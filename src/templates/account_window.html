@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Account {{nick}}</title>
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
+    />
+    <link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon"/>
+</head>
+<body>
+<main class="container">
+    <article>
+        <h3>Welcome {{nick}}</h3>
+        <nav
+                style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px"
+        >
+            <ul>
+                <li><a href="Contacts" role="button">Contacts</a></li>
+                <li><a href="Notes" role="button">Notes</a></li>
+                <li><a href="Upload_files" role="button">Upload files</a></li>
+                <li><a href="logout" role="button">Log out</a></li>
+            </ul>
+        </nav>
+        <div>
+            <h3>News:</h3>
+            {% for contact in contacts%}
+            <ul>
+                <li>
+                    <a href="/page/{{contact.id}}" role="button" class="outline"
+                    >{{contact.first_name}} {{contact.last_name}}</a
+                    >
+                    <a href="/delete_contact/{{contact.id}}" role="button" class="contrast"
+                    >Delete contact</a
+                    >
+                </li>
+            </ul>
+            {% endfor %}
+        </div>
+
+    </article>
+</main>
+</body>
+</html>
