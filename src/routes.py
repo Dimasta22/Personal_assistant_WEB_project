@@ -65,19 +65,19 @@ def account_window():
 
 @app.route('/Notebook', strict_slashes=False)
 def notebook():
-    all_tags_n = len(tag.all_tags())
-    all_tags = tag.all_tags()
-    nick = user.get_user(session['user_id']['id']).nick
+    nick = user.get_user(session['user_id']['id'])
+    all_tags_n = len(tag.all_tags(nick.id))
+    all_tags = tag.all_tags(nick.id)
     # print(user.get_user(session['user_id']['id']).id)
     return render_template('notebook.html', nick=nick, all_tags_num=all_tags_n, all_tags=all_tags)
 
 
 @app.route('/tags', methods=['GET', 'POST'], strict_slashes=False)
 def tags():
-    nick = user.get_user(session['user_id']['id']).nick
+    nick = user.get_user(session['user_id']['id'])
     if request.method == "POST":
         tag_name = request.form.get("tag_name")
-        tag.add_tag(tag_name)
+        tag.add_tag(tag_name, nick.id)
     return render_template('tags.html', nick=nick)
 
 

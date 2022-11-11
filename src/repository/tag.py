@@ -3,8 +3,8 @@ from src import models
 import bcrypt
 
 
-def add_tag(new_tag):
-    add_new_tag = models.Tag(name=new_tag)
+def add_tag(new_tag, u_id):
+    add_new_tag = models.Tag(name=new_tag, user_id=u_id)
     db.session.add(add_new_tag)
     db.session.commit()
     return
@@ -23,5 +23,5 @@ def edit_tag():
     pass
 
 
-def all_tags():
-    return models.Tag.query.all()
+def all_tags(u_id):
+    return models.Tag.query.filter(models.Tag.user_id == u_id).all()
