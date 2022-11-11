@@ -58,22 +58,22 @@ def logout():
 def account_window():
     # auth = True if 'username' in session else False
     nick = user.get_user(session['user_id']['id']).nick
-    #contacts = contact.get_all_contacts(session['user_id']['id'])
-    #contact_notes = notes.get_all_notes(session['user_id']['id'])
+    # contacts = contact.get_all_contacts(session['user_id']['id'])
+    # contact_notes = notes.get_all_notes(session['user_id']['id'])
     return render_template('account_window.html', nick=nick)
 
 
 @app.route('/Notebook', strict_slashes=False)
 def notebook():
+    all_tags_n = len(tag.all_tags())
     all_tags = tag.all_tags()
     nick = user.get_user(session['user_id']['id']).nick
     # print(user.get_user(session['user_id']['id']).id)
-    return render_template('notebook.html', nick=nick, all_tags=all_tags)
+    return render_template('notebook.html', nick=nick, all_tags_num=all_tags_n, all_tags=all_tags)
 
 
 @app.route('/tags', methods=['GET', 'POST'], strict_slashes=False)
 def tags():
-
     nick = user.get_user(session['user_id']['id']).nick
     if request.method == "POST":
         tag_name = request.form.get("tag_name")
@@ -81,8 +81,21 @@ def tags():
     return render_template('tags.html', nick=nick)
 
 
+@app.route("/delete_tag/<_id>", strict_slashes=False)
+def delete_tag(_id):
+    tag.delete_tag(_id)
+    return redirect("/Notebook")
+
+
+@app.route('/detail_tag/<_id>', strict_slashes=False)
+def detail_tag(_id):
+    d_tag = tag.get_detail(_id)
+    print(d_tag.id)
+    # return redirect("/Notebook")
+    return render_template('tag_detail.html', d_tag=d_tag)
+
+
 @app.route('/notes', strict_slashes=False)
 def notes():
     nick = user.get_user(session['user_id']['id']).nick
     return render_template('notes.html', nick=nick)
-

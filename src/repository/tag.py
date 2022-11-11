@@ -10,13 +10,18 @@ def add_tag(new_tag):
     return
 
 
-def delete_tag():
-    pass
+def delete_tag(_id):
+    db.session.query(models.Tag).filter(models.Tag.id == _id).delete()
+    db.session.commit()
 
+
+def get_detail(_id):
+    tag_detail = db.session.query(models.Tag).filter(models.Tag.id == _id).first()
+    return tag_detail
 
 def edit_tag():
     pass
 
 
 def all_tags():
-    return len(models.Tag.query.all())
+    return models.Tag.query.all()

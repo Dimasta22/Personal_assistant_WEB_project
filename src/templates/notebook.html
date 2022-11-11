@@ -25,8 +25,18 @@
         </ul>
     </div>
     <div>
-        for now you have {{ all_tags }} tags
+        for now you have {{ all_tags_num }} tags
     </div>
+
+    {% for tag in all_tags%}
+    <ul>
+        <li>
+            <a href="/detail_tag/{{tag.id}}" role="button" class="outline">{{tag.name}}</a>
+            <a href="/edit_tag/{{tag.id}}" role="button" class="secondary">Edit tag</a>
+            <a href="/delete_tag/{{tag.id}}" role="button" class="contrast">Delete tag</a>
+        </li>
+    </ul>
+      {% endfor %}
 </main>
 </body>
 </html>
