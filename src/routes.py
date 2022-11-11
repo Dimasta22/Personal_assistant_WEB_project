@@ -1,12 +1,12 @@
 import sqlalchemy.exc
 from flask import render_template, request, flash, redirect, url_for, session, make_response
 from . import app
-from src.repository import user
+from src.repository import user, tag
 
 
 @app.route('/healthcheck', strict_slashes=False)
 def healthcheck():
-    return 'I am worhing'
+    return 'I am working'
 
 
 @app.route('/', strict_slashes=False)
@@ -61,3 +61,28 @@ def account_window():
     #contacts = contact.get_all_contacts(session['user_id']['id'])
     #contact_notes = notes.get_all_notes(session['user_id']['id'])
     return render_template('account_window.html', nick=nick)
+
+
+@app.route('/Notebook', strict_slashes=False)
+def notebook():
+    all_tags = tag.all_tags()
+    nick = user.get_user(session['user_id']['id']).nick
+    # print(user.get_user(session['user_id']['id']).id)
+    return render_template('notebook.html', nick=nick, all_tags=all_tags)
+
+
+@app.route('/tags', methods=['GET', 'POST'], strict_slashes=False)
+def tags():
+
+    nick = user.get_user(session['user_id']['id']).nick
+    if request.method == "POST":
+        tag_name = request.form.get("tag_name")
+        tag.add_tag(tag_name)
+    return render_template('tags.html', nick=nick)
+
+
+@app.route('/notes', strict_slashes=False)
+def notes():
+    nick = user.get_user(session['user_id']['id']).nick
+    return render_template('notes.html', nick=nick)
+
