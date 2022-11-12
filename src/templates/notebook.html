@@ -28,7 +28,7 @@
         for now you have {{ all_tags_num }} tags
     </div>
 
-    {% for tag in all_tags%}
+    {% for tag in all_tags %}
     <ul>
         <li>
             <a href="/detail_tag/{{tag.id}}" role="button" class="outline">{{tag.name}}</a>

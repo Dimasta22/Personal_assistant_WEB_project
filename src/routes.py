@@ -91,11 +91,17 @@ def delete_tag(_id):
 def detail_tag(_id):
     d_tag = tag.get_detail(_id)
     print(d_tag.id)
-    # return redirect("/Notebook")
     return render_template('tag_detail.html', d_tag=d_tag)
 
 
-@app.route('/notes', strict_slashes=False)
+@app.route('/notes', methods=['GET', 'POST'], strict_slashes=False)
 def notes():
-    nick = user.get_user(session['user_id']['id']).nick
-    return render_template('notes.html', nick=nick)
+    nick = user.get_user(session['user_id']['id'])
+    all_tags = tag.all_tags(nick.id)
+    if request.method == "POST":
+        note_n = request.form.get("note_name")
+        note_des = request.form.get("note_description")
+        note_tgs = request.form.get("note_tags")
+        note_ty = request.form.get("note_type")
+        print(note_tgs)
+    return render_template('notes.html', nick=nick, all_tags=all_tags)

@@ -1,30 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>Add notes</title>
     <link
-      rel="stylesheet"
-      href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
+            rel="stylesheet"
+            href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
     />
-  </head>
-  <body>
-    <main class="container">
-      <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+</head>
+<body>
+<main class="container">
+    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
         <ul>
-          <li><a href="/Notebook" role="button"> Go back to the notebook page </a></li>
+            <li><a href="/Notebook" role="button"> Go back to the notebook page </a></li>
         </ul>
-      </nav>
-      <form method="POST" action="/contact">
+    </nav>
+    <form method="POST" action="/notes">
         <div style="padding: 10px">
-          <label
-            >Tag name:
-            <input type="text" name="name" required />
+            <label
+            >Note name:
+                <input type="text" name="note_name" required/>
+            </label>
+            <label>
+                <label
+                >Note description:
+                    <input type="text" name="note_description" required/>
+                </label>
+                <label>
+                    Tags: </label>
+                <select name="note_tags">
+                    {% for tag in all_tags %}
+                    <option value="{{tag.id}}">{{tag.name}}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label
+            >Status:
+            <select name="note_type" required>
+              <option value="0" selected="selected">Not done</option>
+              <option value="1">Done</option>
+            </select>
           </label>
-          <button type="submit">Submit</button>
-		  <button type="reset" class="secondary">Reset</button>
+            <button type="submit">Submit</button>
+            <button type="reset" class="secondary">Reset</button>
         </div>
-      </form>
-    </main>
-  </body>
+    </form>
+</main>
+</body>
 </html>
