@@ -19,8 +19,12 @@ def get_detail(_id):
     tag_detail = db.session.query(models.Tag).filter(models.Tag.id == _id).first()
     return tag_detail
 
-def edit_tag():
-    pass
+
+def edit_tag(_id, new_name_tag):
+    edited_tag = db.session.query(models.Tag).filter(models.Tag.id == _id).first()
+    edited_tag.name = new_name_tag
+    db.session.commit()
+    return edited_tag
 
 
 def all_tags(u_id):

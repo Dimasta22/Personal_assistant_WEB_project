@@ -1,7 +1,7 @@
 import sqlalchemy.exc
 from flask import render_template, request, flash, redirect, url_for, session, make_response
 from . import app
-from src.repository import user, tag
+from src.repository import user, tag, note
 
 
 @app.route('/healthcheck', strict_slashes=False)
@@ -68,7 +68,6 @@ def notebook():
     nick = user.get_user(session['user_id']['id'])
     all_tags_n = len(tag.all_tags(nick.id))
     all_tags = tag.all_tags(nick.id)
-    # print(user.get_user(session['user_id']['id']).id)
     return render_template('notebook.html', nick=nick, all_tags_num=all_tags_n, all_tags=all_tags)
 
 
@@ -90,8 +89,18 @@ def delete_tag(_id):
 @app.route('/detail_tag/<_id>', strict_slashes=False)
 def detail_tag(_id):
     d_tag = tag.get_detail(_id)
-    print(d_tag.id)
     return render_template('tag_detail.html', d_tag=d_tag)
+
+
+@app.route('/edit_tag/<_id>', methods=['GET', 'POST'], strict_slashes=False)
+def edit_tag(_id):
+    nick = user.get_user(session['user_id']['id'])
+    d_tag = tag.get_detail(_id)
+    if request.method == "POST":
+        d_tag = tag.get_detail(_id)
+        tag_new = request.form.get("tag_name")
+        print(tag.edit_tag(d_tag.id, tag_new))
+    return render_template('tag_edit.html', d_tag=d_tag)
 
 
 @app.route('/notes', methods=['GET', 'POST'], strict_slashes=False)
@@ -103,5 +112,6 @@ def notes():
         note_des = request.form.get("note_description")
         note_tgs = request.form.get("note_tags")
         note_ty = request.form.get("note_type")
-        print(note_tgs)
+        note_ty = (False if note_ty == '0' else True)
+        note.add_note(note_n, note_des, note_tgs, note_ty, nick.id)
     return render_template('notes.html', nick=nick, all_tags=all_tags)
