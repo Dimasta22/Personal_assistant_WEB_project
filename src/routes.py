@@ -2,6 +2,7 @@ import sqlalchemy.exc
 from flask import render_template, request, flash, redirect, url_for, session, make_response
 from . import app
 from src.repository import user
+from src.scrappy_libs import currency, football, politics, weather
 
 
 @app.route('/healthcheck', strict_slashes=False)
@@ -58,6 +59,12 @@ def logout():
 def account_window():
     # auth = True if 'username' in session else False
     nick = user.get_user(session['user_id']['id']).nick
-    #contacts = contact.get_all_contacts(session['user_id']['id'])
-    #contact_notes = notes.get_all_notes(session['user_id']['id'])
-    return render_template('account_window.html', nick=nick)
+    politics_news = politics.parse_finance(10)
+    football_news = football.parse_football(10)
+    weather_news = weather.parse_weather('Днепр')
+    currency_news = currency.parse_currency()
+    return render_template('account_window.html', nick=nick,
+                           politics_news=politics_news,
+                           football_news=football_news,
+                           weather_news=weather_news,
+                           currency_news=currency_news)
