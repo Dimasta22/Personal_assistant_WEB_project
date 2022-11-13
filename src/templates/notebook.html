@@ -37,6 +37,19 @@
         </li>
     </ul>
       {% endfor %}
+    <div>
+        for now you have {{ all_notes_n }} notes
+    </div>
+
+    {% for note in all_notes %}
+    <ul>
+        <li>
+            <a href="/detail_note/{{note.id}}" role="button" class="outline">{{note.name}}</a>
+            <a href="/edit_note/{{note.id}}" role="button" class="secondary">Edit note</a>
+            <a href="/delete_note/{{note.id}}" role="button" class="contrast">Delete note</a>
+        </li>
+    </ul>
+      {% endfor %}
 </main>
 </body>
 </html>

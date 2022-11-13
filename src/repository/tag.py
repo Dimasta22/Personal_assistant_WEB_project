@@ -24,8 +24,16 @@ def edit_tag(_id, new_name_tag):
     edited_tag = db.session.query(models.Tag).filter(models.Tag.id == _id).first()
     edited_tag.name = new_name_tag
     db.session.commit()
-    return edited_tag
+    # return edited_tag
 
 
 def all_tags(u_id):
     return models.Tag.query.filter(models.Tag.user_id == u_id).all()
+
+
+def add_to_notes(many_tags):
+    multi_tags = []
+    for tag in many_tags:
+        multi_tags.append(db.session.query(models.Tag).filter(models.Tag.name == tag).first())
+    return multi_tags
+

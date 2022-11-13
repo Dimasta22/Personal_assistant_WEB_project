@@ -68,7 +68,10 @@ def notebook():
     nick = user.get_user(session['user_id']['id'])
     all_tags_n = len(tag.all_tags(nick.id))
     all_tags = tag.all_tags(nick.id)
-    return render_template('notebook.html', nick=nick, all_tags_num=all_tags_n, all_tags=all_tags)
+    all_notes = note.all_notes(nick.id)
+    all_notes_n = len(note.all_notes(nick.id))
+    return render_template('notebook.html', nick=nick, all_tags_num=all_tags_n, all_tags=all_tags, all_notes=all_notes,
+                           all_notes_n=all_notes_n)
 
 
 @app.route('/tags', methods=['GET', 'POST'], strict_slashes=False)
@@ -99,7 +102,7 @@ def edit_tag(_id):
     if request.method == "POST":
         d_tag = tag.get_detail(_id)
         tag_new = request.form.get("tag_name")
-        print(tag.edit_tag(d_tag.id, tag_new))
+        tag.edit_tag(d_tag.id, tag_new)
     return render_template('tag_edit.html', d_tag=d_tag)
 
 
@@ -110,8 +113,38 @@ def notes():
     if request.method == "POST":
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
-        note_tgs = request.form.get("note_tags")
+        note_tgs = request.form.getlist("tags")
+        tags_in_form = tag.add_to_notes(note_tgs)
         note_ty = request.form.get("note_type")
         note_ty = (False if note_ty == '0' else True)
-        note.add_note(note_n, note_des, note_tgs, note_ty, nick.id)
+        note.add_note(note_n, note_des, tags_in_form, note_ty, nick.id)
     return render_template('notes.html', nick=nick, all_tags=all_tags)
+
+
+@app.route("/delete_note/<_id>", strict_slashes=False)
+def delete_note(_id):
+    note.delete_note(_id)
+    return redirect("/Notebook")
+
+
+@app.route('/detail_note/<_id>', strict_slashes=False)
+def detail_note(_id):
+    d_note = note.get_detail(_id)
+    return render_template('note_detail.html', d_note=d_note)
+
+
+@app.route('/edit_note/<_id>', methods=['GET', 'POST'], strict_slashes=False)
+def edit_note(_id):
+    nick = user.get_user(session['user_id']['id'])
+    all_tags = tag.all_tags(nick.id)
+    d_note = note.get_detail(_id)
+    if request.method == "POST":
+        d_note = note.get_detail(_id)
+        note_n = request.form.get("note_name")
+        note_des = request.form.get("note_description")
+        note_tgs = request.form.getlist("tags")
+        tags_in_form = tag.add_to_notes(note_tgs)
+        note_ty = request.form.get("note_type")
+        note_ty = (False if note_ty == '0' else True)
+        note.edit_note(d_note.id, note_n, note_des, tags_in_form, note_ty)
+    return render_template('note_edit.html', all_tags=all_tags, d_note=d_note)

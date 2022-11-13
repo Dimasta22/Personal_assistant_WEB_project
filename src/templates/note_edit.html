@@ -2,29 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>Add notes</title>
+    <title>Note {{d_note}} information</title>
     <link
             rel="stylesheet"
             href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
     />
 </head>
-<body>
+ </head>
+  <body>
 <main class="container">
     <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
         <ul>
             <li><a href="/Notebook" role="button"> Go back to the notebook page </a></li>
         </ul>
     </nav>
-    <form method="POST" action="/notes">
+    <form method="POST" action="/edit_note/{{d_note.id}}">
         <div style="padding: 10px">
             <label
             >Note name:
-                <input type="text" name="note_name" required/>
+                <input type="text" name="note_name" placeholder={{d_note.name}} required/>
             </label>
             <label>
                 <label
                 >Note description:
-                    <input type="text" name="note_description" required/>
+                    <input type="text" name="note_description" placeholder={{d_note.description}}required/>
                 </label>
           <label
             >Select tags:
@@ -47,5 +48,6 @@
         </div>
     </form>
 </main>
-</body>
+  </body>
 </html>
+
