@@ -11,6 +11,8 @@ Flask-SQLAlchemy = "^2.5.1"
 Flask-Migrate = "^3.1.0"
 python-dotenv = "^0.21.0"
 bcrypt = "^4.0.1"
+requests = "^2.28.1"
+beautifulsoup4 = "^4.11.1"
 
 [tool.poetry.dev-dependencies]
 
