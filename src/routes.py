@@ -148,3 +148,8 @@ def edit_note(_id):
         note_ty = (False if note_ty == '0' else True)
         note.edit_note(d_note.id, note_n, note_des, tags_in_form, note_ty)
     return render_template('note_edit.html', all_tags=all_tags, d_note=d_note)
+
+
+@app.route('/search_notes_tags', strict_slashes=False)
+def search_note_tag():
+    return render_template('search_n.html')

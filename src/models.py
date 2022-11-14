@@ -70,7 +70,7 @@ class Note(db.Model):
     done = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     user = relationship('User', cascade='all, delete', backref='note')
-    tags = relationship("Tag", secondary=note_m2m_tag, backref="notes")
+    tags = relationship("Tag", secondary=note_m2m_tag, back_populates="notes", cascade="all, delete",)
 
 
 class Tag(db.Model):
@@ -78,6 +78,7 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25), nullable=False, unique=True)
     user_id = db.Column(db.Integer, nullable=False)
+    notes = relationship("Note", secondary=note_m2m_tag, back_populates="tags",)
 
     def __repr__(self) -> str:
         return self.name
