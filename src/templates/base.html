@@ -8,6 +8,7 @@
             href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
     />
     <link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
 </head>
 <body>
 <main class="container">
@@ -17,26 +18,18 @@
                 style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px"
         >
             <ul>
+                <li><a href="/account_window" role="button">News</a></li>
+                {% if href_ != 'contact' %}
                 <li><a href="/contacts" role="button">Contacts</a></li>
+                {% endif %}
                 <li><a href="Notes" role="button">Notes</a></li>
                 <li><a href="Upload_files" role="button">Upload files</a></li>
-                <li><a href="logout" role="button">Log out</a></li>
+                <li><a href="/logout" role="button">Log out</a></li>
             </ul>
         </nav>
         <div>
-            <h3>News:</h3>
-            {% for contact in contacts%}
-            <ul>
-                <li>
-                    <a href="/page/{{contact.id}}" role="button" class="outline"
-                    >{{contact.first_name}} {{contact.last_name}}</a
-                    >
-                    <a href="/delete_contact/{{contact.id}}" role="button" class="contrast"
-                    >Delete contact</a
-                    >
-                </li>
-            </ul>
-            {% endfor %}
+        {% block content %}
+        {% endblock %}
         </div>
 
     </article>
