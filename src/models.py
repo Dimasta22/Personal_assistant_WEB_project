@@ -97,6 +97,5 @@ class Tag(db.Model):
                          back_populates="tags",
                          passive_deletes=True,
                          )
-
     def repr(self) -> str:
         return self.name
