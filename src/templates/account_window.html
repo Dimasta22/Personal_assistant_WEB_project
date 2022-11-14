@@ -17,26 +17,69 @@
                 style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px"
         >
             <ul>
-                <li><a href="Contacts" role="button">Contacts</a></li>
-                <li><a href="Notebook" role="button">Notes</a></li>
+                <li><a href="/contacts" role="button">Contacts</a></li>
+                <li><a href="Notes" role="button">Notes</a></li>
                 <li><a href="Upload_files" role="button">Upload files</a></li>
                 <li><a href="logout" role="button">Log out</a></li>
             </ul>
         </nav>
         <div>
             <h3>News:</h3>
-            {% for contact in contacts%}
+            {% for politic in politics_news%}
             <ul>
                 <li>
-                    <a href="/page/{{contact.id}}" role="button" class="outline"
-                    >{{contact.first_name}} {{contact.last_name}}</a
-                    >
-                    <a href="/delete_contact/{{contact.id}}" role="button" class="contrast"
-                    >Delete contact</a
+                    <span class="outline"
+                    >{{politic}}</span
                     >
                 </li>
             </ul>
             {% endfor %}
+            <h3>Football:</h3>
+            {% for football in football_news%}
+            <ul>
+                <li>
+                    <span class="outline"
+                    >{{football}}</span
+                    >
+                </li>
+            </ul>
+            {% endfor %}
+            <h3>Currency:</h3>
+            <table>
+                <tr>
+                    {% for index in range(4)%}
+                    <td>{{currency_news[index]}}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>{{currency_news[4]}}</td>
+                    {% for index in range(7,10)%}
+                    <td>{{currency_news[index]}}</td>
+                    {% endfor %}
+                <tr>
+                    <td>{{currency_news[5]}}</td>
+                    {% for index in range(10,13)%}
+                    <td>{{currency_news[index]}}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>{{currency_news[6]}}</td>
+                    {% for index in range(13,16)%}
+                    <td>{{currency_news[index]}}</td>
+                    {% endfor %}
+                </tr>
+            </table>
+            <h3>Weather:</h3>
+            {% for weather in weather_news%}
+            <ul>
+                <li>
+                    <span class="outline"
+                    >{{weather}}</span
+                    >
+                </li>
+            </ul>
+            {% endfor %}
+
         </div>
 
     </article>
