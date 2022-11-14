@@ -8,7 +8,7 @@ from . import app
 from src.repository import user, files
 from .libs.file_service import move_user_file
 from .libs.validation_file import allowed_file
-from .models import FileType, File
+from .models import FileType
 
 @app.route('/healthcheck', strict_slashes=False)
 def healthcheck():
