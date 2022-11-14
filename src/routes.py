@@ -4,6 +4,7 @@ from src.repository import user, contact
 from src.libs.validation_contact import contact_validation
 from sqlalchemy.engine import Engine
 from sqlalchemy import event
+from src.scrappy_libs import currency, football, politics, weather
 
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
@@ -65,9 +66,15 @@ def logout():
 def account_window():
     # auth = True if 'username' in session else False
     nick = user.get_user(session['user_id']['id']).nick
-    #contacts = contact.get_all_contacts(session['user_id']['id'])
-    #contact_notes = notes.get_all_notes(session['user_id']['id'])
-    return render_template('account_window.html', nick=nick)
+    politics_news = politics.parse_finance(10)
+    football_news = football.parse_football(10)
+    weather_news = weather.parse_weather('Днепр')
+    currency_news = currency.parse_currency()
+    return render_template('account_window.html', nick=nick,
+                           politics_news=politics_news,
+                           football_news=football_news,
+                           weather_news=weather_news,
+                           currency_news=currency_news)
 
 
 @app.route('/contacts', methods=['GET', 'POST'], strict_slashes=False)
@@ -252,6 +259,7 @@ def edit_address(contact_id, address_id):
         # print('contact_id = ', contact_id)
         # print('email_id = ', email_id)
     return render_template('edit_address.html', contact=contact_, address=address_id, address_obj=contact.get_address(contact_id=contact_id,address_id=address_id)[0])
+
 
 
 
