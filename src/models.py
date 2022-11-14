@@ -62,12 +62,12 @@ class Phone(db.Model):
     contact = relationship("Contact", back_populates="phones")
 
 
-note_m2m_tag_table = db.Table(
+note_m2m_tag = db.Table(
     "note_m2m_tag",
     db.Model.metadata,
     db.Column("id", db.Integer, primary_key=True),
-    db.Column("note_id", db.Integer, ForeignKey("notes.id", ondelete="CASCADE")),
-    db.Column("tag_id", db.Integer, ForeignKey("tags.id", ondelete="CASCADE")),
+    db.Column("note", db.Integer, ForeignKey("notes.id")),
+    db.Column("tag", db.Integer, ForeignKey("tags.id")),
 )
 
 
@@ -78,25 +78,17 @@ class Note(db.Model):
     created = db.Column(db.DateTime, default=datetime.now())
     description = db.Column(db.String(150), nullable=False)
     done = db.Column(db.Boolean, default=False)
-    user_id = db.Column(db.Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
-    user = relationship("User", back_populates="contacts")
-    tags = relationship("Tag",
-                        secondary=note_m2m_tag_table,
-                        back_populates="note",
-                        cascade="all, delete", )
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
+    user = relationship('User', cascade='all, delete', backref='note')
+    tags = relationship("Tag", secondary=note_m2m_tag, backref="notes")
 
 
 class Tag(db.Model):
     __tablename__ = "tags"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25), nullable=False, unique=True)
-    user_id = db.Column(db.Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
-    user = relationship("User", back_populates="contacts")
-    notes = relationship("Note",
-                         secondary=note_m2m_tag_table,
-                         back_populates="tags",
-                         passive_deletes=True,
-                         )
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
+
     def repr(self) -> str:
         return self.name
 
