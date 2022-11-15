@@ -1,10 +1,22 @@
+
+import pathlib
+from .libs.normalize import normalize
+import sqlalchemy.exc
 from flask import render_template, request, flash, redirect, url_for, session, make_response
+from werkzeug.utils import secure_filename
+from src import db
 from . import app
-from src.repository import user, contact, tag, note
+
+from .libs.file_service import move_user_file
+from .libs.validation_file import allowed_file
+from .models import FileType
+
+from src.repository import user, contact, tag, note, files
 from src.libs.validation_contact import contact_validation
 from sqlalchemy.engine import Engine
 from sqlalchemy import event
 from src.scrappy_libs import currency, football, politics, weather
+
 
 
 @event.listens_for(Engine, "connect")
@@ -76,6 +88,41 @@ def account_window():
                            football_news=football_news,
                            weather_news=weather_news,
                            currency_news=currency_news)
+
+
+@app.route('/file_uploader', methods=['GET'], strict_slashes=False)
+def file_uploader():
+    user_id = user.get_user(session['user_id']['id']).id
+    #type_ex = db.session.query(File).filter(File.user_id==user_id).all()
+    type_ex = db.session.query(FileType).filter(FileType.files.any(user_id=user_id)).all()
+    return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex)
+
+
+@app.route('/file_uploader/upload', methods=['GET', 'POST'], strict_slashes=False)
+def file_upload():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(request.url)
+    if request.method == 'POST':
+        description = request.form.get('description')
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(normalize(file.filename))
+            file_path = pathlib.Path(app.config['UPLOAD_FOLDER']) / filename
+            file.save(file_path)
+            files.upload_file_for_user(session['user_id']['id'], file_path, description)
+            flash('Uploaded successfully!')
+        else:
+            flash('Wrong type of file!')
+            return redirect(url_for('file_uploader'))
+    return redirect(url_for('file_uploader'))
+
 
 
 @app.route('/Notebook', strict_slashes=False)
@@ -353,3 +400,4 @@ def edit_address(contact_id, address_id):
         # print('contact_id = ', contact_id)
         # print('email_id = ', email_id)
     return render_template('edit_address.html', contact=contact_, address=address_id, address_obj=contact.get_address(contact_id=contact_id,address_id=address_id)[0])
+

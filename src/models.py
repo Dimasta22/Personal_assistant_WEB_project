@@ -91,3 +91,22 @@ class Tag(db.Model):
 
     def repr(self) -> str:
         return self.name
+
+
+class File(db.Model):
+    __tablename__ = 'files'
+    id = db.Column(db.Integer, primary_key=True)
+    path = db.Column(db.String(350), unique=True, nullable=False)
+    description = db.Column(db.String(300), nullable=False)
+    size = db.Column(db.Integer, nullable=False)
+    type_id = db.Column(db.Integer, ForeignKey('filetypes.id'), nullable=False)
+    file_type = relationship('FileType', cascade='all, delete')
+    user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    user = relationship('User', cascade='all, delete', backref='files')
+
+
+class FileType(db.Model):
+    __tablename__ = 'filetypes'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(25), nullable=False, unique=True)
+    files = relationship('File')
