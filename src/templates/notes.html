@@ -26,24 +26,24 @@
                 >Note description:
                     <input type="text" name="note_description" required/>
                 </label>
-          <label
-            >Select tags:
-            <select name="tags" multiple="multiple" required>
-              {% for tag in all_tags %}
-              <option value="{{tag.name}}">{{tag.name}}</option>
-              {% endfor %}
-            </select>
-          </label>
+                <label
+                >Select tags:
+                    <select name="tags" multiple="multiple" required>
+                        {% for tag in all_tags %}
+                        <option value="{{tag.name}}">{{tag.name}}</option>
+                        {% endfor %}
+                    </select>
+                </label>
         </div>
-            <label
-            >Status:
+        <label
+        >Status:
             <select name="note_type" required>
-              <option value="0" selected="selected">Not done</option>
-              <option value="1">Done</option>
+                <option value="0" selected="selected">Not done</option>
+                <option value="1">Done</option>
             </select>
-          </label>
-            <button type="submit">Submit</button>
-            <button type="reset" class="secondary">Reset</button>
+        </label>
+        <button type="submit">Submit</button>
+        <button type="reset" class="secondary">Reset</button>
         </div>
     </form>
 </main>

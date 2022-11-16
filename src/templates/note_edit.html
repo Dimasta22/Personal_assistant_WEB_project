@@ -16,7 +16,7 @@
             <li><a href="/Notebook" role="button"> Go back to the notebook page </a></li>
         </ul>
     </nav>
-    <form method="POST" action="/edit_note/{{d_note.id}}">
+    <form method="POST" action="/notes">
         <div style="padding: 10px">
             <label
             >Note name:
@@ -25,7 +25,7 @@
             <label>
                 <label
                 >Note description:
-                    <input type="text" name="note_description" placeholder={{d_note.description}}required/>
+                    <input type="text" name="note_description" placeholder={{d_note.description}} required/>
                 </label>
           <label
             >Select tags:

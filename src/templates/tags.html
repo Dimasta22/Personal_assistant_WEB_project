@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>Add tags</title>
     <link
-      rel="stylesheet"
-      href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
+            rel="stylesheet"
+            href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
     />
-  </head>
-  <body>
-    <main class="container">
-      <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+</head>
+<body>
+<main class="container">
+    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
         <ul>
-          <li><a href="/Notebook" role="button"> Go back to the notebook page </a></li>
+            <li><a href="/Notebook" role="button"> Go back to the notebook page </a></li>
         </ul>
-      </nav>
-      <form method="POST" action="/tags">
+    </nav>
+    <form method="POST" action="/tags">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning">{{message}}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <div style="padding: 10px">
-          <label
+            <label
             >Tag name:
-            <input type="text" name="tag_name" required />
-          </label>
-          <button type="submit">Submit</button>
-		  <button type="reset" class="secondary">Reset</button>
+                <input type="text" name="tag_name" required/>
+            </label>
+            <button type="submit">Submit</button>
+            <button type="reset" class="secondary">Reset</button>
         </div>
-      </form>
-    </main>
-  </body>
+    </form>
+</main>
+</body>
 </html>
