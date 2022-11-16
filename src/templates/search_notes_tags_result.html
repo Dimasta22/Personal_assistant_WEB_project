@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Search page</title>
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
+    />
+</head>
+<body>
+<main class="container">
+    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+        <ul>
+            <li><a href="/search_notes_tags" role="button"> Go back to the main page </a></li>
+        </ul>
+        <ul><b>Search for user {{ nick.nick }}</b></ul>
+    </nav>
+
+    {% if done_notes %}
+    <h2> All finished notes</h2>
+    {% for d_notes in done_notes %}
+    <h3>Name: {{d_notes.name}} | Description: {{d_notes.description}} | Tags: {{d_s_tags}}</h3>
+    {% endfor %}
+    {% endif %}
+    {% if undone_notes %}
+    <h2> All unfinished notes</h2>
+    {% for u_notes in undone_notes %}
+    <h3>Name: {{u_notes.name}} | Description: {{u_notes.description}} | Tags: {{u_s_tags}}</h3>
+    {% endfor %}
+    {% endif %}
+    {% if result %}
+    <h2> All found notes with : "{{phrase}}"</h2>
+    {% for r_notes in result_notes %}
+    <h3>Name: {{r_notes[0]}} | Description: {{r_notes[1]}} | Tags: {{r_notes[2]}}</h3>
+    {% endfor %}
+    {% endif %}
+</main>
+</body>
+</html>
