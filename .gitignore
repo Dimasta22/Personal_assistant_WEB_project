@@ -18,7 +18,7 @@ smart_command_finder.py
 # Distribution / packaging
 .Python
 migrations/
-data/
+
 env/
 build/
 develop-eggs/

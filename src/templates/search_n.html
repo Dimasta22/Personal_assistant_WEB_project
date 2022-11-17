@@ -27,9 +27,17 @@
         </div>
         <div><label
         >Search by phrase:
-            <input type="text" name="note_phrase" required/>
+            <input type="text" name="note_phrase" />
             <button type="submit">Search by phrase</button>
         </label></div>
+                        <label
+                >Select tags:
+                    <select name="tags" multiple="multiple" >
+                        {% for tag in all_tags %}
+                        <option value="{{tag.name}}">{{tag.name}}</option>
+                        {% endfor %}
+                    </select>
+                </label>
     </form>
 </main>
 </body>

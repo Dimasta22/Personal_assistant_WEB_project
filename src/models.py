@@ -66,7 +66,7 @@ note_m2m_tag = db.Table(
     "note_m2m_tag",
     db.Model.metadata,
     db.Column("id", db.Integer, primary_key=True),
-    db.Column("note", db.Integer, ForeignKey("notes.id")),
+    db.Column("note", db.Integer, ForeignKey("notes.id"), ),
     db.Column("tag", db.Integer, ForeignKey("tags.id")),
 )
 
@@ -86,7 +86,7 @@ class Note(db.Model):
 class Tag(db.Model):
     __tablename__ = "tags"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(25), nullable=False, unique=True)
+    name = db.Column(db.String(25), nullable=False, )
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
 
     def repr(self) -> str:

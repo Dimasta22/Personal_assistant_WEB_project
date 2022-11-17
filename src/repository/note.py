@@ -27,12 +27,11 @@ def get_detail(_id):
 
 def edit_note(_id, new_name_note, new_desc_note, new_tags_note, new_type_note):
     edited_note = db.session.query(models.Note).filter(models.Note.id == _id).first()
-    print(edited_note)
     edited_note.name = new_name_note
     edited_note.description = new_desc_note
     edited_note.tags = new_tags_note
     edited_note.done = new_type_note
-    # db.session.commit()
+    db.session.commit()
     return edited_note
 
 
@@ -55,8 +54,8 @@ def all_find_notes(u_id, what_to_find):
 def note_tags_to_string(notes_tags):
     all_tags = ''
     for tag in notes_tags:
-        all_tags = all_tags + " " + tag.name
-    return all_tags.replace(' ', ' , ').lstrip(' ,')
+        all_tags = all_tags + "!@#" + tag.name
+    return all_tags.replace('!@#', ' , ').lstrip(' ,')
 
 
 def result_notes_into_list(note_list):

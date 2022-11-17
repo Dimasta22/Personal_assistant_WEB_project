@@ -173,7 +173,7 @@ def edit_tag(_id):
             tag.edit_tag(d_tag.id, tag_new)
             return render_template('tag_edit.html', d_tag=d_tag, message='All good')
         elif tag_new == tag.search_tags(tag_new).name:
-            print(tag.search_tags(tag_new).name)
+            # print(tag.search_tags(tag_new).name)
             flash('This name already exist')
             return render_template('tag_edit.html', d_tag=d_tag, message='User already exist')
         # tag.edit_tag(d_tag.id, tag_new)
@@ -229,7 +229,8 @@ def edit_note(_id):
 @app.route('/search_notes_tags', strict_slashes=False)
 def search_note_tag():
     nick = user.get_user(session['user_id']['id'])
-    return render_template('search_n.html', nick=nick)
+    all_tags = tag.all_tags(nick.id)
+    return render_template('search_n.html', nick=nick, all_tags=all_tags)
 
 
 @app.route('/search_all_done_notes', strict_slashes=False)
@@ -253,6 +254,8 @@ def search_by_phrases():
     nick = user.get_user(session['user_id']['id'])
     if request.method == "POST":
         phrase = request.form.get('note_phrase')
+        note_tgs = request.form.getlist("tags")
+        print(note_tgs, phrase)
         result = note.all_find_notes(nick.id, phrase)
         result_notes = note.result_notes_into_list(result)
         return render_template('search_notes_tags_result.html', nick=nick, result=result, phrase=phrase, result_notes=result_notes)
