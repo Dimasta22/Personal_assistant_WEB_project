@@ -12,8 +12,10 @@ def add_tag(new_tag, u_id):
 
 
 def delete_tag(_id):
-    db.session.query(models.Tag).filter(models.Tag.id == _id).delete()
-    db.session.commit()
+    tag = db.session.query(models.Tag).get(_id)
+    if tag:
+        db.session.delete(tag)
+        db.session.commit()
 
 
 def get_detail(_id):

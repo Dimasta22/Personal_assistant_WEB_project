@@ -16,8 +16,10 @@ def all_notes(u_id):
 
 
 def delete_note(_id):
-    db.session.query(models.Note).filter(models.Note.id == _id).delete()
-    db.session.commit()
+    note = db.session.query(models.Note).get(_id)
+    if note:
+        db.session.delete(note)
+        db.session.commit()
 
 
 def get_detail(_id):

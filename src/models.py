@@ -79,7 +79,7 @@ class Note(db.Model):
     description = db.Column(db.String(150), nullable=False)
     done = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    user = relationship('User', cascade='all, delete', backref='note')
+    user = relationship('User', back_populates="notes")
     tags = relationship("Tag", secondary=note_m2m_tag, backref="notes")
 
 

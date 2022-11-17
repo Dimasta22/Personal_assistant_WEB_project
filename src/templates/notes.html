@@ -28,7 +28,7 @@
                 </label>
                 <label
                 >Select tags:
-                    <select name="tags" multiple="multiple" required>
+                    <select name="tags" multiple="multiple" >
                         {% for tag in all_tags %}
                         <option value="{{tag.name}}">{{tag.name}}</option>
                         {% endfor %}
