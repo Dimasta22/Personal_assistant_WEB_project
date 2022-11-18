@@ -12,6 +12,7 @@ Flask-Migrate = "^3.1.0"
 python-dotenv = "^0.21.0"
 bcrypt = "^4.0.1"
 google-api-python-client = "^2.65.0"
+flask-paginate = "^2022.1.8"
 
 [tool.poetry.dev-dependencies]
 

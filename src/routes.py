@@ -1,14 +1,14 @@
 import pathlib
 from .libs.normalize import normalize
-import sqlalchemy.exc
-from flask import render_template, request, flash, redirect, url_for, session, make_response
+from flask import render_template, request, flash, redirect, url_for, session, make_response, send_file
 from werkzeug.utils import secure_filename
 from src import db
 from . import app
 from src.repository import user, files
-from .libs.file_service import move_user_file
 from .libs.validation_file import allowed_file
-from .models import FileType
+from .models import FileType, File
+from src.repository.files import delete_file
+
 
 @app.route('/healthcheck', strict_slashes=False)
 def healthcheck():
@@ -72,9 +72,32 @@ def account_window():
 @app.route('/file_uploader', methods=['GET'], strict_slashes=False)
 def file_uploader():
     user_id = user.get_user(session['user_id']['id']).id
-    #type_ex = db.session.query(File).filter(File.user_id==user_id).all()
+    type_ex = db.session.query(FileType).filter(FileType.files.any(user_id=user_id))
+    group_is_set = False
+    return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex,
+                           group_is_set=group_is_set)
+
+
+@app.route('/file_uploader/<group>', methods=['GET'], strict_slashes=False)
+def file_uploader_set_files(group):
+    user_id = user.get_user(session['user_id']['id']).id
     type_ex = db.session.query(FileType).filter(FileType.files.any(user_id=user_id)).all()
-    return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex)
+    groups = ['Audio', 'Video', 'Documents', 'Images', 'Other']
+    group_is_set = False
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+    if group in groups:
+        group_is_set = True
+        chosen_group = db.session.query(FileType).filter(FileType.name == group).first()
+        selected_files = db.session.query(File).filter(File.user_id == user_id, File.type_id == chosen_group.id)
+        selected_files = selected_files.paginate(page=page, per_page=3)
+        return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex,
+                               group_is_set=group_is_set, selected_files=selected_files, group=group)
+    return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex,
+                           group_is_set=group_is_set, group=group)
 
 
 @app.route('/file_uploader/upload', methods=['GET', 'POST'], strict_slashes=False)
@@ -101,3 +124,22 @@ def file_upload():
             flash('Wrong type of file!')
             return redirect(url_for('file_uploader'))
     return redirect(url_for('file_uploader'))
+
+
+@app.route('/file_uploader/download/<file_id>', methods=['GET', 'POST'], strict_slashes=False)
+def file_download(file_id):
+    user_id = user.get_user(session['user_id']['id']).id
+    file = db.session.query(File).filter(File.id == file_id, File.user_id == user_id).first()
+    name = file.path.replace(f'/static/{user_id}/', '\\')
+    file_path = pathlib.Path(app.config['DOWNLOAD_FOLDER']) / str(user_id)
+    full_path = str(file_path) + name
+    return send_file(full_path, download_name=name)
+
+
+@app.route('/file_uploader/<group>/delete/<file_id>', methods=['GET'], strict_slashes=False)
+def delete(group, file_id):
+    delete_file(file_id, session['user_id']['id'])
+    flash('Deletion successfully!')
+    return redirect(url_for('file_uploader_set_files', group=group))
+
+
