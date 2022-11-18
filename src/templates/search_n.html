@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Search</title>
-    <link
-            rel="stylesheet"
-            href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
-    />
-</head>
-<body>
-<main class="container">
-    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
-        <ul>
-            <li><a href="/Notebook" role="button"> Go back to the notebook page </a></li>
-        </ul>
-    </nav>
+{% extends "base_notes.html" %}
+{% block content %}
     <form method="POST" action="/search_by_phrase">
 
         <div class="grid">
@@ -28,17 +13,15 @@
         <div><label
         >Search by phrase:
             <input type="text" name="note_phrase" />
-            <button type="submit">Search by phrase</button>
+            <label
+            >Select tags:
+                <select name="tags" multiple="multiple" >
+                    {% for tag in all_tags %}
+                    <option value="{{tag.name}}">{{tag.name}}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button type="submit">Search</button>
         </label></div>
-                        <label
-                >Select tags:
-                    <select name="tags" multiple="multiple" >
-                        {% for tag in all_tags %}
-                        <option value="{{tag.name}}">{{tag.name}}</option>
-                        {% endfor %}
-                    </select>
-                </label>
     </form>
-</main>
-</body>
-</html>
+{% endblock %}

@@ -1,21 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Tag {{d_tag}} information</title>
-    <link
-            rel="stylesheet"
-            href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
-    />
-</head>
- </head>
-  <body>
-    <main class="container">
-      <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
-        <ul>
-          <li><a href="/Notebook" role="button"> Go back to the notebook page </a></li>
-        </ul>
-      </nav>
+{% extends "base_notes.html" %}
+{% block content %}
       <form method="POST" action="/edit_tag/{{d_tag.id}}">
           {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -33,7 +17,4 @@
 		  <button type="reset" class="secondary">Reset</button>
         </div>
       </form>
-    </main>
-  </body>
-</html>
-
+{% endblock %}

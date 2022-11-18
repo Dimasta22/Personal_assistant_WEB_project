@@ -1,26 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Note {{d_note}} information</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
-    />
-  </head>
-  <body>
-    <main class="container">
-      <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
-        <ul>
-          <li><a href="/Notebook" role="button"> Go back to the main page </a></li>
-        </ul>
-      </nav>
+{% extends "base_notes.html" %}
+{% block content %}
             <h1>Note name {{d_note.name}}</h1>
             <h2>Note description: {{d_note.description}}</h2>
             <h2>Tags: {{tags_n}}</h2>
           <a href="/edit_note/{{d_note.id}}" role="button" class="secondary">Edit note</a>
           <a href="/delete_note/{{d_note.id}}" role="button" class="contrast">Delete note</a>
-    </main>
-  </body>
-</html>
-
+{% endblock %}
