@@ -170,12 +170,12 @@ def edit_tag(_id):
         d_tag = tag.get_detail(_id)
         tag_new = request.form.get("tag_name")
         if tag.search_tags(tag_new) is None:
-            flash('All good')
+            flash('Tag was edited')
             tag.edit_tag(d_tag.id, tag_new)
-            return render_template('tag_edit.html', nick=nick.nick, d_tag=d_tag, message='All good')
+            return render_template('tag_edit.html', nick=nick.nick, d_tag=d_tag, message='Tag was edited')
         elif tag_new == tag.search_tags(tag_new).name:
             flash('This name already exist')
-            return render_template('tag_edit.html', d_tag=d_tag, nick=nick.nick, message='User already exist')
+            return render_template('tag_edit.html', d_tag=d_tag, nick=nick.nick, message='This name already exist')
     return render_template('tag_edit.html', d_tag=d_tag, nick=nick.nick)
 
 
@@ -184,6 +184,7 @@ def notes():
     nick = user.get_user(session['user_id']['id'])
     all_tags = tag.all_tags(nick.id)
     if request.method == "POST":
+        flash('Note was added')
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
         note_tgs = request.form.getlist("tags")
@@ -191,7 +192,7 @@ def notes():
         note_ty = request.form.get("note_type")
         note_ty = (False if note_ty == '0' else True)
         note.add_note(note_n, note_des, tags_in_form, note_ty, nick.id)
-    return render_template('notes.html', nick=nick.nick, all_tags=all_tags)
+    return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
 
 
 @app.route("/delete_note/<_id>", strict_slashes=False)
@@ -214,6 +215,7 @@ def edit_note(_id):
     all_tags = tag.all_tags(nick.id)
     d_note = note.get_detail(_id)
     if request.method == "POST":
+        flash('Note was edited')
         d_note = note.get_detail(_id)
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
@@ -222,7 +224,7 @@ def edit_note(_id):
         note_ty = request.form.get("note_type")
         note_ty = (False if note_ty == '0' else True)
         note.edit_note(d_note.id, note_n, note_des, tags_in_form, note_ty)
-    return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note)
+    return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note, message='Note was edited')
 
 
 @app.route('/search_notes_tags', strict_slashes=False)
