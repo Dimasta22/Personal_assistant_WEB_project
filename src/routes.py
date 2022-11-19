@@ -106,7 +106,8 @@ def account_window():
 def file_uploader():
     user_id = user.get_user(session['user_id']['id']).id
     # type_ex = db.session.query(File).filter(File.user_id==user_id).all()
-    type_ex = db.session.query(FileType).filter(FileType.files.any(user_id=user_id)).all()
+    type_ex = db.session.query(FileType).filter(
+        FileType.files.any(user_id=user_id)).all()
     return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex)
 
 
@@ -128,7 +129,8 @@ def file_upload():
             filename = secure_filename(normalize(file.filename))
             file_path = pathlib.Path(app.config['UPLOAD_FOLDER']) / filename
             file.save(file_path)
-            files.upload_file_for_user(session['user_id']['id'], file_path, description)
+            files.upload_file_for_user(
+                session['user_id']['id'], file_path, description)
             flash('Uploaded successfully!')
         else:
             flash('Wrong type of file!')
@@ -260,8 +262,37 @@ def add_contact():
             flash(validation)
             return redirect(request.url)
 
-        contact.create_contact(first_name, last_name, birthday, email, address, cell_phone, session['user_id']['id'])
+        contact.create_contact(first_name, last_name, birthday,
+                               email, address, cell_phone, session['user_id']['id'])
     return render_template('add_contact.html', nick=nick)
+
+
+@app.route('/show_contact_birthday', methods=['GET', 'POST'], strict_slashes=False)
+def show_contact_birthday():
+    nick = user.get_user(session['user_id']['id']).nick
+    contacts = contact.get_contacts_user(session['user_id']['id'])
+    birthday_date = 'dd/mm/yyyy'
+    if request.method == 'POST':
+        birthday_date = request.form.get('calendar')
+        if birthday_date == '':
+            flash('Choose date!')
+            return redirect(request.url)
+        contacts = contact.find_contact_birthday(
+            session['user_id']['id'], birthday_date)
+    return render_template('/contacts.html', contacts=contacts, nick=nick, href_='contact',
+                           amount_contacts=len(contacts), calendar=birthday_date)
+
+
+@app.route('/find_contact', methods=['GET', 'POST'], strict_slashes=False)
+def find_contact():
+    nick = user.get_user(session['user_id']['id']).nick
+    contacts = contact.get_contacts_user(session['user_id']['id'])
+    if request.method == 'POST':
+        word = request.form.get('find')
+        print(word)
+        contacts = contact.find_contact(session['user_id']['id'], word)
+    return render_template('/contacts.html', contacts=contacts, nick=nick, href_='contact',
+                           amount_contacts=len(contacts))
 
 
 @app.route('/delete_contact/<contact_id>', methods=["POST"], strict_slashes=False)
@@ -274,7 +305,8 @@ def contact_delete(contact_id):
 
 @app.route('/add_email/<contact_id>', methods=["POST"], strict_slashes=False)
 def add_email(contact_id):
-    contact_ = contact.get_contacts_user_by_id(session['user_id']['id'], contact_id)
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
     if request.method == 'POST':
         if request.form.get('email') is not None:
             email = request.form.get('email')
@@ -288,7 +320,8 @@ def add_email(contact_id):
 
 @app.route('/add_address/<contact_id>', methods=["POST"], strict_slashes=False)
 def add_address(contact_id):
-    contact_ = contact.get_contacts_user_by_id(session['user_id']['id'], contact_id)
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
     if request.method == 'POST':
         address = request.form.get('address')
         if request.form.get('address') is not None:
@@ -298,7 +331,8 @@ def add_address(contact_id):
 
 @app.route('/add_phone/<contact_id>', methods=["POST"], strict_slashes=False)
 def add_phone(contact_id):
-    contact_ = contact.get_contacts_user_by_id(session['user_id']['id'], contact_id)
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
     if request.method == 'POST':
         phone = request.form.get('phone')
         if request.form.get('phone') is not None:
@@ -313,7 +347,8 @@ def add_phone(contact_id):
 @app.route('/edit_contact/<contact_id>', methods=["POST"], strict_slashes=False)
 def edit_contact(contact_id):
     nick = user.get_user(session['user_id']['id']).nick
-    contact_ = contact.get_contacts_user_by_id(session['user_id']['id'], contact_id)
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
     if request.method == 'POST':
         pass
     return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
@@ -321,27 +356,32 @@ def edit_contact(contact_id):
 
 @app.route('/edit_name/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_name(contact_id):
-    contact_ = contact.get_contacts_user_by_id(session['user_id']['id'], contact_id)
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
     if request.method == 'POST':
         if request.form.get('name') is not None:
             name = request.form.get('name')
-            contact.update_first_name(contact_id, session['user_id']['id'], name)
+            contact.update_first_name(
+                contact_id, session['user_id']['id'], name)
     return render_template('edit_name.html', contact=contact_, first_name_obj=contact_.first_name)
 
 
 @app.route('/edit_last_name/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_last_name(contact_id):
-    contact_ = contact.get_contacts_user_by_id(session['user_id']['id'], contact_id)
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
     if request.method == 'POST':
         if request.form.get('last_name') is not None:
             last_name = request.form.get('last_name')
-            contact.update_last_name(contact_id, session['user_id']['id'], last_name)
+            contact.update_last_name(
+                contact_id, session['user_id']['id'], last_name)
     return render_template('edit_last_name.html', contact=contact_, last_name_obj=contact_.last_name)
 
 
 @app.route('/edit_birthday/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_birthday(contact_id):
-    contact_ = contact.get_contacts_user_by_id(session['user_id']['id'], contact_id)
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
     if request.method == 'POST':
         if request.form.get('birthday') is not None:
             birthday = request.form.get('birthday')
@@ -349,13 +389,15 @@ def edit_birthday(contact_id):
             if validation is not None:
                 flash(validation[:-1])
                 return render_template('edit_birthday.html', contact=contact_, birthday_obj=contact_.birthday)
-            contact.update_birthday(contact_id, session['user_id']['id'], birthday)
+            contact.update_birthday(
+                contact_id, session['user_id']['id'], birthday)
     return render_template('edit_birthday.html', contact=contact_, birthday_obj=contact_.birthday)
 
 
 @app.route('/edit_email/<contact_id>/<email_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_email(contact_id, email_id):
-    contact_ = contact.get_contacts_user_by_id(session['user_id']['id'], contact_id)
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
     if request.method == 'POST':
         if request.form.get('email') is not None:
             email = request.form.get('email')
@@ -372,7 +414,8 @@ def edit_email(contact_id, email_id):
 
 @app.route('/edit_phone/<contact_id>/<phone_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_phone(contact_id, phone_id):
-    contact_ = contact.get_contacts_user_by_id(session['user_id']['id'], contact_id)
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
     if request.method == 'POST':
         if request.form.get('phone') is not None:
             phone = request.form.get('phone')
@@ -388,7 +431,8 @@ def edit_phone(contact_id, phone_id):
 
 @app.route('/edit_address/<contact_id>/<address_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_address(contact_id, address_id):
-    contact_ = contact.get_contacts_user_by_id(session['user_id']['id'], contact_id)
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
     if request.method == 'POST':
         if request.form.get('address') is not None:
             address = request.form.get('address')

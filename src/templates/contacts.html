@@ -9,6 +9,18 @@
                     {% endfor %}
                 {% endif %}
         {% endwith %}
+        <form action="/show_contact_birthday" method="post">
+        <p>Choose date till which your contacts will have birthday: <input type="date" name="calendar">
+                <button class="btn btn-sm btn-outline-secondary">
+                    Find
+                </button>
+            </form></p>
+            <form action="/find_contact" method="post">
+                <p><input name="find" placeholder="find contact">
+                        <button class="btn btn-sm btn-outline-secondary">
+                            Find
+                        </button>
+                    </form></p>
         <div>
             <table style="width:10%">
                 <tr>
