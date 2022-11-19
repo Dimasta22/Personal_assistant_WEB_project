@@ -224,7 +224,8 @@ def edit_note(_id):
         note_ty = request.form.get("note_type")
         note_ty = (False if note_ty == '0' else True)
         note.edit_note(d_note.id, note_n, note_des, tags_in_form, note_ty)
-    return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note, message='Note was edited')
+    return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note,
+                           message='Note was edited')
 
 
 @app.route('/search_notes_tags', strict_slashes=False)
@@ -247,7 +248,8 @@ def search_note_undone():
     nick = user.get_user(session['user_id']['id'])
     undone_notes = note.search_all_notes(nick.id, 0)
     u_s_tags = note.note_tags_to_string(undone_notes)
-    return render_template('search_notes_tags_result.html', nick=nick.nick, undone_notes=undone_notes, u_s_tags=u_s_tags)
+    return render_template('search_notes_tags_result.html', nick=nick.nick, undone_notes=undone_notes,
+                           u_s_tags=u_s_tags)
 
 
 @app.route('/search_by_phrase', methods=['GET', 'POST'], strict_slashes=False)
@@ -256,11 +258,33 @@ def search_by_phrases():
     if request.method == "POST":
         phrase = request.form.get('note_phrase')
         note_tgs = request.form.getlist("tags")
-        print(note_tgs, phrase)
-        result = note.all_find_notes(nick.id, phrase)
-        result_notes = note.result_notes_into_list(result)
-        return render_template('search_notes_tags_result.html', nick=nick.nick, result=result, phrase=phrase,
-                               result_notes=result_notes)
+
+        if not phrase and not note_tgs:
+            flash('Nothing to show')
+            return render_template('search_notes_tags_result.html', nick=nick.nick, message='Nothing to show')
+        if phrase and not note_tgs:
+            flash('No Tags included')
+            result_note = note.all_find_notes(nick.id, phrase)
+            result_notes = note.result_notes_into_list(result_note)
+            return render_template('search_notes_tags_result.html', nick=nick.nick, result=result_note, phrase=phrase,
+                                   result_notes=result_notes, message='No Tags included')
+        if not phrase and note_tgs:
+            flash('No Notes included')
+            result_tag = tag.all_find_tags(nick.id, note_tgs)
+            result_note_tags = note.result_notes_into_list(result_tag)
+            return render_template('search_notes_tags_result.html', nick=nick.nick, result_tag=result_tag,
+                                   result_note_tags=result_note_tags, note_tgs=note_tgs, message='No Tags included')
+        if phrase and note_tgs:
+            flash('All included')
+            result_note = note.all_find_notes(nick.id, phrase)
+            result_notes = note.result_notes_into_list(result_note)
+            result_tag = tag.all_find_tags(nick.id, note_tgs)
+            result_note_tags = note.result_notes_into_list(result_tag)
+            all_in = 1
+            return render_template('search_notes_tags_result.html', nick=nick.nick, result_tag=result_tag,
+                                   all_in=all_in, phrase=phrase,
+                                   result_all=result_note, result_notes_all=result_notes,
+                                   result_note_tags=result_note_tags, note_tgs=note_tgs, message='All included')
     return render_template('search_notes_tags_result.html', nick=nick.nick)
 
 

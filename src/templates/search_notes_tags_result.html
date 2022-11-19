@@ -1,22 +1,40 @@
 {% extends "base_notes.html" %}
 {% block content %}
-
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning">{{message}}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     {% if done_notes %}
-    <h2> All finished notes</h2>
+    <h3> All finished notes</h3>
     {% for d_notes in done_notes %}
-    <h3>Name: {{d_notes.name}} | Description: {{d_notes.description}} | Tags: {{d_s_tags}}</h3>
+    <h4>Name: {{d_notes.name}} | Description: {{d_notes.description}} | Tags: {{d_s_tags}}</h4>
     {% endfor %}
     {% endif %}
     {% if undone_notes %}
-    <h2> All unfinished notes</h2>
+    <h3> All unfinished notes</h3>
     {% for u_notes in undone_notes %}
-    <h3>Name: {{u_notes.name}} | Description: {{u_notes.description}} | Tags: {{u_s_tags}}</h3>
+    <h4>Name: {{u_notes.name}} | Description: {{u_notes.description}} | Tags: {{u_s_tags}}</h4>
     {% endfor %}
     {% endif %}
     {% if result %}
-    <h2> All found notes with : "{{phrase}}"</h2>
+    <h3> All found notes with : "{{phrase}}"</h3>
     {% for r_notes in result_notes %}
-    <h3>Name: {{r_notes[0]}} | Description: {{r_notes[1]}} | Tags: {{r_notes[2]}}</h3>
+    <h4>Name: {{r_notes[0]}} | Description: {{r_notes[1]}} | Tags: {{r_notes[2]}}</h4>
+    {% endfor %}
+    {% endif %}
+    {% if result_tag %}
+    <h3> All found notes with tags: "{{note_tgs}}"</h3>
+    {% for r_notes in result_note_tags %}
+    <h4>Name: {{r_notes[0]}} | Description: {{r_notes[1]}} | Tags: {{r_notes[2]}}</h4>
+    {% endfor %}
+    {% endif %}
+    {% if all_in %}
+    <h3> All found notes with : "{{phrase}}"</h3>
+    {% for r_notes in result_notes_all %}
+    <h4>Name: {{r_notes[0]}} | Description: {{r_notes[1]}} | Tags: {{r_notes[2]}}</h4>
     {% endfor %}
     {% endif %}
 {% endblock %}
