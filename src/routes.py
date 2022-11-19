@@ -258,7 +258,6 @@ def search_by_phrases():
     if request.method == "POST":
         phrase = request.form.get('note_phrase')
         note_tgs = request.form.getlist("tags")
-
         if not phrase and not note_tgs:
             flash('Nothing to show')
             return render_template('search_notes_tags_result.html', nick=nick.nick, message='Nothing to show')
@@ -272,6 +271,7 @@ def search_by_phrases():
             flash('No Notes included')
             result_tag = tag.all_find_tags(nick.id, note_tgs)
             result_note_tags = note.result_notes_into_list(result_tag)
+            note_tgs = ", ".join(note_tgs)
             return render_template('search_notes_tags_result.html', nick=nick.nick, result_tag=result_tag,
                                    result_note_tags=result_note_tags, note_tgs=note_tgs, message='No Tags included')
         if phrase and note_tgs:
@@ -281,6 +281,7 @@ def search_by_phrases():
             result_tag = tag.all_find_tags(nick.id, note_tgs)
             result_note_tags = note.result_notes_into_list(result_tag)
             all_in = 1
+            note_tgs = ", ".join(note_tgs)
             return render_template('search_notes_tags_result.html', nick=nick.nick, result_tag=result_tag,
                                    all_in=all_in, phrase=phrase,
                                    result_all=result_note, result_notes_all=result_notes,
