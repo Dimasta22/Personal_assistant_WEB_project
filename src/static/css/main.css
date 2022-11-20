@@ -129,6 +129,12 @@ a:active {
     border-radius: 0;
 }
 
+.btn-danger {
+    margin-left: 2%;
+    background-color: transparent;
+    border-color: transparent;
+}
+
 .btn-home {
   background-color: transparent;
   border: 1px solid #fff;
@@ -709,7 +715,7 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#8ec6
 
 
 .init-slider .owl-dots {
-    margin-top: -25px;
+    margin-top: 1%;
     position: relative;
     text-align: center;
     z-index: 9;
