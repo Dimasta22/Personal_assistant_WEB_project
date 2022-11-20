@@ -114,6 +114,7 @@ def account_window():
 def file_uploader():
     user_id = user.get_user(session['user_id']['id']).id
     type_ex = db.session.query(FileType).filter(FileType.files.any(user_id=user_id))
+    #type_ex = db.session.query(File).filter(File.user_id == user_id)
     group_is_set = False
     return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex,
                            group_is_set=group_is_set)
