@@ -53,13 +53,30 @@
             <h3>Weather:</h3>
             <div class="row">
                 <div class="column">
-                    <select name="select_city"> <!--Supplement an id here instead of using 'name'-->
-                        <option value="Днепр">Dnipro</option>
-                        <option value="Киев" selected>Kyiv</option>
-                        <option value="Харьков">Kharkiv</option>
-                        <option value="Львов">Lviv</option>
-                        <option value="Одесса">Odesa</option>
-                        <option value="Каменское">Kamenskoe</option>
+                    <select name="select_city" id="city"> <!--Supplement an id here instead of using 'name'-->
+                        <option value="Днепр"
+                                {% if city=="Днепр" %} selected {% endif %}
+                        >Dnipro
+                        </option>
+                        <option value="Киев"
+                                {% if city=="Киев" %} selected {% endif %}
+                        >Kyiv                        </option>
+                        <option value="Харьков"
+                                {% if city=="Харьков" %} selected {% endif %}
+                        >Kharkiv
+                        </option>
+                        <option value="Львов"
+                                {% if city=="Львов" %} selected {% endif %}
+                        >Lviv
+                        </option>
+                        <option value="Одесса"
+                                {% if city=="Одесса" %} selected {% endif %}
+                        >Odesa
+                        </option>
+                        <option value="Каменское"
+                                {% if city=="Каменское" %} selected {% endif %}
+                        >Kamenskoe
+                        </option>
                     </select>
                 </div>
                 <div class="grid column">
@@ -83,9 +100,9 @@
                 {% for news, href in politics_news.items()%}
                 <ul>
                     <li>
-                    <a href="{{href}}" class="outline"
-                    >{{news}}</a
-                    >
+                        <a href="{{href}}" class="outline"
+                        >{{news}}</a
+                        >
                     </li>
                 </ul>
                 {% endfor %}

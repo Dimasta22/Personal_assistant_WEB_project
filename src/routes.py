@@ -92,19 +92,22 @@ def account_window():
                                politics_news=politics_news,
                                football_news=football_news,
                                weather_news=weather_news,
-                               currency_news=currency_news)
+                               currency_news=currency_news,
+                               city=city)
 
     nick = user.get_user(session['user_id']['id']).nick
     politics_news = politics.parse_finance(10)
     football_news = football.parse_football(10)
-    weather_news = weather.parse_weather('Киев')
+    city = 'Киев'
+    weather_news = weather.parse_weather(city)
     currency_news = currency.parse_currency()
     return render_template('account_window.html',
                            nick=nick,
                            politics_news=politics_news,
                            football_news=football_news,
                            weather_news=weather_news,
-                           currency_news=currency_news)
+                           currency_news=currency_news,
+                           city=city)
 
 
 @app.route('/file_uploader', methods=['GET'], strict_slashes=False)
