@@ -17,6 +17,7 @@ def all_notes(u_id):
 
 def delete_note(_id):
     note = db.session.query(models.Note).get(_id)
+    print(note)
     if note:
         db.session.delete(note)
         db.session.commit()
