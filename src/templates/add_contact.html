@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="contacts_page" style="color: #000;">
+        <h1>Add contact:</h1>
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-warning">{{message[:-1]}}<br></div>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+        <div class="row justify-content-center">
+            <form
+            class="col-sm-6"
+            action="/add_contact"
+            method="post"
+            enctype="multipart/form-data"
+            >
+            <div class="form-group">
+                <input
+                class="form-control"
+                type="text"
+                placeholder="first_name"
+                name="first_name"
+                />
+                <input
+                class="form-control"
+                type="text"
+                placeholder="last_name"
+                name="last_name"
+                />
+                <input
+                class="form-control"
+                type="text"
+                placeholder="birthday"
+                name="birthday"
+                />
+                <input
+                class="form-control"
+                type="text"
+                placeholder="email"
+                name="email"
+                />
+                <input
+                class="form-control"
+                type="text"
+                placeholder="address"
+                name="address"
+                />
+                <input
+                class="form-control"
+                type="text"
+                placeholder="cell_phone"
+                name="cell_phone"
+                />
+            </div>
+            <div class="form-group">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary col-sm-12" type="submit">
+                Add
+                </button>
+            </div>
+            </form>
+        </div>
+        
+    </div>
+    {% endblock %}

@@ -15,8 +15,11 @@ notebook_data.bin
 garbage
 test
 smart_command_finder.py
+.vscode
 # Distribution / packaging
 .Python
+migrations/
+data/
 env/
 build/
 develop-eggs/
