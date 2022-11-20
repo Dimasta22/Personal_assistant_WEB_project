@@ -66,7 +66,7 @@ note_m2m_tag = db.Table(
     "note_m2m_tag",
     db.Model.metadata,
     db.Column("id", db.Integer, primary_key=True),
-    db.Column("note", db.Integer, ForeignKey("notes.id"), ),
+    db.Column("note", db.Integer, ForeignKey("notes.id")),
     db.Column("tag", db.Integer, ForeignKey("tags.id")),
 )
 
@@ -79,17 +79,34 @@ class Note(db.Model):
     description = db.Column(db.String(150), nullable=False)
     done = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    user = relationship('User', back_populates="notes")
+    user = relationship('User', cascade='all, delete', backref='note')
     tags = relationship("Tag", secondary=note_m2m_tag, backref="notes")
 
 
 class Tag(db.Model):
     __tablename__ = "tags"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(25), nullable=False, )
+    name = db.Column(db.String(25), nullable=False)
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
 
     def repr(self) -> str:
         return self.name
 
 
+class File(db.Model):
+    __tablename__ = 'files'
+    id = db.Column(db.Integer, primary_key=True)
+    path = db.Column(db.String(350), unique=True, nullable=False)
+    description = db.Column(db.String(300), nullable=False)
+    size = db.Column(db.Integer, nullable=False)
+    type_id = db.Column(db.Integer, ForeignKey('filetypes.id'), nullable=False)
+    file_type = relationship('FileType', cascade='all, delete')
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
+    user = relationship('User', cascade='all, delete', backref='files')
+
+
+class FileType(db.Model):
+    __tablename__ = 'filetypes'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(25), nullable=False, unique=True)
+    files = relationship('File')

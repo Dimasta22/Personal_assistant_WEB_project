@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 def parse_football(count: int):
     url = 'https://football.ua/'
     i = 0
-    data = []
+    data_dict = {}
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -15,14 +15,14 @@ def parse_football(count: int):
         try:
             time = content.find('div').text
             news = content.find('a').text
-            print(f'{time}: {news}')
-            data.append(f'{time}: {news}')
+            href = content.find('a')['href']
+            data_dict.update({f'{time}: {news}': href})
         except AttributeError:
             continue
 
         i += 1
         if i == count:
-            return data
+            return data_dict
 
 
 if __name__ == '__main__':

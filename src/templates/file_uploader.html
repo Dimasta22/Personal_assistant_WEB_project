@@ -17,13 +17,13 @@
 
     <!-- CSS -->
 
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/css/owl.carousel.css">
-    <link rel="stylesheet" href="../static/css/animate.css">
-    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/owl.carousel.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/animate.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/main.css')}}">
     <!-- Responsive Stylesheet -->
-    <link rel="stylesheet" href="../static/css/responsive.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/responsive.css')}}">
 </head>
 
 <body id="body">
@@ -50,8 +50,8 @@ Header start
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#">
-                <img class="logo-1" src="../static/images/logo.png" alt="LOGO">
-                <img class="logo-2" src="../static/images/logo-2.png" alt="LOGO">
+                <img class="logo-1" src="{{ url_for('static', filename='/images/logo.png')}}" alt="LOGO">
+                <img class="logo-2" src="{{ url_for('static', filename='/images/logo-2.png')}}" alt="LOGO">
             </a>
         </div>
 
@@ -76,7 +76,8 @@ Header start
                     <p class="wow fadeInDown" data-wow-delay="0.3s">Feel free to upload any pictures you want to your
                         personal storage!</p>
                     <div class="wow fadeInDown" data-wow-delay="0.3s">
-                        <a class="btn btn-default btn-home" href="/account_window" role="button">BIG "RETURN TO MAIN MENU"
+                        <a class="btn btn-default btn-home" href="/account_window" role="button">BIG "RETURN TO MAIN
+                            MENU"
                             BUTTON</a>
                     </div>
                 </div>
@@ -108,13 +109,13 @@ About start
                 <div class="sub-heading">
                     <h3>Here you can upload your files!</h3>
                 </div>
-                 {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in messages %}
-              <div class="alert alert-warning">{{message}}</div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-warning">{{message}}</div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
                 <form
                         class="col-sm-6"
                         action="/file_uploader/upload"
@@ -140,14 +141,14 @@ About start
                             </div>
                         </div>
                     </div>
-            <div class="form-group">
-                <button class="btn btn-send" type="submit">
-                    Upload
-                </button>
+                    <div class="form-group">
+                        <button class="btn btn-send" type="submit">
+                            Upload
+                        </button>
+                    </div>
+                </form>
             </div>
-            </form>
         </div>
-    </div>
     </div>
 </section><!-- #about close -->
 <!--
@@ -158,34 +159,57 @@ About start
         <div class="row">
             <div class="col-md-7 col-sm-12 wow fadeInLeft">
                 <div class="sub-heading">
-                    <h3>Here's the result!</h3>
+                    <h3>And here's all your uploaded files!</h3>
                 </div>
-            <div>
-                {% for type in types%}
-                <p>{{type.name}}</p>
-                <ul>{%for file in type.files%}
-                    <li><a href="#">{{file.description}}</a> </li>
+                {%if group_is_set == false%}
+                <div>
+                    {% for type in types%}
+                    <a href="/file_uploader/{{type.name}}/"><b style="color:green">{{type.name}}:</b></a>
+                    <ul>{%for file in type.files[0:2]%}
+                        <li>
+                            <div style="margin:1%"><a class="btn btn-default btn-submit"
+                                                      href="/file_uploader/download/{{file.id}}" role="button">
+                                {{file.description}} | {{"{:.2f}".format(file.size / 1000000) }} Mb
+                            </a></div>
+                        </li>
+                        {%endfor%}
+                        <span style="margin:1%;"><a href="/file_uploader/{{type.name}}/"><b style="color:black">
+                            . . .
+                        </b></a></span>
+                    </ul>
                     {%endfor%}
-                </ul>
-                {%endfor%}
-            </div>
-            </div>
-            <div class="col-md-5 col-sm-12 wow fadeInLeft" data-wow-delay="0.3s">
-                <div class="about-slider">
-                    <div class="init-slider">
-                        <div class="about-item">
-                            <img src="../../uploads/screens_bs1_5.jpg" alt="" class="img-responsive">
+                </div>
+                {%else%}
+                <div>
+                    <b>{{group}}</b> | <a href="/file_uploader/#show_all"><b style="color:green">To all</b></a>
+                    {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-warning">{{message}}</div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                    <ul>{%for file in selected_files.items%}
+                        <li>
+                            <div style="margin:1%"><a class="btn btn-default btn-submit"
+                                                      href="/file_uploader/download/{{file.id}}" role="button">
+                                {{file.description}} | {{"{:.2f}".format(file.size / 1000000) }} Mb |
+                                    <a class="btn btn-danger" href="/file_uploader/{{group}}/delete/{{file.id}}" role="button">X</a>
+                            </a></div>
+                        </li>
+                        {%endfor%}
+                        {%if not selected_files.items%}
+                        <p style="margin:2%"><em >Guess you delete everything from here...</em></p>
+                        {%endif%}
+                        <!-- Pagination!!! -->
+                    </ul>
+                    <nav>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a href="./?page={{ selected_files.prev_num }}#show_all" class="btn btn-success {%if not selected_files.has_prev%} disabled {%endif%}" role="button">Prev</a>
+                            <a href="./?page={{ selected_files.next_num }}#show_all"  class="btn btn-success {%if not selected_files.has_next%} disabled {%endif%}" role="button">Next</a>
                         </div>
-                        <div class="about-item">
-                            <img src="../static/images/about/2.jpg" alt="" class="img-responsive">
-                        </div>
-                        <div class="about-item">
-                            <img src="../static/images/about/3.jpg" alt="" class="img-responsive">
-                        </div>
-                        <div class="about-item">
-                            <img src="../static/images/about/3.jpg" alt="" class="img-responsive">
-                        </div>
-                    </div>
+                    </nav><!-- Pagination ENDS!!! -->
+                    {%endif%}
                 </div>
             </div>
         </div>
@@ -198,7 +222,8 @@ About start
         <div class="row">
             <div class="col-md-12">
                 <div class="block">
-                    <p>Our team: <a href=https://t.me/+UnKntM5SbrAzNTli>Write some good words!</a>| All right reserved.
+                    <p>Created by JARVIS-team | 2022</p>
+                    <p>Our team: <a href=https://t.me/+UnKntM5SbrAzNTli>Write some good words! </a>| All right reserved.
                     </p>
                 </div>
             </div>
@@ -208,20 +233,20 @@ About start
 
 
 <!-- Js -->
-<script src="../static/js/vendor/modernizr-2.6.2.min.js"></script>
-<script src="../static/js/vendor/jquery-1.10.2.min.js"></script>
+<script src="{{ url_for('static', filename='/js/vendor/modernizr-2.6.2.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/vendor/jquery-1.10.2.min.js')}}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script src="../static/js/jquery.lwtCountdown-1.0.js"></script>
-<script src="../static/js/bootstrap.min.js"></script>
-<script src="../static/js/owl.carousel.min.js"></script>
-<script src="../static/js/jquery.validate.min.js"></script>
-<script src="../static/js/jquery.form.js"></script>
-<script src="../static/js/jquery.nav.js"></script>
-<script src="../static/js/jquery.sticky.js"></script>
-<script src="../static/js/plugins.js"></script>
-<script src="../static/js/wow.min.js"></script>
-<script src="../static/js/main.js"></script>
-<script src="../static/js/uploader.js"></script>
+<script src="{{ url_for('static', filename='/js/jquery.lwtCountdown-1.0.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/bootstrap.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/owl.carousel.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.validate.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.form.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.nav.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.sticky.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/plugins.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/wow.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/main.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/uploader.js')}}"></script>
 
 
 </body>

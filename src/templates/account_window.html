@@ -8,6 +8,7 @@
             href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
     />
     <link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account_window.css')}}"/>
 </head>
 <body>
 <main class="container">
@@ -19,57 +20,52 @@
             <ul>
                 <li><a href="/contacts" role="button">Contacts</a></li>
                 <li><a href="/Notebook" role="button">Notes</a></li>
-                <li><a href="Upload_files" role="button">Upload files</a></li>
+                <li><a href="/file_uploader" role="button">Upload files</a></li>
                 <li><a href="logout" role="button">Log out</a></li>
             </ul>
         </nav>
-        <div>
-            <h3>News:</h3>
-            {% for politic in politics_news%}
-            <ul>
-                <li>
-                    <span class="outline"
-                    >{{politic}}</span
-                    >
-                </li>
-            </ul>
-            {% endfor %}
-            <h3>Football:</h3>
-            {% for football in football_news%}
-            <ul>
-                <li>
-                    <span class="outline"
-                    >{{football}}</span
-                    >
-                </li>
-            </ul>
-            {% endfor %}
-            <h3>Currency:</h3>
-            <table>
-                <tr>
-                    {% for index in range(4)%}
-                    <td>{{currency_news[index]}}</td>
-                    {% endfor %}
-                </tr>
-                <tr>
-                    <td>{{currency_news[4]}}</td>
-                    {% for index in range(7,10)%}
-                    <td>{{currency_news[index]}}</td>
-                    {% endfor %}
-                <tr>
-                    <td>{{currency_news[5]}}</td>
-                    {% for index in range(10,13)%}
-                    <td>{{currency_news[index]}}</td>
-                    {% endfor %}
-                </tr>
-                <tr>
-                    <td>{{currency_news[6]}}</td>
-                    {% for index in range(13,16)%}
-                    <td>{{currency_news[index]}}</td>
-                    {% endfor %}
-                </tr>
-            </table>
+        <h3>Currency:</h3>
+        <table>
+            <tr>
+                {% for index in range(4)%}
+                <td>{{currency_news[index]}}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>{{currency_news[4]}}</td>
+                {% for index in range(7,10)%}
+                <td>{{currency_news[index]}}</td>
+                {% endfor %}
+            <tr>
+                <td>{{currency_news[5]}}</td>
+                {% for index in range(10,13)%}
+                <td>{{currency_news[index]}}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>{{currency_news[6]}}</td>
+                {% for index in range(13,16)%}
+                <td>{{currency_news[index]}}</td>
+                {% endfor %}
+            </tr>
+        </table>
+        <form method="post">
             <h3>Weather:</h3>
+            <div class="row">
+                <div class="column">
+                    <select name="select_city"> <!--Supplement an id here instead of using 'name'-->
+                        <option value="Днепр">Dnipro</option>
+                        <option value="Киев" selected>Kyiv</option>
+                        <option value="Харьков">Kharkiv</option>
+                        <option value="Львов">Lviv</option>
+                        <option value="Одесса">Odesa</option>
+                        <option value="Каменское">Kamenskoe</option>
+                    </select>
+                </div>
+                <div class="grid column">
+                    <button type="submit">Choose</button>
+                </div>
+            </div>
             {% for weather in weather_news%}
             <ul>
                 <li>
@@ -79,9 +75,35 @@
                 </li>
             </ul>
             {% endfor %}
+        </form>
 
+        <div class="row">
+            <div class="column">
+                <h3>News:</h3>
+                {% for news, href in politics_news.items()%}
+                <ul>
+                    <li>
+                    <a href="{{href}}" class="outline"
+                    >{{news}}</a
+                    >
+                    </li>
+                </ul>
+                {% endfor %}
+            </div>
+
+            <div class="column">
+                <h3>Football:</h3>
+                {% for news, href in football_news.items() %}
+                <ul>
+                    <li>
+                        <a href="{{href}}" class="outline"
+                        >{{news}}</a
+                        >
+                    </li>
+                </ul>
+                {% endfor %}
+            </div>
         </div>
-
     </article>
 </main>
 </body>
