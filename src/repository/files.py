@@ -33,12 +33,6 @@ def upload_file_for_user(user_id, file_path, description):
     db.session.commit()
 
 
-# def update_file(file_id, user_id, description):
-#     picture = get_file_user(file_id, user_id)
-#     picture.description = description
-#     db.session.commit()
-
-
 def delete_file(file_id, user_id):
     file = get_file_user(file_id, user_id)
     db.session.query(File).filter(

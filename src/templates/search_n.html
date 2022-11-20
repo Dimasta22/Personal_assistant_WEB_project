@@ -1,0 +1,27 @@
+{% extends "base_notes.html" %}
+{% block content %}
+    <form method="POST" action="/search_by_phrase">
+
+        <div class="grid">
+            <ul>
+                <a href="/search_all_done_notes/" role="button">All done notes</a>
+            </ul>
+            <ul>
+                <a href="/search_all_undone_notes/" role="button">All undone notes</a>
+            </ul>
+        </div>
+        <div><label
+        >Search by phrase:
+            <input type="text" name="note_phrase" />
+            <label
+            >Select tags:
+                <select name="tags" multiple="multiple" >
+                    {% for tag in all_tags %}
+                    <option value="{{tag.name}}">{{tag.name}}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button type="submit">Search</button>
+        </label></div>
+    </form>
+{% endblock %}

@@ -1,22 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Note {{d_note}} information</title>
-    <link
-            rel="stylesheet"
-            href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
-    />
-</head>
- </head>
-  <body>
-<main class="container">
-    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
-        <ul>
-            <li><a href="/Notebook" role="button"> Go back to the notebook page </a></li>
-        </ul>
-    </nav>
+{% extends "base_notes.html" %}
+{% block content %}
     <form method="POST" action="/edit_note/{{d_note.id}}">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning">{{message}}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <div style="padding: 10px">
             <label
             >Note name:
@@ -25,7 +16,7 @@
             <label>
                 <label
                 >Note description:
-                    <input type="text" name="note_description" placeholder={{d_note.description}}required/>
+                    <input type="text" name="note_description" placeholder={{d_note.description}} required/>
                 </label>
           <label
             >Select tags:
@@ -47,7 +38,4 @@
             <button type="reset" class="secondary">Reset</button>
         </div>
     </form>
-</main>
-  </body>
-</html>
-
+{% endblock %}
