@@ -101,7 +101,7 @@ class File(db.Model):
     size = db.Column(db.Integer, nullable=False)
     type_id = db.Column(db.Integer, ForeignKey('filetypes.id'), nullable=False)
     file_type = relationship('FileType', cascade='all, delete')
-    user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
     user = relationship('User', cascade='all, delete', backref='files')
 
 
