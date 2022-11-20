@@ -193,7 +193,7 @@ def notebook():
     all_notes = note.all_notes(nick.id)
     all_notes_n = len(note.all_notes(nick.id))
     return render_template('notebook.html',
-                           nick=nick,
+                           nick=nick.nick,
                            all_tags_num=all_tags_n,
                            all_tags=all_tags,
                            all_notes=all_notes,
@@ -395,6 +395,7 @@ def show_contact_birthday():
     birthday_date = 'dd/mm/yyyy'
     if request.method == 'POST':
         birthday_date = request.form.get('calendar')
+        print(birthday_date)
         if birthday_date == '':
             flash('Choose date!')
             return redirect(request.url)

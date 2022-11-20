@@ -1,41 +1,41 @@
 {% extends "base_notes.html" %}
 {% block content %}
-    <form method="POST" action="/edit_note/{{d_note.id}}">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-warning">{{message}}</div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-        <div style="padding: 10px">
+<form method="POST" action="/edit_note/{{d_note.id}}">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning">{{message}}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div style="padding: 10px">
+        <label
+        >Note name:
+            <input type="text" name="note_name" placeholder={{d_note.name}}>
+        </label>
+        <label>
             <label
-            >Note name:
-                <input type="text" name="note_name" placeholder={{d_note.name}} required/>
+            >Note description:
+                <input type="text" name="note_description" placeholder={{d_note.description}}/>
             </label>
-            <label>
-                <label
-                >Note description:
-                    <input type="text" name="note_description" placeholder={{d_note.description}} required/>
-                </label>
-          <label
-            >Select tags:
-            <select name="tags" multiple="multiple" required>
-              {% for tag in all_tags %}
-              <option value="{{tag.name}}">{{tag.name}}</option>
-              {% endfor %}
-            </select>
-          </label>
-        </div>
             <label
-            >Status:
-            <select name="note_type" required>
-              <option value="0" selected="selected">Not done</option>
-              <option value="1">Done</option>
-            </select>
-          </label>
-            <button type="submit">Submit</button>
-            <button type="reset" class="secondary">Reset</button>
-        </div>
-    </form>
+            >Select tags:
+                <select name="tags" multiple="multiple">
+                    {% for tag in all_tags %}
+                    <option value="{{tag.name}}">{{tag.name}}</option>
+                    {% endfor %}
+                </select>
+            </label>
+    </div>
+    <label
+    >Status:
+        <select name="note_type" required>
+            <option value="0" selected="selected">Not done</option>
+            <option value="1">Done</option>
+        </select>
+    </label>
+    <button type="submit">Submit</button>
+    <button type="reset" class="secondary">Reset</button>
+    </div>
+</form>
 {% endblock %}

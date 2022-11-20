@@ -51,8 +51,13 @@ def add_phone(contact_id, phone):
 
 def cont_delete(contact_id, user_id):
     contact = get_contacts_user_by_id(user_id, contact_id)
-    db.session.query(models.Contact).filter(
-        and_(models.Contact.user_id == int(user_id), models.Contact.id == int(contact_id))).delete()
+    print(contact)
+    if contact:
+        db.session.delete(contact)
+        db.session.commit()
+
+    # db.session.query(models.Contact).filter(
+    #     and_(models.Contact.user_id == int(user_id), models.Contact.id == int(contact_id))).delete()
 
 
 def find_contact_birthday(user_id, birthday):
@@ -63,6 +68,7 @@ def find_contact_birthday(user_id, birthday):
         date = datetime.strptime(contact.birthday, "%d.%m.%Y")
         date = datetime(year=datetime.now().year,
                         month=date.month, day=date.day)
+
         if date - birthday < datetime.now()-datetime.now() and date - datetime.now() > datetime.now()-datetime.now():
             new_contacts.append(contact)
     return new_contacts
