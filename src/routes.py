@@ -672,6 +672,7 @@ def edit_address(contact_id, address_id):
             contact.update_address(contact_id, address_id, address)
     return render_template('edit_address.html', contact=contact_, address=address_id,
                            address_obj=contact.get_address(contact_id=contact_id, address_id=address_id)[0])
+<<<<<<< Updated upstream
 
 
 @app.route('/delete_address/<contact_id>/<address_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -719,3 +720,5 @@ def back():
     print(request.url)
     return redirect(request.url)
 
+=======
+>>>>>>> Stashed changes
