@@ -20,12 +20,16 @@
             <tr>
                 <th>Last name:</th>
                 <th>{{contact.last_name}}<a style="color: black; text-align: center; margin-left: 10px;" href="/edit_last_name/{{contact.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
-                    height="50" alt="Edit last name"></a></th>
+                    height="50" alt="Edit last name"></a>
+                    <a style="color: black; text-align: center; margin-left: 10px;" href="/delete_last_name/{{contact.id}}"><img src="{{url_for('static', filename='delete_button.png')}}" width="12" 
+                        height="50" alt="delete last name"></a></th>
             </tr>
             <tr>
                 <th>Birthday:</th>
                 <th>{{contact.birthday}}<a style="color: black; text-align: center; margin-left: 10px;" href="/edit_birthday/{{contact.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
-                    height="50" alt="Edit birthday"></a></th>
+                    height="50" alt="Edit birthday"></a>
+                    <a style="color: black; text-align: center; margin-left: 10px;" href="/delete_birthday/{{contact.id}}"><img src="{{url_for('static', filename='delete_button.png')}}" width="12" 
+                        height="50" alt="delete birthday"></a></th>
             </tr>
             <tr>
                 <th>Emails:</th>
@@ -33,7 +37,9 @@
                     {% for email in contact.emails %}
                     {{email.email}}
                     <a style="color: black; text-align: center; margin-left: 10px;" href="/edit_email/{{contact.id}}/{{email.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
-                        height="50" alt="Edit email"></a><br>
+                        height="50" alt="Edit email"></a>
+                        <a style="color: black; text-align: center; margin-left: 10px;" href="/delete_email/{{contact.id}}/{{email.id}}"><img src="{{url_for('static', filename='delete_button.png')}}" width="12" 
+                            height="50" alt="delete email"></a><br>
                     {% endfor %}
                 </th>
             </tr>
@@ -43,7 +49,9 @@
                     {% for phone in contact.phones %}
                         {{phone.phone}}
                         <a style="color: black; text-align: center; margin-left: 10px;" href="/edit_phone/{{contact.id}}/{{phone.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
-                            height="50" alt="Edit phone"></a><br>
+                            height="50" alt="Edit phone"></a>
+                            <a style="color: black; text-align: center; margin-left: 10px;" href="/delete_phone/{{contact.id}}/{{phone.id}}"><img src="{{url_for('static', filename='delete_button.png')}}" width="12" 
+                                height="50" alt="delete phone"></a><br>
                         {% endfor %}
                 </th>
             </tr>
@@ -53,7 +61,8 @@
                     {% for address in contact.addresses %}
                     {{address.address}}
                     <a style="color: black; text-align: center; margin-left: 10px;" href="/edit_address/{{contact.id}}/{{address.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
-                        height="50" alt="Edit address"></a><br>
+                        height="50" alt="Edit address"></a><a style="color: black; text-align: center; margin-left: 10px;" href="/delete_address/{{contact.id}}/{{address.id}}"><img src="{{url_for('static', filename='delete_button.png')}}" width="12" 
+                        height="50" alt="delete address"></a><br>
                     {% endfor %}
                 </th>
             </tr>
