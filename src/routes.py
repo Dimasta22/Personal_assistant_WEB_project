@@ -439,3 +439,48 @@ def edit_address(contact_id, address_id):
             contact.update_address(contact_id, address_id, address)
     return render_template('edit_address.html', contact=contact_, address=address_id,
                            address_obj=contact.get_address(contact_id=contact_id, address_id=address_id)[0])
+
+@app.route('/delete_address/<contact_id>/<address_id>', methods=['GET', 'POST'], strict_slashes=False)
+def delete_address(contact_id, address_id):
+    nick = user.get_user(session['user_id']['id']).nick
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
+    contact.address_delete(address_id)
+    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+
+@app.route('/delete_phone/<contact_id>/<phone_id>', methods=['GET', 'POST'], strict_slashes=False)
+def delete_phone(contact_id, phone_id):
+    nick = user.get_user(session['user_id']['id']).nick
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
+    contact.phone_delete(phone_id)
+    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+
+@app.route('/delete_email/<contact_id>/<email_id>', methods=['GET', 'POST'], strict_slashes=False)
+def delete_email(contact_id, email_id):
+    nick = user.get_user(session['user_id']['id']).nick
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
+    contact.email_delete(email_id)
+    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+
+@app.route('/delete_birthday/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
+def delete_birthday(contact_id):
+    nick = user.get_user(session['user_id']['id']).nick
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
+    contact.update_birthday(contact_id, session['user_id']['id'], '-')
+    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+
+@app.route('/delete_last_name/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
+def delete_last_name(contact_id):
+    nick = user.get_user(session['user_id']['id']).nick
+    contact_ = contact.get_contacts_user_by_id(
+        session['user_id']['id'], contact_id)
+    contact.update_last_name(contact_id, session['user_id']['id'], '-')
+    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+
+@app.route('/back', methods=['GET', 'POST'], strict_slashes=False)
+def back():
+    print(request.url)
+    return redirect(request.url)

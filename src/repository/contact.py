@@ -4,7 +4,6 @@ from sqlalchemy import and_, func
 from datetime import datetime
 import difflib
 
-
 def get_contacts_user(user_id):
     return db.session.query(models.Contact).where(models.Contact.user_id == user_id).all()
 
@@ -53,17 +52,24 @@ def cont_delete(contact_id, user_id):
     contact = get_contacts_user_by_id(user_id, contact_id)
     db.session.query(models.Contact).filter(
         and_(models.Contact.user_id == int(user_id), models.Contact.id == int(contact_id))).delete()
-
+    db.session.commit()
 
 def find_contact_birthday(user_id, birthday):
     contacts = get_contacts_user(user_id=user_id)
     birthday = datetime.strptime(birthday, "%Y-%m-%d")
+    if birthday > datetime(year=datetime.now().year+1, month=datetime.now().month, day=datetime.now().day):
+        birthday = datetime(year=datetime.now().year+1, month=datetime.now().month, day=datetime.now().day)
     new_contacts = []
     for contact in contacts:
-        date = datetime.strptime(contact.birthday, "%d.%m.%Y")
-        date = datetime(year=datetime.now().year,
-                        month=date.month, day=date.day)
-        if date - birthday < datetime.now()-datetime.now() and date - datetime.now() > datetime.now()-datetime.now():
+        if contact.birthday == '-' or contact.birthday == '':
+            continue
+        contact_birthday = datetime.strptime(contact.birthday, "%d.%m.%Y")
+        contact_birthday = datetime(year=datetime.now().year,
+                        month=contact_birthday.month, day=contact_birthday.day)
+        if datetime.now().month > contact_birthday.month:
+            contact_birthday = datetime(year=datetime.now().year+1,
+                        month=contact_birthday.month, day=contact_birthday.day)
+        if contact_birthday - birthday < datetime.now()-datetime.now() and contact_birthday - datetime.now() > datetime.now()-datetime.now():
             new_contacts.append(contact)
     return new_contacts
 
@@ -84,6 +90,12 @@ def similar(word, contacts):
     arr = contacts
 
     for i in arr:
+        if i.birthday == '':
+            try:
+                datetime.strptime(word, "%d.%m.%Y")
+                continue
+            except:
+                pass
         final_contacts[i] = equation(i.first_name, word)
         a = equation(i.last_name, word)
         if final_contacts[i] < a:
@@ -121,25 +133,37 @@ def similar(word, contacts):
 
                 break
     result = []
+    full_match_result = []
+    average = 0
     for k, v in new_sorted_dict.items():
-        if v != 0:
+        average += v
+    average = average/len(new_sorted_dict)
+    for k, v in new_sorted_dict.items():
+        if v >= average:
             result.append(k)
+    for k, v in new_sorted_dict.items():
+        if v == 1:
+            full_match_result.append(k)
+    if full_match_result:
+        return full_match_result
     return result
 
-
-def email_delete(email):
+def email_delete(email_id):
     db.session.query(models.Email).filter(
-        models.Email.id == int(email.id)).delete()
+        models.Email.id == int(email_id)).delete()
+    db.session.commit()
 
 
-def phone_delete(phone):
+def phone_delete(phone_id):
     db.session.query(models.Phone).filter(
-        models.Phone.id == int(phone.id)).delete()
+        models.Phone.id == int(phone_id)).delete()
+    db.session.commit()
 
 
-def address_delete(address):
+def address_delete(address_id):
     db.session.query(models.Address).filter(
-        models.Address.id == int(address.id)).delete()
+        models.Address.id == int(address_id)).delete()
+    db.session.commit()
 
 
 def get_email(contact_id, email_id):
