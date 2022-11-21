@@ -34,35 +34,7 @@
         <div class="book__page"></div>
         <div class="book__page"></div>
     </div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    {% if message %}
-    <div class="alert alert-danger">{{message}}</div>
-    {% endif %}
 
-    <div class="row justify-content-center">
-        <form class="col-sm-6" action="/registration" method="post">
-            <div class="form-group">
-                <input
-                        class="form-control col-sm-12"
-                        type="text"
-                        placeholder="nickname"
-                        name="nickname"
-                        required
-                />
-            </div>
-            <div class="form-group">
-                <input
-                        class="col-sm-12 form-control"
-                        type="password"
-                        placeholder="password(minimum 6 symbols)"
-                        name="password"
-                        minlength="6"
-                        required
-                />
-=======
-=======
->>>>>>> Stashed changes
 </div>
 
 <!--
@@ -86,25 +58,23 @@ Header start
             <div class="col-md-6">
                 <div class="block" style="padding:0">
                     <h1 class="wow fadeInDown"><br>Welcome to <b>{{title}}</b>{{title_desc}}!</h1>
-                    <p class="wow fadeInDown" data-wow-delay="0.3s"><strong>Already have JARVIS account?</strong></p>
+                    <p class="wow fadeInDown" data-wow-delay="0.3s"><strong>Already have JARVIS
+                        account?</strong></p>
                     <div class="wow fadeInDown" data-wow-delay="0.3s">
                         <a class="btn btn-default btn-home" href="/login" role="button">LOG IN</a>
                     </div>
                 </div>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
             </div>
             <div class="col-md-6 wow zoomIn">
 
                 <div class="block" style="width:80%">
                     <div class="counter text-center">
                         <!--ALERT MESSAGE-->
-{% if message %}
-<div class="alert alert-danger">{{message}}</div>
-{% endif %}
-<!--ALERT MESSAGE-->
+                        {% if message %}
+                        <div class="alert alert-danger">{{message}}</div>
+                        {% endif %}
+                        <!--ALERT MESSAGE-->
                         <div class="row justify-content-center">
                             <form style="width:100%" class="col-sm-6" action="/registration" method="post">
                                 <div class="input-field">
@@ -143,7 +113,8 @@ Header start
             <div class="col-md-12">
                 <div class="block">
                     <p>Created by JARVIS-team | 2022</p>
-                    <p>Our team: <a href=https://t.me/+UnKntM5SbrAzNTli>Write some good words! </a>| All right reserved.
+                    <p>Our team: <a href=https://t.me/+UnKntM5SbrAzNTli>Write some good words! </a>| All
+                        right reserved.
                     </p>
                 </div>
             </div>
