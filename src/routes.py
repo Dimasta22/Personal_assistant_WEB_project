@@ -212,10 +212,7 @@ def notebook():
     all_tags = tag.all_tags(nick.id)
     all_notes = note.all_notes(nick.id)
     all_notes_n = len(note.all_notes(nick.id))
-    return render_template('notebook.html',
-                           nick=nick.nick,
-                           all_tags_num=all_tags_n,
-                           all_tags=all_tags,
+    return render_template('notebook.html', nick=nick.nick, all_tags_num=all_tags_n, all_tags=all_tags,
                            all_notes=all_notes,
                            all_notes_n=all_notes_n)
 
@@ -268,9 +265,10 @@ def edit_tag(_id):
         d_tag = tag.get_detail(_id)
         tag_new = request.form.get("tag_name")
         if tag.search_tags(tag_new) is None:
-            flash('Tag was edited')
+            # flash('Tag was edited')
             tag.edit_tag(d_tag.id, tag_new)
-            return render_template('tag_edit.html', nick=nick.nick, d_tag=d_tag, message='Tag was edited')
+            return redirect("/Notebook")
+            # return render_template('tag_edit.html', nick=nick.nick, d_tag=d_tag, message='Tag was edited')
         elif tag_new == tag.search_tags(tag_new).name:
             flash('This name already exist')
             return render_template('tag_edit.html', d_tag=d_tag, nick=nick.nick, message='This name already exist')
@@ -285,14 +283,20 @@ def notes():
     nick = user.get_user(session['user_id']['id'])
     all_tags = tag.all_tags(nick.id)
     if request.method == "POST":
-        flash('Note was added')
+        flash('This name already exist')
+        # flash('Note was added')
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
         note_tgs = request.form.getlist("tags")
         tags_in_form = tag.add_to_notes(note_tgs)
         note_ty = request.form.get("note_type")
         note_ty = (False if note_ty == '0' else True)
-        note.add_note(note_n, note_des, tags_in_form, note_ty, nick.id)
+        if note.search_note_name(note_n, nick.id) is None:
+            note.add_note(note_n, note_des, tags_in_form, note_ty, nick.id)
+            return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
+        else:
+            # flash('This name already exist')
+            return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='This name already exist')
     return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
 
 
@@ -325,7 +329,7 @@ def edit_note(_id):
     all_tags = tag.all_tags(nick.id)
     d_note = note.get_detail(_id)
     if request.method == "POST":
-        flash('Note was edited')
+        flash('This name already exist')
         d_note = note.get_detail(_id)
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
@@ -333,9 +337,13 @@ def edit_note(_id):
         tags_in_form = tag.add_to_notes(note_tgs)
         note_ty = request.form.get("note_type")
         note_ty = (False if note_ty == '0' else True)
-        note.edit_note(d_note.id, note_n, note_des, tags_in_form, note_ty)
-    return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note,
-                           message='Note was edited')
+        if note.search_note_name(note_n, nick.id) is None:
+            note.edit_note(d_note.id, note_n, note_des, tags_in_form, note_ty)
+            return redirect("/Notebook")
+        else:
+            return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note,
+                                   message='This name already exist')
+    return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note)
 
 
 @app.route('/search_notes_tags', strict_slashes=False)
@@ -409,7 +417,6 @@ def search_by_phrases():
                                    result_all=result_note, result_notes_all=result_notes,
                                    result_note_tags=result_note_tags, note_tgs=note_tgs, message='All included')
     return render_template('search_notes_tags_result.html', nick=nick.nick)
-
 
 @app.route('/contacts', methods=['GET', 'POST'], strict_slashes=False)
 def contacts():

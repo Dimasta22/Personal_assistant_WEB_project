@@ -1,4 +1,4 @@
-{% extends "base_notes.html" %}
+<html><head></head><body>{% extends "base_notes.html" %}
 {% block content %}
     <div class="grid">
         <ul>
@@ -11,9 +11,14 @@
             <a href="/search_notes_tags/" role="button">Search</a>
         </ul>
     </div>
-    <div>
+	<div style="
+    display: flex;
+    justify-content: space-around;
+">
+    <div style="
+">
         for now you have {{ all_tags_num }} tags
-    </div>
+    
 
     {% for tag in all_tags %}
     <ul>
@@ -24,9 +29,11 @@
         </li>
     </ul>
       {% endfor %}
-    <div>
+	</div>
+    <div style=";
+">
         for now you have {{ all_notes_n }} notes
-    </div>
+    
 
     {% for note in all_notes %}
     <ul>
@@ -37,4 +44,7 @@
         </li>
     </ul>
       {% endfor %}
+	</div>
+	</div>
     {% endblock %}
+</body></html>
