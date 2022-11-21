@@ -68,7 +68,7 @@ def note_tags_to_string(notes_tags):
 def result_notes_into_list(note_list):
     search_note_pool = []
     for i in note_list:
-        temp_pool = [i.name, i.description, note_tags_to_string(i.tags)]
+        temp_pool = [i.id, i.name, i.description, note_tags_to_string(i.tags)]
         search_note_pool.append(temp_pool)
     return search_note_pool
 
