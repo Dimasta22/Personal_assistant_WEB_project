@@ -30,10 +30,14 @@ def get_detail(_id):
 
 def edit_note(_id, new_name_note, new_desc_note, new_tags_note, new_type_note):
     edited_note = db.session.query(models.Note).filter(models.Note.id == _id).first()
-    edited_note.name = new_name_note
-    edited_note.description = new_desc_note
-    edited_note.tags = new_tags_note
-    edited_note.done = new_type_note
+    if not new_name_note == '':
+        edited_note.name = new_name_note
+    if not new_desc_note == '':
+        edited_note.description = new_desc_note
+    if not new_tags_note == '':
+        edited_note.tags = new_tags_note
+    if not new_type_note == '':
+        edited_note.done = new_type_note
     db.session.commit()
     return edited_note
 
@@ -67,3 +71,9 @@ def result_notes_into_list(note_list):
         temp_pool = [i.name, i.description, note_tags_to_string(i.tags)]
         search_note_pool.append(temp_pool)
     return search_note_pool
+
+
+def search_note_name(new_name, u_id):
+    search_tag = db.session.query(models.Note).filter(and_(models.Note.name == new_name),
+                                                      (models.Note.user_id == u_id)).first()
+    return search_tag

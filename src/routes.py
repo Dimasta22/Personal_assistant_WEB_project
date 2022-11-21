@@ -249,14 +249,19 @@ def notes():
     nick = user.get_user(session['user_id']['id'])
     all_tags = tag.all_tags(nick.id)
     if request.method == "POST":
-        flash('Note was added')
+        # flash('Note was added')
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
         note_tgs = request.form.getlist("tags")
         tags_in_form = tag.add_to_notes(note_tgs)
         note_ty = request.form.get("note_type")
         note_ty = (False if note_ty == '0' else True)
-        note.add_note(note_n, note_des, tags_in_form, note_ty, nick.id)
+        if note.search_note_name(note_n, nick.id) is None:
+            note.add_note(note_n, note_des, tags_in_form, note_ty, nick.id)
+            return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
+        else:
+            flash('This name already exist')
+            return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='This name already exist')
     return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
 
 
@@ -280,7 +285,6 @@ def edit_note(_id):
     all_tags = tag.all_tags(nick.id)
     d_note = note.get_detail(_id)
     if request.method == "POST":
-        flash('Note was edited')
         d_note = note.get_detail(_id)
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
@@ -288,10 +292,13 @@ def edit_note(_id):
         tags_in_form = tag.add_to_notes(note_tgs)
         note_ty = request.form.get("note_type")
         note_ty = (False if note_ty == '0' else True)
-        note.edit_note(d_note.id, note_n, note_des, tags_in_form, note_ty)
-        return redirect("/Notebook")
-    return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note,
-                           message='Note was edited')
+        if note.search_note_name(note_n, nick.id) is None:
+            note.edit_note(d_note.id, note_n, note_des, tags_in_form, note_ty)
+            return redirect("/Notebook")
+        else:
+            return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note,
+                                   message='This name already exist')
+    return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note)
 
 
 @app.route('/search_notes_tags', strict_slashes=False)
