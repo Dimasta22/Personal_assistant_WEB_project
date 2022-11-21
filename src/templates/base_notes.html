@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>Account {{nick}}</title>
+    <title>Account {{nick.nick}}</title>
     <link
             rel="stylesheet"
             href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
@@ -18,9 +18,10 @@
                 style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px"
         >
             <ul>
-                <li><a href="/back" role="button">Back</a></li>
                 <li><a href="/account_window" role="button">News</a></li>
+                {% if href_ != 'contact' %}
                 <li><a href="/contacts" role="button">Contacts</a></li>
+                {% endif %}
                 <li><a href="/Notebook" role="button">Notes</a></li>
                 <li><a href="/file_uploader" role="button">Upload files</a></li>
                 <li><a href="/logout" role="button">Log out</a></li>

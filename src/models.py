@@ -66,7 +66,7 @@ note_m2m_tag = db.Table(
     "note_m2m_tag",
     db.Model.metadata,
     db.Column("id", db.Integer, primary_key=True),
-    db.Column("note", db.Integer, ForeignKey("notes.id")),
+    db.Column("note", db.Integer, ForeignKey("notes.id"), ),
     db.Column("tag", db.Integer, ForeignKey("tags.id")),
 )
 
@@ -79,14 +79,14 @@ class Note(db.Model):
     description = db.Column(db.String(150), nullable=False)
     done = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    user = relationship('User', cascade='all, delete', backref='note')
+    user = relationship('User', back_populates="notes")
     tags = relationship("Tag", secondary=note_m2m_tag, backref="notes")
 
 
 class Tag(db.Model):
     __tablename__ = "tags"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(25), nullable=False, unique=True)
+    name = db.Column(db.String(25), nullable=False, )
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
 
     def repr(self) -> str:

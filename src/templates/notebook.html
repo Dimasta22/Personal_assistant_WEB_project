@@ -1,21 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Notebook</title>
-    <link
-            rel="stylesheet"
-            href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
-    />
-</head>
-<body>
-<main class="container">
-    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
-        <ul>
-            <li><a href="/account_window" role="button"> Go back to the main page </a></li>
-        </ul>
-        <ul><b>Notes for {{ nick.nick }}</b></ul>
-    </nav>
+<html><head></head><body>{% extends "base_notes.html" %}
+{% block content %}
     <div class="grid">
         <ul>
             <a href="/tags/" role="button">Add tags</a>
@@ -27,9 +11,14 @@
             <a href="/search_notes_tags/" role="button">Search</a>
         </ul>
     </div>
-    <div>
+	<div style="
+    display: flex;
+    justify-content: space-around;
+">
+    <div style="
+">
         for now you have {{ all_tags_num }} tags
-    </div>
+    
 
     {% for tag in all_tags %}
     <ul>
@@ -40,9 +29,11 @@
         </li>
     </ul>
       {% endfor %}
-    <div>
+	</div>
+    <div style=";
+">
         for now you have {{ all_notes_n }} notes
-    </div>
+    
 
     {% for note in all_notes %}
     <ul>
@@ -53,6 +44,7 @@
         </li>
     </ul>
       {% endfor %}
-</main>
-</body>
-</html>
+	</div>
+	</div>
+    {% endblock %}
+</body></html>

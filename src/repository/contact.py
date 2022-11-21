@@ -54,6 +54,7 @@ def cont_delete(contact_id, user_id):
         and_(models.Contact.user_id == int(user_id), models.Contact.id == int(contact_id))).delete()
     db.session.commit()
 
+
 def find_contact_birthday(user_id, birthday):
     contacts = get_contacts_user(user_id=user_id)
     birthday = datetime.strptime(birthday, "%Y-%m-%d")
@@ -70,6 +71,7 @@ def find_contact_birthday(user_id, birthday):
             contact_birthday = datetime(year=datetime.now().year+1,
                         month=contact_birthday.month, day=contact_birthday.day)
         if contact_birthday - birthday < datetime.now()-datetime.now() and contact_birthday - datetime.now() > datetime.now()-datetime.now():
+
             new_contacts.append(contact)
     return new_contacts
 

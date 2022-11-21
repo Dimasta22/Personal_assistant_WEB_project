@@ -14,6 +14,8 @@ def move_user_file(user_id, file_path: Path):
 
 def delete_user_file(file_path: str):
     filename = Path(f"{BASE_DIR}/src{file_path}")
+    print(file_path)
+    print(str(filename))
     try:
         filename.unlink()
     except FileNotFoundError as err:
