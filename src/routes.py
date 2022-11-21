@@ -249,6 +249,7 @@ def notes():
     nick = user.get_user(session['user_id']['id'])
     all_tags = tag.all_tags(nick.id)
     if request.method == "POST":
+        flash('This name already exist')
         # flash('Note was added')
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
@@ -260,7 +261,7 @@ def notes():
             note.add_note(note_n, note_des, tags_in_form, note_ty, nick.id)
             return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
         else:
-            flash('This name already exist')
+            # flash('This name already exist')
             return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='This name already exist')
     return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
 
@@ -285,6 +286,7 @@ def edit_note(_id):
     all_tags = tag.all_tags(nick.id)
     d_note = note.get_detail(_id)
     if request.method == "POST":
+        flash('This name already exist')
         d_note = note.get_detail(_id)
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
