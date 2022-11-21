@@ -286,8 +286,6 @@ def notes():
     nick = user.get_user(session['user_id']['id'])
     all_tags = tag.all_tags(nick.id)
     if request.method == "POST":
-        flash('This name already exist')
-        # flash('Note was added')
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
         note_tgs = request.form.getlist("tags")
@@ -296,9 +294,10 @@ def notes():
         note_ty = (False if note_ty == '0' else True)
         if note.search_note_name(note_n, nick.id) is None:
             note.add_note(note_n, note_des, tags_in_form, note_ty, nick.id)
+            flash('Note was added')
             return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
         else:
-            # flash('This name already exist')
+            flash('This name already exist')
             return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='This name already exist')
     return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
 
@@ -420,6 +419,7 @@ def search_by_phrases():
                                    result_all=result_note, result_notes_all=result_notes,
                                    result_note_tags=result_note_tags, note_tgs=note_tgs, message='All included')
     return render_template('search_notes_tags_result.html', nick=nick.nick)
+
 
 @app.route('/contacts', methods=['GET', 'POST'], strict_slashes=False)
 def contacts():
@@ -556,7 +556,7 @@ def add_phone(contact_id):
     return render_template('add_phone.html', contact=contact_)
 
 
-@app.route('/edit_contact/<contact_id>', methods=["POST"], strict_slashes=False)
+@app.route('/edit_contact/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_contact(contact_id):
     auth = True if 'user_id' in session else False
     if not auth:
@@ -672,53 +672,70 @@ def edit_address(contact_id, address_id):
             contact.update_address(contact_id, address_id, address)
     return render_template('edit_address.html', contact=contact_, address=address_id,
                            address_obj=contact.get_address(contact_id=contact_id, address_id=address_id)[0])
-<<<<<<< Updated upstream
 
 
 @app.route('/delete_address/<contact_id>/<address_id>', methods=['GET', 'POST'], strict_slashes=False)
 def delete_address(contact_id, address_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id']).nick
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     contact.address_delete(address_id)
     return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
 
+
 @app.route('/delete_phone/<contact_id>/<phone_id>', methods=['GET', 'POST'], strict_slashes=False)
 def delete_phone(contact_id, phone_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id']).nick
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     contact.phone_delete(phone_id)
     return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
 
+
 @app.route('/delete_email/<contact_id>/<email_id>', methods=['GET', 'POST'], strict_slashes=False)
 def delete_email(contact_id, email_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id']).nick
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     contact.email_delete(email_id)
     return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
 
+
 @app.route('/delete_birthday/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def delete_birthday(contact_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id']).nick
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     contact.update_birthday(contact_id, session['user_id']['id'], '-')
     return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
 
+
 @app.route('/delete_last_name/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def delete_last_name(contact_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id']).nick
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     contact.update_last_name(contact_id, session['user_id']['id'], '-')
     return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
 
-@app.route('/back', methods=['GET', 'POST'], strict_slashes=False)
-def back():
-    print(request.url)
-    return redirect(request.url)
 
-=======
->>>>>>> Stashed changes
+@app.route('/back/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
+def back(contact_id):
+    return redirect(url_for('edit_contact', contact_id=contact_id))
+
+
