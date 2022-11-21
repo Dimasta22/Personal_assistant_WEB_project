@@ -73,7 +73,7 @@ Header start
             <div class="col-md-6">
                 <div class="block">
                     <h1 class="wow fadeInDown">Hello! <br> And welcome to {{title}}!</h1>
-                    <p class="wow fadeInDown" data-wow-delay="0.3s">Feel free to upload any pictures you want to your
+                    <p class="wow fadeInDown" data-wow-delay="0.3s">Feel free to upload any files you want to your
                         personal storage!</p>
                     <div class="wow fadeInDown" data-wow-delay="0.3s">
                         <a class="btn btn-default btn-home" href="/account_window" role="button">BIG "RETURN TO MAIN
@@ -166,13 +166,15 @@ About start
                 <div>
                     {% for type in types%}
                     <a href="/file_uploader/{{type.name}}/"><b style="color:green">{{type.name}}:</b></a>
-                    <ul>{%for file in type.files[0:2]%}
+                    <ul>{%for file in files_on_demand%}
+                        {%if file.type_id == type.id%}
                         <li>
                             <div style="margin:1%"><a class="btn btn-default btn-submit"
                                                       href="/file_uploader/download/{{file.id}}" role="button">
                                 {{file.description}} | {{"{:.2f}".format(file.size / 1000000) }} Mb
                             </a></div>
                         </li>
+                        {%endif%}
                         {%endfor%}
                         <span style="margin:1%;"><a href="/file_uploader/{{type.name}}/"><b style="color:black">
                             . . .
@@ -180,34 +182,44 @@ About start
                     </ul>
                     {%endfor%}
                 </div>
+                {%if not files_on_demand%}
+                    <div style="width:40%" class="alert alert-success" role="alert">
+                        <b>There is nothing... yet.</b>
+                    </div>
+                    {%endif%}
                 {%else%}
                 <div>
                     <b>{{group}}</b> | <a href="/file_uploader/#show_all"><b style="color:green">To all</b></a>
                     {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-warning">{{message}}</div>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div style="margin-top:2%" class="alert alert-warning">{{message}}</div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
                     <ul>{%for file in selected_files.items%}
                         <li>
                             <div style="margin:1%"><a class="btn btn-default btn-submit"
                                                       href="/file_uploader/download/{{file.id}}" role="button">
                                 {{file.description}} | {{"{:.2f}".format(file.size / 1000000) }} Mb |
-                                    <a class="btn btn-danger" href="/file_uploader/{{group}}/delete/{{file.id}}" role="button">X</a>
+                                <a class="btn btn-danger" href="/file_uploader/{{group}}/delete/{{file.id}}"
+                                   role="button">X</a>
                             </a></div>
                         </li>
                         {%endfor%}
                         {%if not selected_files.items%}
-                        <p style="margin:2%"><em >Guess you delete everything from here...</em></p>
+                        <p style="margin:2%"><em>Guess you delete everything from here...</em></p>
                         {%endif%}
                         <!-- Pagination!!! -->
                     </ul>
                     <nav>
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <a href="./?page={{ selected_files.prev_num }}#show_all" class="btn btn-success {%if not selected_files.has_prev%} disabled {%endif%}" role="button">Prev</a>
-                            <a href="./?page={{ selected_files.next_num }}#show_all"  class="btn btn-success {%if not selected_files.has_next%} disabled {%endif%}" role="button">Next</a>
+                            <a href="./?page={{ selected_files.prev_num }}#show_all"
+                               class="btn btn-success {%if not selected_files.has_prev%} disabled {%endif%}"
+                               role="button">Prev</a>
+                            <a href="./?page={{ selected_files.next_num }}#show_all"
+                               class="btn btn-success {%if not selected_files.has_next%} disabled {%endif%}"
+                               role="button">Next</a>
                         </div>
                     </nav><!-- Pagination ENDS!!! -->
                     {%endif%}

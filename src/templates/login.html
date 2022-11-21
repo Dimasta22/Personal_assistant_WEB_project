@@ -1,19 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="no-js">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Login</title>
-    <link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon"/>
-    <link
-            rel="stylesheet"
-            href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
-    />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Jarvis | Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- Fonts -->
+    <!-- Lato -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/owl.carousel.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/animate.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/main.css')}}">
+    <!-- Responsive Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/responsive.css')}}">
 </head>
-<a class="btn btn-sm btn-outline-secondary" href="registration"
->Регистрация</a>
+
+<body id="body">
+
+<div id="preloader">
+    <div class="book">
+        <div class="book__page"></div>
+        <div class="book__page"></div>
+        <div class="book__page"></div>
+    </div>
+</div>
+
+<!--
+Header start
+==================== -->
+<div class="navbar-default navbar-fixed-top" id="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <img class="logo-1" src="{{ url_for('static', filename='/images/logo.png')}}" alt="LOGO">
+                <img class="logo-2" src="{{ url_for('static', filename='/images/logo-2.png')}}" alt="LOGO">
+            </a>
+        </div>
+    </div><!-- /.container-fluid -->
+</div>
+
+<section id="hero-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="block" style="padding:0">
+                    <h1 class="wow fadeInDown"><br>Welcome to <b>{{title}}</b>{{title_desc}}!</h1>
+                    <p class="wow fadeInDown" data-wow-delay="0.3s"><strong>Haven't used the JARVIS yet??</strong></p>
+                    <div class="wow fadeInDown" data-wow-delay="0.3s">
+                        <a class="btn btn-default btn-home" href="/registration" role="button">SING UP</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 wow zoomIn">
+                <div class="block" style="width:80%">
+                    <div class="counter text-center">
+                        <div class="row justify-content-center">
+                            <form style="width:100%" class="col-sm-6" action="/login" method="post">
+                                <div class="input-field">
+                                    <input
+                                            class="form-control"
+                                            type="text"
+                                            placeholder="Nickname"
+                                            name="nickname"/>
+                                </div>
+                                <div class="input-field">
+                                    <input
+                                            class="form-control"
+                                            type="password"
+                                            placeholder="Password"
+                                            name="password"
+                                            required/>
+                                </div>
+                                <div style="padding-right:70%" class="form-group form-check mb-3">
+                                    <label class="form-check-label">
+                                        <input
+                                                type="checkbox"
+                                                class="form-check-input"
+                                                name="remember"
+                                        />
+                                        Remember me</label>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-send" type="submit">
+                                        Login
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .row close -->
+        </div>
+    </div><!-- .container close -->
+</section><!-- header close -->
+<!--ALERT MESSAGE-->
 {% if message %}
 <div class="alert alert-danger">{{message}}</div>
 {% endif %}
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <div class="container">
     <div class="row justify-content-center mb-3">
         <h1>Sign in</h1>
@@ -43,6 +140,45 @@
                 </button>
             </div>
         </form>
+=======
+=======
+>>>>>>> Stashed changes
+<!--ALERT MESSAGE-->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block">
+                    <p>Created by JARVIS-team | 2022</p>
+                    <p>Our team: <a href=https://t.me/+UnKntM5SbrAzNTli>Write some good words! </a>| All right reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     </div>
-</div>
+</footer>
 
+
+<!-- Js -->
+<script src="{{ url_for('static', filename='/js/vendor/modernizr-2.6.2.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/vendor/jquery-1.10.2.min.js')}}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="{{ url_for('static', filename='/js/jquery.lwtCountdown-1.0.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/bootstrap.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/owl.carousel.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.validate.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.form.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.nav.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.sticky.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/plugins.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/wow.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/main.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/uploader.js')}}"></script>
+
+
+</body>
+</html>

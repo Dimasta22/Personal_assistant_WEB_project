@@ -2,6 +2,7 @@
 name = "project_web"
 version = "0.1.0"
 description = ""
+<<<<<<< Updated upstream
 authors = ["Dmytro Serdiuk <58885847+Dimasta22@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
@@ -14,6 +15,20 @@ flask-sqlalchemy = "^3.0.2"
 Flask-Migrate = "^4.0.0"
 python-dotenv = "^0.21.0"
 bcrypt = "^4.0.1"
+=======
+authors = ["Dimasta22 <serdyuk0002@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "^2.2.2"
+Flask-SQLAlchemy = "^2.5.1"
+Flask-Migrate = "^3.1.0"
+python-dotenv = "^0.21.0"
+bcrypt = "^4.0.1"
+google-api-python-client = "^2.65.0"
+flask-paginate = "^2022.1.8"
+beautifulsoup4 = "^4.11.1"
+>>>>>>> Stashed changes
 
 [tool.poetry.dev-dependencies]
 

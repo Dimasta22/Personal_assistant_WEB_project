@@ -97,7 +97,7 @@ class File(db.Model):
     __tablename__ = 'files'
     id = db.Column(db.Integer, primary_key=True)
     path = db.Column(db.String(350), unique=True, nullable=False)
-    description = db.Column(db.String(300), nullable=False)
+    description = db.Column(db.String(300), nullable=False, default='file_without_description')
     size = db.Column(db.Integer, nullable=False)
     type_id = db.Column(db.Integer, ForeignKey('filetypes.id'), nullable=False)
     file_type = relationship('FileType', cascade='all, delete')
