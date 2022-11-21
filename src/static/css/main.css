@@ -349,7 +349,7 @@ a:active {
 
 
 #hero-area {
-  padding:180px 0;
+  padding:120px 0;
     background: rgba(0, 0, 0, 0) linear-gradient(135deg, #8ec64e 0%, #41aba0 100%) repeat scroll 0 0;
 }
 #hero-area:before {
@@ -500,6 +500,7 @@ a:active {
     background: #fff;
 }
 #hero-area .block {
+
 }
 #hero-area .block p {
     color: #fff;
@@ -511,6 +512,8 @@ a:active {
 #hero-area .block .counter {
     background: rgba(255, 255, 255, 0.2);
     padding:18px;
+    position:static;
+
 }
 
 #hero-area .block .counter h2 {
@@ -862,7 +865,7 @@ hr {
 footer {
     text-align: center;
     background: #272727;
-    padding: 27px 0px;
+    padding: 12px 0px;
 }
 footer p {
     font-weight: 300;

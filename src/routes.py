@@ -7,13 +7,9 @@ from src import db
 from . import app
 from .libs.file_service import move_user_file
 from .libs.validation_file import allowed_file
-
 from .models import FileType, File
 from src.repository.files import delete_file
-
-
 from src.repository import user, contact, tag, note, files
-
 from src.libs.validation_contact import contact_validation
 from sqlalchemy.engine import Engine
 from sqlalchemy import event
@@ -49,8 +45,9 @@ def registration():
             return render_template('login.html')
         else:
             flash('User already exist')
-            return render_template('registration.html', message='User already exist')
-    return render_template('registration.html')
+            return render_template('registration.html', message='User already exist!', title='JARVIS',
+                                   title_desc=' - your best organizing decision!')
+    return render_template('registration.html', title='JARVIS', title_desc=' - your best organizing decision!')
 
 
 @app.route('/login', methods=['GET', 'POST'], strict_slashes=False)
@@ -65,7 +62,7 @@ def login():
         session['user_id'] = {'id': login_data.id}
         response = make_response(redirect(url_for('account_window')))
         return response
-    return render_template('login.html')
+    return render_template('login.html', title='JARVIS', title_desc=' - your best organizing decision!')
 
 
 @app.route('/logout', strict_slashes=False)
@@ -120,11 +117,17 @@ def file_uploader():
     if not auth:
         return redirect(url_for('login'))
     user_id = user.get_user(session['user_id']['id']).id
-    type_ex = db.session.query(FileType).filter(FileType.files.any(user_id=user_id))
-    #type_ex = db.session.query(File).filter(File.user_id == user_id)
+    print(user_id)
+    type_ex = db.session.query(FileType).filter(FileType.files.any(user_id=user_id)).all()
+    any_files = [file.files for file in type_ex]
+    files_on_demand = []
+    for file_list in any_files:
+        for file in file_list:
+            if file.user_id == user_id:
+                files_on_demand.append(file)
     group_is_set = False
     return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex,
-                           group_is_set=group_is_set)
+                           group_is_set=group_is_set, user_id=user_id, files_on_demand=files_on_demand)
 
 
 @app.route('/file_uploader/<group>', methods=['GET'], strict_slashes=False)
@@ -670,6 +673,7 @@ def edit_address(contact_id, address_id):
     return render_template('edit_address.html', contact=contact_, address=address_id,
                            address_obj=contact.get_address(contact_id=contact_id, address_id=address_id)[0])
 
+
 @app.route('/delete_address/<contact_id>/<address_id>', methods=['GET', 'POST'], strict_slashes=False)
 def delete_address(contact_id, address_id):
     nick = user.get_user(session['user_id']['id']).nick
@@ -714,3 +718,4 @@ def delete_last_name(contact_id):
 def back():
     print(request.url)
     return redirect(request.url)
+
