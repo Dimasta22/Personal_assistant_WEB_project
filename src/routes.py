@@ -39,7 +39,6 @@ def index():
 
 @app.route('/registration', methods=['GET', 'POST'], strict_slashes=False)
 def registration():
-    # auth = True if 'username' in session else False
     if request.method == 'POST':
         if request.form.get('login'):
             return redirect(url_for('login'))
@@ -56,7 +55,6 @@ def registration():
 
 @app.route('/login', methods=['GET', 'POST'], strict_slashes=False)
 def login():
-    # auth = True if 'username' in session else False
     if request.method == 'POST':
         nick = request.form.get('nickname')
         password = request.form.get('password')
@@ -72,6 +70,9 @@ def login():
 
 @app.route('/logout', strict_slashes=False)
 def logout():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     session.pop('user_id')
     response = make_response(redirect(url_for('login')))
     return response
@@ -79,7 +80,10 @@ def logout():
 
 @app.route('/account_window', methods=['GET', 'POST'], strict_slashes=False)
 def account_window():
-    # auth = True if 'username' in session else False
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
         city = request.form.get('select_city')
         nick = user.get_user(session['user_id']['id']).nick
@@ -112,6 +116,9 @@ def account_window():
 
 @app.route('/file_uploader', methods=['GET'], strict_slashes=False)
 def file_uploader():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     user_id = user.get_user(session['user_id']['id']).id
     type_ex = db.session.query(FileType).filter(FileType.files.any(user_id=user_id))
     #type_ex = db.session.query(File).filter(File.user_id == user_id)
@@ -122,6 +129,9 @@ def file_uploader():
 
 @app.route('/file_uploader/<group>', methods=['GET'], strict_slashes=False)
 def file_uploader_set_files(group):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     user_id = user.get_user(session['user_id']['id']).id
     type_ex = db.session.query(FileType).filter(FileType.files.any(user_id=user_id)).all()
     groups = ['Audio', 'Video', 'Documents', 'Images', 'Other']
@@ -146,7 +156,7 @@ def file_uploader_set_files(group):
 def file_upload():
     auth = True if 'user_id' in session else False
     if not auth:
-        return redirect(request.url)
+        return redirect(url_for('login'))
     if request.method == 'POST':
         description = request.form.get('description')
         if 'file' not in request.files:
@@ -171,6 +181,9 @@ def file_upload():
 
 @app.route('/file_uploader/download/<file_id>', methods=['GET', 'POST'], strict_slashes=False)
 def file_download(file_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     user_id = user.get_user(session['user_id']['id']).id
     file = db.session.query(File).filter(File.id == file_id, File.user_id == user_id).first()
     name = file.path.replace(f'/static/{user_id}/', '\\')
@@ -181,6 +194,9 @@ def file_download(file_id):
 
 @app.route('/file_uploader/<group>/delete/<file_id>', methods=['GET'], strict_slashes=False)
 def delete(group, file_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     delete_file(file_id, session['user_id']['id'])
     flash('Deletion successfully!')
     return redirect(url_for('file_uploader_set_files', group=group))
@@ -188,6 +204,9 @@ def delete(group, file_id):
 
 @app.route('/Notebook', strict_slashes=False)
 def notebook():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     all_tags_n = len(tag.all_tags(nick.id))
     all_tags = tag.all_tags(nick.id)
@@ -203,6 +222,9 @@ def notebook():
 
 @app.route('/tags', methods=['GET', 'POST'], strict_slashes=False)
 def tags():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     if request.method == "POST":
         tag_name = request.form.get("tag_name")
@@ -218,12 +240,18 @@ def tags():
 
 @app.route("/delete_tag/<_id>", strict_slashes=False)
 def delete_tag(_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     tag.delete_tag(_id)
     return redirect("/Notebook")
 
 
 @app.route('/detail_tag/<_id>', strict_slashes=False)
 def detail_tag(_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     d_tag = tag.get_detail(_id)
     return render_template('tag_detail.html', nick=nick.nick, d_tag=d_tag)
@@ -231,6 +259,9 @@ def detail_tag(_id):
 
 @app.route('/edit_tag/<_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_tag(_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     d_tag = tag.get_detail(_id)
     if request.method == "POST":
@@ -248,6 +279,9 @@ def edit_tag(_id):
 
 @app.route('/notes', methods=['GET', 'POST'], strict_slashes=False)
 def notes():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     all_tags = tag.all_tags(nick.id)
     if request.method == "POST":
@@ -264,12 +298,18 @@ def notes():
 
 @app.route("/delete_note/<_id>", strict_slashes=False)
 def delete_note(_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     note.delete_note(_id)
     return redirect("/Notebook")
 
 
 @app.route('/detail_note/<_id>', strict_slashes=False)
 def detail_note(_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     d_note = note.get_detail(_id)
     tags_n = note.note_tags_to_string(d_note.tags)
@@ -278,6 +318,9 @@ def detail_note(_id):
 
 @app.route('/edit_note/<_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_note(_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     all_tags = tag.all_tags(nick.id)
     d_note = note.get_detail(_id)
@@ -297,6 +340,9 @@ def edit_note(_id):
 
 @app.route('/search_notes_tags', strict_slashes=False)
 def search_note_tag():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     all_tags = tag.all_tags(nick.id)
     return render_template('search_n.html', nick=nick.nick, all_tags=all_tags)
@@ -304,6 +350,9 @@ def search_note_tag():
 
 @app.route('/search_all_done_notes', strict_slashes=False)
 def search_note_done():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     done_notes = note.search_all_notes(nick.id, 1)
     d_s_tags = note.note_tags_to_string(done_notes)
@@ -312,6 +361,9 @@ def search_note_done():
 
 @app.route('/search_all_undone_notes', strict_slashes=False)
 def search_note_undone():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     undone_notes = note.search_all_notes(nick.id, 0)
     u_s_tags = note.note_tags_to_string(undone_notes)
@@ -321,6 +373,9 @@ def search_note_undone():
 
 @app.route('/search_by_phrase', methods=['GET', 'POST'], strict_slashes=False)
 def search_by_phrases():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     if request.method == "POST":
         phrase = request.form.get('note_phrase')
@@ -358,6 +413,9 @@ def search_by_phrases():
 
 @app.route('/contacts', methods=['GET', 'POST'], strict_slashes=False)
 def contacts():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id']).nick
     contacts = contact.get_contacts_user(session['user_id']['id'])
     return render_template('/contacts.html', contacts=contacts, nick=nick, href_='contact',
@@ -366,6 +424,9 @@ def contacts():
 
 @app.route('/add_contact', methods=['GET', 'POST'], strict_slashes=False)
 def add_contact():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id']).nick
     if request.method == 'POST':
         first_name = request.form.get('first_name')
@@ -391,6 +452,9 @@ def add_contact():
 
 @app.route('/show_contact_birthday', methods=['GET', 'POST'], strict_slashes=False)
 def show_contact_birthday():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id']).nick
     contacts = contact.get_contacts_user(session['user_id']['id'])
     birthday_date = 'dd/mm/yyyy'
@@ -408,6 +472,9 @@ def show_contact_birthday():
 
 @app.route('/find_contact', methods=['GET', 'POST'], strict_slashes=False)
 def find_contact():
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id']).nick
     contacts = contact.get_contacts_user(session['user_id']['id'])
     if request.method == 'POST':
@@ -420,6 +487,9 @@ def find_contact():
 
 @app.route('/delete_contact/<contact_id>', methods=["POST"], strict_slashes=False)
 def contact_delete(contact_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     if request.method == 'POST':
         contact.cont_delete(contact_id, session['user_id']['id'])
         flash('Operation successfully!')
@@ -428,6 +498,9 @@ def contact_delete(contact_id):
 
 @app.route('/add_email/<contact_id>', methods=["POST"], strict_slashes=False)
 def add_email(contact_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     if request.method == 'POST':
@@ -443,6 +516,9 @@ def add_email(contact_id):
 
 @app.route('/add_address/<contact_id>', methods=["POST"], strict_slashes=False)
 def add_address(contact_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     if request.method == 'POST':
@@ -454,6 +530,9 @@ def add_address(contact_id):
 
 @app.route('/add_phone/<contact_id>', methods=["POST"], strict_slashes=False)
 def add_phone(contact_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     if request.method == 'POST':
@@ -469,6 +548,9 @@ def add_phone(contact_id):
 
 @app.route('/edit_contact/<contact_id>', methods=["POST"], strict_slashes=False)
 def edit_contact(contact_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id']).nick
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
@@ -479,6 +561,9 @@ def edit_contact(contact_id):
 
 @app.route('/edit_name/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_name(contact_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     if request.method == 'POST':
@@ -491,6 +576,9 @@ def edit_name(contact_id):
 
 @app.route('/edit_last_name/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_last_name(contact_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     if request.method == 'POST':
@@ -503,6 +591,9 @@ def edit_last_name(contact_id):
 
 @app.route('/edit_birthday/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_birthday(contact_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     if request.method == 'POST':
@@ -519,6 +610,9 @@ def edit_birthday(contact_id):
 
 @app.route('/edit_email/<contact_id>/<email_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_email(contact_id, email_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     if request.method == 'POST':
@@ -537,6 +631,9 @@ def edit_email(contact_id, email_id):
 
 @app.route('/edit_phone/<contact_id>/<phone_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_phone(contact_id, phone_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     if request.method == 'POST':
@@ -554,6 +651,9 @@ def edit_phone(contact_id, phone_id):
 
 @app.route('/edit_address/<contact_id>/<address_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_address(contact_id, address_id):
+    auth = True if 'user_id' in session else False
+    if not auth:
+        return redirect(url_for('login'))
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     if request.method == 'POST':
