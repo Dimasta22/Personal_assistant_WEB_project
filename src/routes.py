@@ -47,7 +47,8 @@ def registration():
             flash('User already exist')
             return render_template('registration.html', message='User already exist!', title='JARVIS',
                                    title_desc=' - your best organizing decision!')
-    return render_template('registration.html', title='JARVIS', title_desc=' - your best organizing decision!')
+    return render_template('registration.html', title='JARVIS', title_desc=' - your best organizing decision!',
+                           tab_title='Jarvis | Sing Up')
 
 
 @app.route('/login', methods=['GET', 'POST'], strict_slashes=False)
@@ -57,12 +58,13 @@ def login():
         password = request.form.get('password')
         login_data = user.checkout_login_for_user(nick, password)
         if login_data is None:
-            flash('pass')
+            flash('Incorrect nickname or password.')
             return redirect(url_for('login'))
         session['user_id'] = {'id': login_data.id}
         response = make_response(redirect(url_for('account_window')))
         return response
-    return render_template('login.html', title='JARVIS', title_desc=' - your best organizing decision!')
+    return render_template('login.html', title='JARVIS', title_desc=' - your best organizing decision!',
+                           tab_title='Jarvis | Login')
 
 
 @app.route('/logout', strict_slashes=False)
@@ -94,7 +96,7 @@ def account_window():
                                football_news=football_news,
                                weather_news=weather_news,
                                currency_news=currency_news,
-                               city=city)
+                               city=city, tab_title=f'Jarvis | {nick}', title='JARVIS')
 
     nick = user.get_user(session['user_id']['id']).nick
     politics_news = politics.parse_finance(10)
@@ -108,7 +110,7 @@ def account_window():
                            football_news=football_news,
                            weather_news=weather_news,
                            currency_news=currency_news,
-                           city=city)
+                           city=city, tab_title=f'Jarvis | {nick}', title='JARVIS')
 
 
 @app.route('/file_uploader', methods=['GET'], strict_slashes=False)
@@ -429,7 +431,7 @@ def contacts():
     nick = user.get_user(session['user_id']['id']).nick
     contacts = contact.get_contacts_user(session['user_id']['id'])
     return render_template('/contacts.html', contacts=contacts, nick=nick, href_='contact',
-                           amount_contacts=len(contacts))
+                           amount_contacts=len(contacts), tab_title=f'Jarvis | {nick}', title='JARVIS')
 
 
 @app.route('/add_contact', methods=['GET', 'POST'], strict_slashes=False)
@@ -566,7 +568,8 @@ def edit_contact(contact_id):
         session['user_id']['id'], contact_id)
     if request.method == 'POST':
         pass
-    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_,
+                           tab_title=f'Jarvis | {nick}', title='JARVIS')
 
 
 @app.route('/edit_name/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -737,5 +740,3 @@ def delete_last_name(contact_id):
 @app.route('/back/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def back(contact_id):
     return redirect(url_for('edit_contact', contact_id=contact_id))
-
-
