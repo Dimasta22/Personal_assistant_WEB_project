@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="contacts_page" style="color: #000;">
+        <h1>Your contacts: {{amount_contacts}}</h1>
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-warning">{{message}}</div>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+        <form action="/show_contact_birthday" method="post">
+        <p>Choose date till which your contacts will have birthday: <input type="date" name="calendar">
+                <button class="btn btn-sm btn-outline-secondary">
+                    Find
+                </button>
+            </form></p>
+            <form action="/find_contact" method="post">
+                <p><input name="find" placeholder="find contact">
+                        <button class="btn btn-sm btn-outline-secondary">
+                            Find
+                        </button>
+                    </form></p>
+        <div>
+            <div>
+                <button class="button" href="/add_contact"><a class="nav-link" href="/add_contact">add contact</a></button>
+                
+            </div>
+            <table style="width:10%">
+                <tr>
+                    <td>first&nbsp;name</td>
+                    <td>last&nbsp;name</td>
+                    <td>birthday</td>
+                    <td>email</td>
+                    <td>cell&nbsp;phone</td>
+                    <td>address</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+            {% for contact in contacts%}
+            <tr>
+                <th>{{contact.first_name}}</th>
+                <th>{{contact.last_name}}</th>
+                <th>{{contact.birthday}}</th>
+                <th>
+                {% for email in contact.emails %}
+                {{email.email}}
+                <br>
+                {% endfor %}
+                </th>
+                <th>
+                    {% for phone in contact.phones %}
+                        {{phone.phone}}
+                        <br>
+                        {% endfor %}
+                </th>
+                <th>
+                    {% for address in contact.addresses %}
+                    {{address.address}}
+                    <br>
+                    {% endfor %}
+                </th>
+                <th>
+                    <form action="/add_email/{{contact.id}}" method="post">
+                        <button class="btn btn-sm btn-outline-secondary">
+                            Add email
+                        </button>
+                    </form>
+                    <form action="/add_phone/{{contact.id}}" method="post">
+                        <button class="btn btn-sm btn-outline-secondary">
+                            Add phone
+                        </button>
+                    </form>
+                    <form action="/add_address/{{contact.id}}" method="post">
+                        <button>
+                            Add address
+                        </button>
+                    </form>
+                    
+                </th>
+                <th>
+                    <form action="/delete_contact/{{contact.id}}" method="post">
+                        <button class="btn btn-sm btn-outline-secondary">
+                        Delete
+                        </button>
+                    </form>
+                    <form action="/edit_contact/{{contact.id}}" method="post">
+                        <button class="btn btn-sm btn-outline-secondary">
+                        Edit
+                        </button>
+                    </form>
+                </th>
+              </tr>
+            {% endfor %}
+        </table>
+        </div>
+        
+        
+    </div>
+    {% endblock %}

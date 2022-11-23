@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{tab_title}}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- Fonts -->
+    <!-- Lato -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/owl.carousel.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/animate.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/main.css')}}">
+    <!-- Responsive Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/responsive.css')}}">
+</head>
+
+<body id="body">
+
+<div id="preloader">
+    <div class="book">
+        <div class="book__page"></div>
+        <div class="book__page"></div>
+        <div class="book__page"></div>
+    </div>
+</div>
+
+{% block content %} {% endblock %}
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block">
+                    <p>Created by JARVIS-team | 2022</p>
+                    <p>Our team: <a href=https://t.me/+UnKntM5SbrAzNTli>Write some good words! </a>| All
+                        right reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Js -->
+<script src="{{ url_for('static', filename='/js/vendor/modernizr-2.6.2.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/vendor/jquery-1.10.2.min.js')}}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="{{ url_for('static', filename='/js/jquery.lwtCountdown-1.0.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/bootstrap.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/owl.carousel.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.validate.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.form.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.nav.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/jquery.sticky.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/plugins.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/wow.min.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/main.js')}}"></script>
+<script src="{{ url_for('static', filename='/js/uploader.js')}}"></script>
+
+
+</body>
+</html>

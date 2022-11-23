@@ -2,6 +2,54 @@
     Common Css
 --*/
 
+ul.contact_operations {
+  padding-left: 0px;
+  background-color: transparent;
+  text-align: center;
+}
+ul.contact_operations > li {
+  display: inline-block;
+  padding: 10px 20px;
+}
+ul.contact_operations > li:hover {
+  background-color: transparent;
+}
+ul.contact_operations > li > a {
+  color: white;
+  text-decoration: none;
+}
+
+#weather_button{
+border:transparent;
+}
+#city {
+    /* border-bottom: #32cc83; */
+    border-radius: 5px;
+    margin-right: 2%;
+    margin-left: 6%;
+    background: transparent;
+    border: transparent;
+    appearance: none;
+    padding: 0.25em 0.5em;
+    font-size: 1.25rem;
+    cursor: pointer;
+    line-height: 1.1;
+    font-color: white;
+}
+
+
+#news{
+position:relative;
+left:0;
+top:30%;
+}
+
+#football {
+position:relative;
+left:0;
+top:10%;
+}
+
 body {
     font-family: 'Lato', sans-serif;
     font-size: 14px;
@@ -349,7 +397,7 @@ a:active {
 
 
 #hero-area {
-  padding:120px 0;
+  padding:100px 0;
     background: rgba(0, 0, 0, 0) linear-gradient(135deg, #8ec64e 0%, #41aba0 100%) repeat scroll 0 0;
 }
 #hero-area:before {
@@ -365,7 +413,7 @@ a:active {
     opacity: 0.9;
 }
 #hero-area .block {
-  padding-top: 100px;
+  padding-top: 0;
 }
 #hero-area .block h1 {
   margin-bottom: 35px;
@@ -513,6 +561,7 @@ a:active {
     background: rgba(255, 255, 255, 0.2);
     padding:18px;
     position:static;
+    width:113%;
 
 }
 
@@ -527,11 +576,9 @@ a:active {
 #hero-area .block .counter ul li {
     background-color: rgba(255, 255, 255, 0.3);
     color: #fff;
-    display: inline-block;
-    line-height: 25px;
-    padding: 25px 28px 20px;
+    display: flex;
     text-align: center;
-    width: 49%;
+    height:110%;
     margin-bottom: 3px;
 }
 #hero-area .block .counter ul li span {
