@@ -24,7 +24,7 @@ Header start
                     <h1 class="wow fadeInDown"><br>Welcome to <b>{{title}}</b>{{title_desc}}!</h1>
                     <p class="wow fadeInDown" data-wow-delay="0.3s"><strong>Haven't used the JARVIS yet??</strong></p>
                     <div class="wow fadeInDown" data-wow-delay="0.3s">
-                        <a class="btn btn-default btn-home" href="/registration" role="button">SING UP</a>
+                        <a class="btn btn-default btn-home" href="/registration" role="button">SIGN UP</a>
                     </div>
                 </div>
             </div>
@@ -32,9 +32,13 @@ Header start
                 <div class="block" style="width:80%">
                     <div class="counter text-center">
                         <!--ALERT MESSAGE-->
-                        {% if message %}
-                        <div class="alert alert-danger">{{message}}</div>
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-warning">{{message}}</div>
+                        {% endfor %}
                         {% endif %}
+                        {% endwith %}
                         <!--ALERT MESSAGE-->
                         <div class="row justify-content-center">
                             <form style="width:100%" class="col-sm-6" action="/login" method="post">

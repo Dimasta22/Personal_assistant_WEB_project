@@ -15,11 +15,8 @@
     display: flex;
     justify-content: space-around;
 ">
-    <div style="
-">
+    <div id="tags_you_have">
         for now you have {{ all_tags_num }} tags
-    
-
     {% for tag in all_tags %}
     <ul>
         <li>
@@ -30,11 +27,8 @@
     </ul>
       {% endfor %}
 	</div>
-    <div style=";
-">
+    <div id="notes_you_have">
         for now you have {{ all_notes_n }} notes
-    
-
     {% for note in all_notes %}
     <ul>
         <li>

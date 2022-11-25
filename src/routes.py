@@ -1,6 +1,6 @@
 import pathlib
 from .libs.normalize import normalize
-
+from datetime import time, datetime
 from flask import render_template, request, flash, redirect, url_for, session, make_response, send_file
 from werkzeug.utils import secure_filename
 from src import db
@@ -15,6 +15,21 @@ from sqlalchemy.engine import Engine
 from sqlalchemy import event
 from src.scrappy_libs import currency, football, politics, weather
 
+"""
+Function for correct hello:
+"""
+
+def hello():
+    now_is = datetime.now().time()
+    if 0 <= now_is.hour < 6:
+        hello = 'Good night!'
+    elif 6 <= now_is.hour < 12:
+        hello ='Good morning!'
+    elif 12 <= now_is.hour < 18:
+        hello = 'Good afternoon!'
+    elif 18 <= now_is.hour < 24:
+        hello= 'Good evening!'
+    return hello
 
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
@@ -76,13 +91,8 @@ def logout():
     response = make_response(redirect(url_for('login')))
     return response
 
-
 @app.route('/account_window', methods=['GET', 'POST'], strict_slashes=False)
 def account_window():
-    auth = True if 'user_id' in session else False
-    if not auth:
-        return redirect(url_for('login'))
-
     if request.method == 'POST':
         city = request.form.get('select_city')
         nick = user.get_user(session['user_id']['id']).nick
@@ -96,7 +106,7 @@ def account_window():
                                football_news=football_news,
                                weather_news=weather_news,
                                currency_news=currency_news,
-                               city=city, tab_title=f'Jarvis | {nick}', title='JARVIS')
+                               city=city, hello=hello(), tab_title=f'Jarvis | {nick}', title='JARVIS')
 
     nick = user.get_user(session['user_id']['id']).nick
     politics_news = politics.parse_finance(10)
@@ -110,7 +120,7 @@ def account_window():
                            football_news=football_news,
                            weather_news=weather_news,
                            currency_news=currency_news,
-                           city=city, tab_title=f'Jarvis | {nick}', title='JARVIS')
+                           city=city, hello=hello(), tab_title=f'Jarvis | {nick}', title='JARVIS')
 
 
 @app.route('/file_uploader', methods=['GET'], strict_slashes=False)
@@ -128,7 +138,7 @@ def file_uploader():
             if file.user_id == user_id:
                 files_on_demand.append(file)
     group_is_set = False
-    return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex,
+    return render_template('file_uploader.html', title='Jarvise', types=type_ex,
                            group_is_set=group_is_set, user_id=user_id, files_on_demand=files_on_demand)
 
 
@@ -151,9 +161,9 @@ def file_uploader_set_files(group):
         chosen_group = db.session.query(FileType).filter(FileType.name == group).first()
         selected_files = db.session.query(File).filter(File.user_id == user_id, File.type_id == chosen_group.id)
         selected_files = selected_files.paginate(page=page, per_page=3)
-        return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex,
+        return render_template('file_uploader.html', title='Jarvise', types=type_ex,
                                group_is_set=group_is_set, selected_files=selected_files, group=group)
-    return render_template('file_uploader.html', title='Jarvise\'s File Uploader', types=type_ex,
+    return render_template('file_uploader.html', title='Jarvise', types=type_ex,
                            group_is_set=group_is_set, group=group)
 
 
@@ -217,9 +227,9 @@ def notebook():
     all_tags = tag.all_tags(nick.id)
     all_notes = note.all_notes(nick.id)
     all_notes_n = len(note.all_notes(nick.id))
-    return render_template('notebook.html', nick=nick.nick, all_tags_num=all_tags_n, all_tags=all_tags,
+    return render_template('notebook2.html', nick=nick.nick, all_tags_num=all_tags_n, all_tags=all_tags,
                            all_notes=all_notes,
-                           all_notes_n=all_notes_n)
+                           all_notes_n=all_notes_n, tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
 
 
 @app.route('/tags', methods=['GET', 'POST'], strict_slashes=False)
@@ -231,13 +241,16 @@ def tags():
     if request.method == "POST":
         tag_name = request.form.get("tag_name")
         if tag.search_tags_user(tag_name, nick.id) is None:
-            flash('All good')
+            flash(f'Tag "{tag_name}" was successfully created.')
             tag.add_tag(tag_name, nick.id)
-            return render_template('tags.html', nick=nick.nick, message='All good')
+            return render_template('tags2.html', nick=nick.nick, message=f'Tag "{tag_name}" was successfully created.',
+                                   tab_title=f'Jarvis | {nick.nick}',
+                                   title='JARVIS')
         else:
-            flash('Tag name already exists')
-            return render_template('tags.html', nick=nick.nick, message='Tag name already exists')
-    return render_template('tags.html', nick=nick.nick)
+            flash('Tag name already exists!')
+            return render_template('tags2.html', nick=nick.nick, message='Tag name already exists!',
+                                   tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
+    return render_template('tags2.html', nick=nick.nick, tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
 
 
 @app.route("/delete_tag/<_id>", strict_slashes=False)
@@ -276,8 +289,10 @@ def edit_tag(_id):
             # return render_template('tag_edit.html', nick=nick.nick, d_tag=d_tag, message='Tag was edited')
         elif tag_new == tag.search_tags(tag_new).name:
             flash('This name already exist')
-            return render_template('tag_edit.html', d_tag=d_tag, nick=nick.nick, message='This name already exist')
-    return render_template('tag_edit.html', d_tag=d_tag, nick=nick.nick)
+            return render_template('tag_edit2.html', d_tag=d_tag, nick=nick.nick, message='This name already exist',
+                                   tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
+    return render_template('tag_edit2.html', d_tag=d_tag, nick=nick.nick, tab_title=f'Jarvis | {nick.nick}',
+                           title='JARVIS')
 
 
 @app.route('/notes', methods=['GET', 'POST'], strict_slashes=False)
@@ -296,12 +311,15 @@ def notes():
         note_ty = (False if note_ty == '0' else True)
         if note.search_note_name(note_n, nick.id) is None:
             note.add_note(note_n, note_des, tags_in_form, note_ty, nick.id)
-            flash('Note was added')
-            return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
+            flash(f'Note "{note_n}" was successfully added.')
+            return render_template('notes2.html', nick=nick.nick, all_tags=all_tags, message='Note was added',
+                                   tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
         else:
-            flash('This name already exist')
-            return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='This name already exist')
-    return render_template('notes.html', nick=nick.nick, all_tags=all_tags, message='Note was added')
+            flash('This name already exist!')
+            return render_template('notes2.html', nick=nick.nick, all_tags=all_tags, message='This name already exist',
+                                   tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
+    return render_template('notes2.html', nick=nick.nick, all_tags=all_tags, message='Note was added',
+                           tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
 
 
 @app.route("/delete_note/<_id>", strict_slashes=False)
@@ -333,7 +351,7 @@ def edit_note(_id):
     all_tags = tag.all_tags(nick.id)
     d_note = note.get_detail(_id)
     if request.method == "POST":
-        flash('This name already exist')
+        #flash('This name already exist') #Цей рядок видає флеш кожного разу, шукай вірний випадок для виводу.
         d_note = note.get_detail(_id)
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
@@ -343,11 +361,14 @@ def edit_note(_id):
         note_ty = (False if note_ty == '0' else True)
         if note.search_note_name(note_n, nick.id) is None:
             note.edit_note(d_note.id, note_n, note_des, tags_in_form, note_ty)
+            flash(f'The note "{note_n}" was updated successfully!')
             return redirect("/Notebook")
         else:
-            return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note,
-                                   message='This name already exist')
-    return render_template('note_edit.html', nick=nick.nick, all_tags=all_tags, d_note=d_note)
+            flash('This name already exist!')
+            return render_template('note_edit2.html', nick=nick.nick, all_tags=all_tags, d_note=d_note,
+                                   message='This name already exist', tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
+    return render_template('note_edit2.html', nick=nick.nick, all_tags=all_tags, d_note=d_note,
+                           tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
 
 
 @app.route('/search_notes_tags', strict_slashes=False)
@@ -722,7 +743,7 @@ def delete_birthday(contact_id):
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     contact.update_birthday(contact_id, session['user_id']['id'], '-')
-    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+    return redirect(url_for('edit_contact', contact_id=contact_id))
 
 
 @app.route('/delete_last_name/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)

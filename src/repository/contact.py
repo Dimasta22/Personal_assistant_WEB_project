@@ -4,6 +4,7 @@ from sqlalchemy import and_, func
 from datetime import datetime
 import difflib
 
+
 def get_contacts_user(user_id):
     return db.session.query(models.Contact).where(models.Contact.user_id == user_id).all()
 
@@ -58,20 +59,23 @@ def cont_delete(contact_id, user_id):
 def find_contact_birthday(user_id, birthday):
     contacts = get_contacts_user(user_id=user_id)
     birthday = datetime.strptime(birthday, "%Y-%m-%d")
-    if birthday > datetime(year=datetime.now().year+1, month=datetime.now().month, day=datetime.now().day):
-        birthday = datetime(year=datetime.now().year+1, month=datetime.now().month, day=datetime.now().day)
+    if birthday > datetime(year=datetime.now().year + 1, month=datetime.now().month, day=datetime.now().day):
+        birthday = datetime(year=datetime.now().year + 1, month=datetime.now().month, day=datetime.now().day)
     new_contacts = []
     for contact in contacts:
         if contact.birthday == '-' or contact.birthday == '':
             continue
         contact_birthday = datetime.strptime(contact.birthday, "%d.%m.%Y")
         contact_birthday = datetime(year=datetime.now().year,
-                        month=contact_birthday.month, day=contact_birthday.day)
+                                    month=contact_birthday.month, day=contact_birthday.day)
         if datetime.now().month > contact_birthday.month:
-            contact_birthday = datetime(year=datetime.now().year+1,
-                        month=contact_birthday.month, day=contact_birthday.day)
-        if contact_birthday - birthday < datetime.now()-datetime.now() and contact_birthday - datetime.now() > datetime.now()-datetime.now():
-
+            contact_birthday = datetime(year=datetime.now().year + 1,
+                                        month=contact_birthday.month, day=contact_birthday.day)
+        elif datetime.now().month == contact_birthday.month:
+            if datetime.now().day > contact_birthday.day:
+                contact_birthday = datetime(year=datetime.now().year + 1,
+                                            month=contact_birthday.month, day=contact_birthday.day)
+        if contact_birthday - birthday < datetime.now() - datetime.now() and contact_birthday - datetime.now() > datetime.now() - datetime.now():
             new_contacts.append(contact)
     return new_contacts
 
@@ -139,7 +143,7 @@ def similar(word, contacts):
     average = 0
     for k, v in new_sorted_dict.items():
         average += v
-    average = average/len(new_sorted_dict)
+    average = average / len(new_sorted_dict)
     for k, v in new_sorted_dict.items():
         if v >= average:
             result.append(k)
@@ -149,6 +153,7 @@ def similar(word, contacts):
     if full_match_result:
         return full_match_result
     return result
+
 
 def email_delete(email_id):
     db.session.query(models.Email).filter(

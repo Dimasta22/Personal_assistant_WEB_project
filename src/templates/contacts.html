@@ -31,12 +31,12 @@
     </div><!-- /.container-fluid -->
 </div>
 
-<section id="hero-area">
+<section id="hero-area" style="min-height: 99vh;">
     <div class="container">
         <div class="row" id="contacts_amount">
             <div class="col-md-6">
                 <div class="block">
-                    <h1 class="wow fadeInDown">Hello! Welcome to <strong>{{title}}</strong>ES contact book.</h1>
+                    <h1 class="wow fadeInDown">Welcome to <strong>{{title}}</strong>ES contact book.</h1>
                     <p class="wow fadeInDown" data-wow-delay="1s">Feel free to create, update or delete the contacts of
                         people you care of.</p>
                     <div class="wow fadeInDown" data-wow-delay="1.5s">
@@ -131,14 +131,14 @@
                 </th>
                 <th >
                     <div style="display:flex">
-                    <form action="/delete_contact/{{contact.id}}" method="post">
-                        <button>
-                        &#10006;
-                        </button>
-                    </form>
                     <form action="/edit_contact/{{contact.id}}" method="post">
                         <button>
                         &#9997;
+                        </button>
+                    </form>
+                        <form action="/delete_contact/{{contact.id}}" method="post">
+                        <button>
+                        &#10006;
                         </button>
                     </form>
                         </div>

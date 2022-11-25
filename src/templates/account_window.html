@@ -36,9 +36,20 @@
         <div class="row" id="here_is_currency">
             <div class="col-md-6">
                 <div class="block">
-                    <h1 class="wow fadeInDown">Hello! Welcome to <strong>{{title}}</strong> .</h1>
+                    <h1 class="wow fadeInDown">{{hello}} Welcome to <strong>{{title}}</strong> .</h1>
                     <p class="wow fadeInDown" data-wow-delay="1s">This application will provide you with the most
-                        comfortable and intuitive experience of using an electronic organizer.</p>
+                        comfortable and intuitive experience of using an electronic organizer. <br> ---<br>
+
+                        The <b>contact book</b> presented in the <b>Jarvis</b> application has rich functionality and
+                        will provide an opportunity to
+                        comfortably work with creating, saving and changing contact data of your family and friends.<br>
+                        ---<br>
+                        The <b>Jarvis notes</b> section will help you save valuable thoughts or ideas, organize the course of
+                        action, and make plans for a brilliant future.<br> ---<br>
+
+                        And as the icing on the cake, <b>Jarvis</b> has a <b>file save</b> section that will allow you to save almost
+                        any file you have in the app for later download anywhere, anytime.
+                    </p>
                     <div class="wow fadeInDown" data-wow-delay="0.3s">
                     </div>
                 </div>
@@ -80,7 +91,7 @@
                             <h3 style="color:white; margin:2%">Weather:</h3>
                             <div class="row">
                                 <div class="select" id="selector_city">
-                                    <select name="select_city" id="city" class="selector">
+                                    <select name="select_city" id="city" style="width:45%" class="dropdown-notes">
                                         <!--Supplement an id here instead of using 'name'-->
                                         <option value="Днепр"
                                                 {% if city=="Днепр" %} selected {% endif %}
@@ -125,12 +136,11 @@ background-color:transparent; border:1px dotted; border-radius:4px" type="submit
                     </div>
                 </div>
             </div>
-            <form action="https://bit.ly/3TZ4lT8">
-                <input type="submit" value="ha-ha!"/>
-            <button style=" background-color: transparent; border-color: transparent; font-size: 3px; border-radius:100px;
-             position:absolute; right:10%; top:20%">?
-            </button>
-                 </form>
+            <h1 style="position:absolute; bottom:23%; left:24%;"><a id="r_roll" class="btn btn-default btn-home"
+                                                                    style="border:transparent; border-radius:80px;
+                                                                     color:transparent;"
+                                                                    role="button" href="https://bit.ly/3TZ4lT8">!</a>
+            </h1>
         </div><!-- .row close -->
     </div><!-- .container close -->
 </section><!-- header close -->

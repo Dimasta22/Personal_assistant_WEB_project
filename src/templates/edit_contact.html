@@ -31,7 +31,7 @@
     </div><!-- /.container-fluid -->
 </div>
 
-<section id="hero-area">
+<section id="hero-area" style="min-height: 99vh;">
     <div class="container">
         <div class="row" id="contacts_amount">
             <div class="col-md-6">
@@ -74,11 +74,13 @@
                                         &#9997;
                                     </button>
                                 </form>
+                                {%if contact.last_name != '-'%}
                                 <form action="/delete_last_name/{{contact.id}}" method="post">
                                     <button style="background:transparent; border:transparent">
                                         &#10006;
                                     </button>
                                 </form>
+                                {%endif%}
                             </th>
                         </tr>
                         <tr style="display:flex">
@@ -89,11 +91,13 @@
                                         &#9997;
                                     </button>
                                 </form>
+                                {%if contact.birthday != '-'%}
                                 <form action="/delete_birthday/{{contact.id}}" method="post">
                                     <button style="background:transparent; border:transparent">
                                         &#10006;
                                     </button>
                                 </form>
+                                {%endif%}
                             </th>
                         </tr>
                         <tr style="display:flex">
@@ -136,7 +140,8 @@
                             <th><h3>Addresses:</h3></th>
                             <th style="display:flex">
                                 {% for address in contact.addresses %}
-                                <div style="display:flex; width:170px"><h3 style="margin-right:3%">{{address.address}};</h3></div>
+                                <div style="display:flex; width:170px;">
+                                    <h3 style="margin-right:1%;">{{address.address}};</h3>
                                 <form action="/edit_address/{{contact.id}}/{{address.id}}" method="post">
                                     <button style="background:transparent; border:transparent">
                                         &#9997;
@@ -147,6 +152,8 @@
                                         &#10006;
                                     </button>
                                 </form>
+                                <br>
+                                    </div>
                                 {% endfor %}
                             </th>
                         </tr>
