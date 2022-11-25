@@ -1,0 +1,83 @@
+{% extends "new_base.html" %}
+
+{% block content %}
+
+<div class="navbar-default navbar-fixed-top" id="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img class="logo-1" src="{{ url_for('static', filename='/images/logo.png')}}" alt="LOGO">
+                <img class="logo-2" src="{{ url_for('static', filename='/images/logo-2.png')}}" alt="LOGO">
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <nav class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav navbar-right" id="top-nav">
+                <li><a href="/account_window">Main</a></li>
+                <li><a href="/contacts">Contacts</a></li>
+                <li><a href="/Notebook">Notes</a></li>
+                <li><a href="/file_uploader">File Uploader</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </nav><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<section id="hero-area" style="min-height: 99vh;">
+    <div class="container">
+        <div class="row" id="contacts_amount">
+            <div class="col-md-6">
+                <div class="block">
+                    <h1 class="wow fadeInDown">Welcome to <strong>{{title}}</strong>ES Notes manager.</h1>
+                    <p class="wow fadeInDown" data-wow-delay="1s">Here you can <b>UPDATE</b> your notes.</p>
+                    <div class="wow fadeInDown" data-wow-delay="1.5s">
+                        <a class="btn btn-default btn-home" href="/Notebook" role="button">Back To Main page of NOTES</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-12 wow fadeInLeft" style="width:50%">
+                <form method="POST" action="/edit_note/{{d_note.id}}">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-warning">{{message}}</div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    <div class="form-group" style="padding: 2%; display:inline">
+                        <h2 style="color:white; margin-bottom: 2%">Note name:</h2>
+                        <input type="text" class="form-control" name="note_name" placeholder="{{d_note.name}}" required/>
+                    </div>
+                    <div class="form-group" style="padding: 2%; display:inline">
+                        <h2 style="color:white; margin-bottom: 2%">Note description:</h2>
+                        <input type="text" class="form-control" name="note_description" placeholder="{{d_note.description}}" required/>
+                    </div>
+                    <div class="dropdown-notes">
+                            <select name="tags" multiple="multiple">
+                                {% for tag in all_tags %}
+                                <option value="{{tag.name}}">{{tag.name}}</option>
+                                {% endfor %}
+                            </select>
+                        <i class="material-icons"></i>
+                    </div>
+                    <button style="width:40%" class="btn btn-send" type="submit">Submit</button>
+                        <button type="reset" class="btn btn-send"
+                                style="width:40%; margin-left:10%; background-color:transparent">Reset
+                        </button>
+                </form>
+            </div>
+        </div>
+    </div><!-- .row close -->
+    </div><!-- .container close -->
+</section><!-- header close -->
+
+
+{%endblock%}
