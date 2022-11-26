@@ -381,7 +381,8 @@ def search_note_tag():
         return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     all_tags = tag.all_tags(nick.id)
-    return render_template('search_n.html', nick=nick.nick, all_tags=all_tags)
+    return render_template('search_n2.html', nick=nick.nick, all_tags=all_tags, tab_title=f'Jarvis | Search for note',
+                           title='JARVIS')
 
 
 @app.route('/search_all_done_notes', strict_slashes=False)
@@ -413,25 +414,29 @@ def search_by_phrases():
     if not auth:
         return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
+    all_tags = tag.all_tags(nick.id)
     if request.method == "POST":
         phrase = request.form.get('note_phrase')
         note_tgs = request.form.getlist("tags")
         if not phrase and not note_tgs:
             flash('Nothing to show')
-            return render_template('search_notes_tags_result.html', nick=nick.nick, message='Nothing to show')
+            return render_template('search_n2.html', nick=nick.nick, message='Nothing to show', tab_title=f'Jarvis | Search for note',
+                           title='JARVIS', all_tags=all_tags)
         if phrase and not note_tgs:
             flash('No Tags included')
             result_note = note.all_find_notes(nick.id, phrase)
             result_notes = note.result_notes_into_list(result_note)
-            return render_template('search_notes_tags_result.html', nick=nick.nick, result=result_note, phrase=phrase,
-                                   result_notes=result_notes, message='No Tags included')
+            return render_template('search_n2.html', nick=nick.nick, result=result_note, phrase=phrase,
+                                   result_notes=result_notes, message='No Tags included', tab_title=f'Jarvis | Search for note',
+                           title='JARVIS',all_tags=all_tags)
         if not phrase and note_tgs:
             flash('No Notes included')
             result_tag = tag.all_find_tags(nick.id, note_tgs)
             result_note_tags = note.result_notes_into_list(result_tag)
             note_tgs = ", ".join(note_tgs)
-            return render_template('search_notes_tags_result.html', nick=nick.nick, result_tag=result_tag,
-                                   result_note_tags=result_note_tags, note_tgs=note_tgs, message='No Tags included')
+            return render_template('search_n2.html', nick=nick.nick, result_tag=result_tag,
+                                   result_note_tags=result_note_tags, note_tgs=note_tgs, message='No Tags included',tab_title=f'Jarvis | Search for note',
+                           title='JARVIS',all_tags=all_tags)
         if phrase and note_tgs:
             flash('All included')
             result_note = note.all_find_notes(nick.id, phrase)
@@ -440,11 +445,13 @@ def search_by_phrases():
             result_note_tags = note.result_notes_into_list(result_tag)
             all_in = 1
             note_tgs = ", ".join(note_tgs)
-            return render_template('search_notes_tags_result.html', nick=nick.nick, result_tag=result_tag,
+            return render_template('search_n2.html', nick=nick.nick, result_tag=result_tag,
                                    all_in=all_in, phrase=phrase,
                                    result_all=result_note, result_notes_all=result_notes,
-                                   result_note_tags=result_note_tags, note_tgs=note_tgs, message='All included')
-    return render_template('search_notes_tags_result.html', nick=nick.nick)
+                                   result_note_tags=result_note_tags, note_tgs=note_tgs, message='All included',tab_title=f'Jarvis | Search for note',
+                           title='JARVIS',all_tags=all_tags)
+    return render_template('search_n2', nick=nick.nick, tab_title=f'Jarvis | Search for note',
+                           title='JARVIS',all_tags=all_tags)
 
 
 @app.route('/contacts', methods=['GET', 'POST'], strict_slashes=False)
