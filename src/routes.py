@@ -19,17 +19,19 @@ from src.scrappy_libs import currency, football, politics, weather
 Function for correct hello:
 """
 
+
 def hello():
     now_is = datetime.now().time()
     if 0 <= now_is.hour < 6:
         hello = 'Good night!'
     elif 6 <= now_is.hour < 12:
-        hello ='Good morning!'
+        hello = 'Good morning!'
     elif 12 <= now_is.hour < 18:
         hello = 'Good afternoon!'
     elif 18 <= now_is.hour < 24:
-        hello= 'Good evening!'
+        hello = 'Good evening!'
     return hello
+
 
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
@@ -90,6 +92,7 @@ def logout():
     session.pop('user_id')
     response = make_response(redirect(url_for('login')))
     return response
+
 
 @app.route('/account_window', methods=['GET', 'POST'], strict_slashes=False)
 def account_window():
@@ -351,7 +354,7 @@ def edit_note(_id):
     all_tags = tag.all_tags(nick.id)
     d_note = note.get_detail(_id)
     if request.method == "POST":
-        #flash('This name already exist') #Цей рядок видає флеш кожного разу, шукай вірний випадок для виводу.
+        # flash('This name already exist') #Цей рядок видає флеш кожного разу, шукай вірний випадок для виводу.
         d_note = note.get_detail(_id)
         note_n = request.form.get("note_name")
         note_des = request.form.get("note_description")
@@ -480,7 +483,8 @@ def add_contact():
 
         contact.create_contact(first_name, last_name, birthday,
                                email, address, cell_phone, session['user_id']['id'])
-    return render_template('add_contact.html', nick=nick)
+        return redirect(url_for('contacts'))
+    return render_template('add_contact2.html', nick=nick, tab_title=f'Jarvis | {nick}', title='JARVIS')
 
 
 @app.route('/show_contact_birthday', methods=['GET', 'POST'], strict_slashes=False)
@@ -542,9 +546,10 @@ def add_email(contact_id):
             validation = contact_validation(email=email)
             if validation is not None:
                 flash(validation[:-1])
-                return render_template('add_email.html', contact=contact_)
+                return render_template('add_email2.html', contact=contact_, tab_title=f'Jarvis | Add Email',
+                                       title='JARVIS')
             contact.add_email(contact_id, email)
-    return render_template('add_email.html', contact=contact_)
+    return render_template('add_email2.html', contact=contact_, tab_title=f'Jarvis | Add Email', title='JARVIS')
 
 
 @app.route('/add_address/<contact_id>', methods=["POST"], strict_slashes=False)
@@ -558,7 +563,7 @@ def add_address(contact_id):
         address = request.form.get('address')
         if request.form.get('address') is not None:
             contact.add_address(contact_id, address)
-    return render_template('add_address.html', contact=contact_)
+    return render_template('add_address2.html', contact=contact_, tab_title=f'Jarvis | Add Address', title='JARVIS')
 
 
 @app.route('/add_phone/<contact_id>', methods=["POST"], strict_slashes=False)
@@ -574,9 +579,10 @@ def add_phone(contact_id):
             validation = contact_validation(phone=phone)
             if validation is not None:
                 flash(validation[:-1])
-                return render_template('add_phone.html', contact=contact_)
+                return render_template('add_phone2.html', contact=contact_, tab_title=f'Jarvis | Add Address',
+                                       title='JARVIS')
             contact.add_phone(contact_id, phone)
-    return render_template('add_phone.html', contact=contact_)
+    return render_template('add_phone2.html', contact=contact_, tab_title=f'Jarvis | Add Phone Number', title='JARVIS')
 
 
 @app.route('/edit_contact/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -605,7 +611,9 @@ def edit_name(contact_id):
             name = request.form.get('name')
             contact.update_first_name(
                 contact_id, session['user_id']['id'], name)
-    return render_template('edit_name.html', contact=contact_, first_name_obj=contact_.first_name)
+            return redirect(url_for('edit_contact', contact_id=contact_id))
+    return render_template('edit_name2.html', contact=contact_, first_name_obj=contact_.first_name,
+                           tab_title=f'Jarvis | Update Name', title='JARVIS')
 
 
 @app.route('/edit_last_name/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -620,7 +628,9 @@ def edit_last_name(contact_id):
             last_name = request.form.get('last_name')
             contact.update_last_name(
                 contact_id, session['user_id']['id'], last_name)
-    return render_template('edit_last_name.html', contact=contact_, last_name_obj=contact_.last_name)
+            return redirect(url_for('edit_contact', contact_id=contact_id))
+    return render_template('edit_last_name2.html', contact=contact_, last_name_obj=contact_.last_name,
+                           tab_title=f'Jarvis | Update Last Name', title='JARVIS')
 
 
 @app.route('/edit_birthday/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -636,10 +646,13 @@ def edit_birthday(contact_id):
             validation = contact_validation(birthday=birthday)
             if validation is not None:
                 flash(validation[:-1])
-                return render_template('edit_birthday.html', contact=contact_, birthday_obj=contact_.birthday)
+                return render_template('edit_birthday2.html', contact=contact_, birthday_obj=contact_.birthday,
+                                       tab_title=f'Jarvis | Update Birthday', title='JARVIS')
             contact.update_birthday(
                 contact_id, session['user_id']['id'], birthday)
-    return render_template('edit_birthday.html', contact=contact_, birthday_obj=contact_.birthday)
+            return redirect(url_for('edit_contact', contact_id=contact_id))
+    return render_template('edit_birthday2.html', contact=contact_, birthday_obj=contact_.birthday,
+                           tab_title=f'Jarvis | Update Birthday', title='JARVIS')
 
 
 @app.route('/edit_email/<contact_id>/<email_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -655,12 +668,15 @@ def edit_email(contact_id, email_id):
             validation = contact_validation(email=email)
             if validation is not None:
                 flash(validation[:-1])
-                return render_template('edit_email.html', contact=contact_,
+                return render_template('edit_email2.html', contact=contact_,
                                        email=email_id,
-                                       email_obj=contact.get_email(contact_id=contact_id, email_id=email_id)[0])
+                                       email_obj=contact.get_email(contact_id=contact_id, email_id=email_id)[0],
+                                       tab_title=f'Jarvis | Update Email', title='JARVIS')
             contact.update_email(contact_id, email_id, email)
-    return render_template('edit_email.html', contact=contact_, email=email_id,
-                           email_obj=contact.get_email(contact_id=contact_id, email_id=email_id)[0])
+            return redirect(url_for('edit_contact', contact_id=contact_id))
+    return render_template('edit_email2.html', contact=contact_, email=email_id,
+                           email_obj=contact.get_email(contact_id=contact_id, email_id=email_id)[0],
+                           tab_title=f'Jarvis | Update Email', title='JARVIS')
 
 
 @app.route('/edit_phone/<contact_id>/<phone_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -676,11 +692,13 @@ def edit_phone(contact_id, phone_id):
             validation = contact_validation(phone=phone)
             if validation is not None:
                 flash(validation[:-1])
-                return render_template('edit_phone.html', contact=contact_, phone=phone_id,
+                return render_template('edit_phone2.html', contact=contact_, phone=phone_id,
                                        phone_obj=contact.get_phone(contact_id=contact_id, phone_id=phone_id)[0])
             contact.update_phone(contact_id, phone_id, phone)
-    return render_template('edit_phone.html', contact=contact_, phone=phone_id,
-                           phone_obj=contact.get_phone(contact_id=contact_id, phone_id=phone_id)[0])
+            return redirect(url_for('edit_contact', contact_id=contact_id))
+    return render_template('edit_phone2.html', contact=contact_, phone=phone_id,
+                           phone_obj=contact.get_phone(contact_id=contact_id, phone_id=phone_id)[0],
+                           tab_title=f'Jarvis | Update Phone', title='JARVIS')
 
 
 @app.route('/edit_address/<contact_id>/<address_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -694,8 +712,10 @@ def edit_address(contact_id, address_id):
         if request.form.get('address') is not None:
             address = request.form.get('address')
             contact.update_address(contact_id, address_id, address)
-    return render_template('edit_address.html', contact=contact_, address=address_id,
-                           address_obj=contact.get_address(contact_id=contact_id, address_id=address_id)[0])
+            return redirect(url_for('edit_contact', contact_id=contact_id))
+    return render_template('edit_address2.html', contact=contact_, address=address_id,
+                           address_obj=contact.get_address(contact_id=contact_id, address_id=address_id)[0],
+                           tab_title=f'Jarvis | Update Address', title='JARVIS')
 
 
 @app.route('/delete_address/<contact_id>/<address_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -707,7 +727,7 @@ def delete_address(contact_id, address_id):
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     contact.address_delete(address_id)
-    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+    return redirect(url_for('edit_contact', contact_id=contact_id))
 
 
 @app.route('/delete_phone/<contact_id>/<phone_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -719,7 +739,7 @@ def delete_phone(contact_id, phone_id):
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     contact.phone_delete(phone_id)
-    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+    return redirect(url_for('edit_contact', contact_id=contact_id))
 
 
 @app.route('/delete_email/<contact_id>/<email_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -731,7 +751,7 @@ def delete_email(contact_id, email_id):
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     contact.email_delete(email_id)
-    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+    return redirect(url_for('edit_contact', contact_id=contact_id))
 
 
 @app.route('/delete_birthday/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
@@ -755,7 +775,7 @@ def delete_last_name(contact_id):
     contact_ = contact.get_contacts_user_by_id(
         session['user_id']['id'], contact_id)
     contact.update_last_name(contact_id, session['user_id']['id'], '-')
-    return render_template('edit_contact.html', contact_id=contact_id, nick=nick, contact=contact_)
+    return redirect(url_for('edit_contact', contact_id=contact_id))
 
 
 @app.route('/back/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)

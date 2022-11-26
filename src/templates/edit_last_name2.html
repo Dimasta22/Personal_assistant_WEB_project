@@ -1,0 +1,85 @@
+{% extends "new_base.html" %}
+
+{% block content %}
+
+<div class="navbar-default navbar-fixed-top" id="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img class="logo-1" src="{{ url_for('static', filename='/images/logo.png')}}" alt="LOGO">
+                <img class="logo-2" src="{{ url_for('static', filename='/images/logo-2.png')}}" alt="LOGO">
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <nav class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav navbar-right" id="top-nav">
+                <li><a href="/account_window">Main</a></li>
+                <li><a href="/contacts">Contacts</a></li>
+                <li><a href="/Notebook">Notes</a></li>
+                <li><a href="/file_uploader">File Uploader</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </nav><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<section id="hero-area" style="min-height: 99vh;">
+    <div class="container">
+        <div class="row" id="contacts_amount">
+            <div class="col-md-6">
+                <div class="block">
+                    <h1 class="wow fadeInDown">Here <strong>{{title}}</strong> can help you to <b>update the last name</b> of your contact.
+                    </h1>
+                    <p class="wow fadeInDown" data-wow-delay="1s">You can <b>change</b> the last name of contact on any suitable.</p>
+                    <div class="wow fadeInDown" data-wow-delay="1.5s">
+                        <a class="btn btn-default btn-home" href="/contacts#contacts_table" role="button">Back To Contacts</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-12 wow fadeInLeft" style="width:50%">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-warning">{{message}}</div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <div>
+                    <form
+            class="col-sm-6"
+            action="{{contact.id}}"
+            method="post"
+            enctype="multipart/form-data"
+                    ><div class="form-group"  style="padding:3%; display:inline;">
+            <div class="form-group">
+                <input
+                class="form-control"
+                type="text"
+                placeholder="{{last_name_obj}}"
+                value="{{last_name_obj}}"
+                name="last_name"
+                />
+            </div>
+                        <div class="form-group">
+                                    <button style="border: 1px solid #ccc;  box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);" class="btn btn-send" type="submit">change last name
+                                    </button>
+                                </div>
+                      </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- .row close -->
+    </div><!-- .container close -->
+</section><!-- header close -->
+
+
+{%endblock%}
