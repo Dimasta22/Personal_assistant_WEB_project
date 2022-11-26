@@ -16,7 +16,7 @@ Header start
     </div><!-- /.container-fluid -->
 </div>
 
-<section id="hero-area">
+<section id="hero-area" style="min-height: 99vh;">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -35,9 +35,13 @@ Header start
                 <div class="block" style="width:80%">
                     <div class="counter text-center">
                         <!--ALERT MESSAGE-->
-                        {% if message %}
-                        <div class="alert alert-danger">{{message}}</div>
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-warning">{{message}}</div>
+                        {% endfor %}
                         {% endif %}
+                        {% endwith %}
                         <!--ALERT MESSAGE-->
                         <div class="row justify-content-center">
                             <form style="width:100%" class="col-sm-6" action="/registration" method="post">
