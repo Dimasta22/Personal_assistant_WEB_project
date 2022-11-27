@@ -70,3 +70,8 @@ def all_find_tags(u_id, note_tgs):
         if note.tags == c_tags:
             all_tags_search_result.append(note)
     return all_tags_search_result
+
+
+def pagination_tag(u_id, pagination_page):
+    tags = models.Tag.query.filter(models.Tag.user_id == u_id).paginate(page=pagination_page, per_page=5)
+    return tags

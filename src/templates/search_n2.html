@@ -82,7 +82,7 @@
         <div class="row">
             <div class="col-12 wow fadeInLeft" style="visibility: visible; animation-name: fadeInLeft;">
                 <div class="sub-heading" style="padding:2%">
-                    <h3> All founded notes with : "{{phrase}}"</h3>
+                    <h3> All founded notes with <b>"{{phrase}}"</b>: </h3>
                 </div>
                 <div class="block" style="padding:3%">
                     {% for r_notes in result_notes %}
@@ -111,7 +111,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <span style='margin-right:77%'>
-                                    <a style="margin-left:2%" href="/edit_note/{{r_notes[0]}}" role="button"
+                                    <a style="margin-left:2%" href="/note_edit/{{r_notes[0]}}" role="button"
                                        class="secondary">&#9997;</a>
                                     <a style="margin-left:2%; color:red; text-decoration: None"
                                        href="/delete_note/{{r_notes[0]}}"
@@ -132,7 +132,7 @@
         <div class="row">
             <div class="col-12 wow fadeInLeft" style="visibility: visible; animation-name: fadeInLeft;">
                 <div class="sub-heading" style="padding:2%">
-                    <h3> All found notes with tags: "{{note_tgs}}"</h3>
+                    <h3> Result in tags: <b>"{{note_tgs}}"</b></h3>
                 </div>
                 <div class="block" style="padding:3%">
                      {% for r_notes in result_note_tags %}
@@ -160,7 +160,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <span style='margin-right:77%'>
-                                    <a style="margin-left:2%" href="/edit_note/{{r_notes[0]}}" role="button"
+                                    <a style="margin-left:2%" href="/note_edit/{{r_notes[0]}}" role="button"
                                        class="secondary">&#9997;</a>
                                     <a style="margin-left:2%; color:red; text-decoration: None"
                                        href="/delete_note/{{r_notes[0]}}"
@@ -181,7 +181,7 @@
         <div class="row">
             <div class="col-12 wow fadeInLeft" style="visibility: visible; animation-name: fadeInLeft;">
                 <div class="sub-heading" style="padding:2%">
-                    <h3> All found notes with tags: "{{phrase}}" and "{{note_tgs}}"</h3>
+                    <h3> All found notes with phrase <b>"{{phrase}}"</b> and tags <b>"{{note_tgs}}"</b>:</h3>
                 </div>
                 <div class="block" style="padding:3%">
 
@@ -211,7 +211,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <span style='margin-right:77%'>
-                                    <a style="margin-left:2%" href="/edit_note/{{r_notes[0]}}" role="button"
+                                    <a style="margin-left:2%" href="/note_edit/{{r_notes[0]}}" role="button"
                                        class="secondary">&#9997;</a>
                                     <a style="margin-left:2%; color:red; text-decoration: None"
                                        href="/delete_note/{{r_notes[0]}}"

@@ -208,7 +208,7 @@ def file_download(file_id):
         return redirect(url_for('login'))
     user_id = user.get_user(session['user_id']['id']).id
     file = db.session.query(File).filter(File.id == file_id, File.user_id == user_id).first()
-    name = file.path.replace(f'/static/{user_id}/', '\\')
+    name = file.path.replace(f'/static/{user_id}/', '/')
     file_path = pathlib.Path(app.config['DOWNLOAD_FOLDER']) / str(user_id)
     full_path = str(file_path) + name
     return send_file(full_path, download_name=name)
@@ -232,10 +232,18 @@ def notebook():
     nick = user.get_user(session['user_id']['id'])
     all_tags_n = len(tag.all_tags(nick.id))
     all_tags = tag.all_tags(nick.id)
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+    pagination_tags = tag.pagination_tag(nick.id, page)
+    # pagination_note = note.pagination_note(nick.id, page)
     all_notes = note.all_notes(nick.id)
     all_notes_n = len(note.all_notes(nick.id))
+    note_tags = note.result_notes_into_list(all_notes)
     return render_template('notebook2.html', nick=nick.nick, all_tags_num=all_tags_n, all_tags=all_tags,
-                           all_notes=all_notes,
+                           all_notes=all_notes, note_tags=note_tags, pagination_tags=pagination_tags,
                            all_notes_n=all_notes_n, tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
 
 
@@ -349,7 +357,8 @@ def detail_note(_id):
     return render_template('note_detail.html', nick=nick.nick, d_note=d_note, tags_n=tags_n)
 
 
-@app.route('/edit_note/<_id>', methods=['GET', 'POST'], strict_slashes=False)
+# @app.route('/edit_note/<_id>', methods=['GET', 'POST'], strict_slashes=False)
+@app.route('/note_edit/<_id>', methods=['GET', 'POST'], strict_slashes=False)
 def edit_note(_id):
     auth = True if 'user_id' in session else False
     if not auth:
@@ -396,8 +405,8 @@ def search_note_done():
         return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     done_notes = note.search_all_notes(nick.id, 1)
-    d_s_tags = note.note_tags_to_string(done_notes)
-    return render_template('search_notes_tags_result.html', nick=nick.nick, done_notes=done_notes, d_s_tags=d_s_tags)
+    result_notes = note.result_notes_into_list(done_notes)
+    return render_template('search_notes_tags_result2.html', nick=nick.nick, done_notes=result_notes)
 
 
 @app.route('/search_all_undone_notes', strict_slashes=False)
@@ -407,9 +416,8 @@ def search_note_undone():
         return redirect(url_for('login'))
     nick = user.get_user(session['user_id']['id'])
     undone_notes = note.search_all_notes(nick.id, 0)
-    u_s_tags = note.note_tags_to_string(undone_notes)
-    return render_template('search_notes_tags_result.html', nick=nick.nick, undone_notes=undone_notes,
-                           u_s_tags=u_s_tags)
+    result_notes = note.result_notes_into_list(undone_notes)
+    return render_template('search_notes_tags_result2.html', nick=nick.nick, undone_notes=result_notes)
 
 
 @app.route('/search_by_phrase', methods=['GET', 'POST'], strict_slashes=False)

@@ -43,7 +43,8 @@
                         in your life.</p>
                     <div class="wow fadeInDown" data-wow-delay="1.5s">
                         <a class="btn btn-default btn-home" href="/search_notes_tags" role="button">SEARCH</a>
-                        <a style="margin-left:3%" class="btn btn-default btn-home" href="/tags/" role="button">Add TAG</a>
+                        <a style="margin-left:3%" class="btn btn-default btn-home" href="/tags/" role="button">Add
+                            TAG</a>
                         <a style="margin-left:3%" class="btn btn-default btn-home" href="/notes/" role="button">Add
                             NOTE</a>
                     </div>
@@ -59,18 +60,42 @@
                 {% endwith %}
                 <div id="tags_you_have">
                     <h2 style="color:white;">For now you added {{ all_tags_num }} <b>tags</b>:</h2>
-                    {% for tag in all_tags %}
+<!--                    {% for tag in all_tags %}-->
+<!--                    <ul style="margin-top:2%; ">-->
+<!--                        <li style="display:flex;">-->
+<!--                            <h3><a style="text-decoration: None; color:white;"-->
+<!--                                &lt;!&ndash;                                   role="button"&ndash;&gt;-->
+<!--                                #{{tag.name}}</a></h3>-->
+<!--                            <a style="margin-left:2%" href="/edit_tag/{{tag.id}}" role="button" class="secondary">&#9997;</a>-->
+<!--                            <a style="margin-left:2%; color:red; text-decoration: None" href="/delete_tag/{{tag.id}}"-->
+<!--                               role="button" class="contrast">&#10006;</a> ;-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                    {% endfor %}-->
+
+                    {% for tags in pagination_tags.items %}
                     <ul style="margin-top:2%; ">
                         <li style="display:flex;">
-                            <h3><a style="text-decoration: None; color:white;" href="/detail_tag/{{tag.id}}"
-                                   role="button"
-                                   class="outline">#{{tag.name}}</a></h3>
-                            <a style="margin-left:2%" href="/edit_tag/{{tag.id}}" role="button" class="secondary">&#9997;</a>
-                            <a style="margin-left:2%; color:red; text-decoration: None" href="/delete_tag/{{tag.id}}"
+                            <h3><a style="text-decoration: None; color:white;"
+                                <!--                                   role="button"-->
+                                #{{tags.name}}</a></h3>
+                            <a style="margin-left:2%" href="/edit_tag/{{tags.id}}" role="button" class="secondary">&#9997;</a>
+                            <a style="margin-left:2%; color:red; text-decoration: None" href="/delete_tag/{{tags.id}}"
                                role="button" class="contrast">&#10006;</a> ;
                         </li>
                     </ul>
                     {% endfor %}
+                    <nav>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a href="/Notebook/?page={{ pagination_tags.prev_num }}#hero-area"
+                               class="btn btn-success {%if not pagination_tags.has_prev%} disabled {%endif%}"
+                               role="button">Prev</a>
+                            <a href="/Notebook/?page={{ pagination_tags.next_num }}#hero-area"
+                               class="btn btn-success {%if not pagination_tags.has_next%} disabled {%endif%}"
+                               role="button">Next</a>
+                        </div>
+                    </nav><!-- Pagination ENDS!!! -->
+
                 </div>
                 <span><br></span>
                 <div class="wow fadeInDown" data-wow-delay="1.5s">
@@ -107,9 +132,13 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="note_title_{{note.id}}"> <b>{{note.name}}</b> </h5>
-<!--                                    PLACE FOR TAGS FOR CERTAIN NOTE-->
-                                    <p>Pinned tags: тут мають бути теги</p>
+                                    <h5 class="modal-title" id="note_title_{{note.id}}"><b>{{note.name}}</b></h5>
+                                    <!--                                    PLACE FOR TAGS FOR CERTAIN NOTE-->
+                                    {% for ttags in note_tags %}
+                                    {% if note.id == ttags[0] %}
+                                    <p>Pinned tags: {{ttags[3]}}</p>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
                                 <div class="modal-body">
                                     {{note.description}}
@@ -117,7 +146,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <span style='margin-right:77%'>
-                                    <a style="margin-left:2%" href="/edit_note/{{note.id}}" role="button"
+                                    <a style="margin-left:2%" href="/note_edit/{{note.id}}" role="button"
                                        class="secondary">&#9997;</a>
                                     <a style="margin-left:2%; color:red; text-decoration: None"
                                        href="/delete_note/{{note.id}}"
