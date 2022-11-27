@@ -204,7 +204,7 @@ def file_download(file_id):
         return redirect(url_for('login'))
     user_id = user.get_user(session['user_id']['id']).id
     file = db.session.query(File).filter(File.id == file_id, File.user_id == user_id).first()
-    name = file.path.replace(f'/static/{user_id}/', '\\')
+    name = file.path.replace(f'/static/{user_id}/', '/')
     file_path = pathlib.Path(app.config['DOWNLOAD_FOLDER']) / str(user_id)
     full_path = str(file_path) + name
     return send_file(full_path, download_name=name)
@@ -234,6 +234,7 @@ def notebook():
     else:
         page = 1
     pagination_tags = tag.pagination_tag(nick.id, page)
+    # pagination_note = note.pagination_note(nick.id, page)
     all_notes = note.all_notes(nick.id)
     all_notes_n = len(note.all_notes(nick.id))
     note_tags = note.result_notes_into_list(all_notes)

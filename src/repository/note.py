@@ -77,3 +77,8 @@ def search_note_name(new_name, u_id):
     search_tag = db.session.query(models.Note).filter(and_(models.Note.name == new_name),
                                                       (models.Note.user_id == u_id)).first()
     return search_tag
+
+
+def pagination_note(u_id, pagination_page):
+    tags = models.Note.query.filter(models.Note.user_id == u_id).paginate(page=pagination_page, per_page=5)
+    return tags
