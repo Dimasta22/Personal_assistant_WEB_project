@@ -1,0 +1,233 @@
+{% extends "new_base.html" %}
+
+{% block content %}
+
+<div class="navbar-default navbar-fixed-top" id="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img class="logo-1" src="{{ url_for('static', filename='/images/logo.png')}}" alt="LOGO">
+                <img class="logo-2" src="{{ url_for('static', filename='/images/logo-2.png')}}" alt="LOGO">
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <nav class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav navbar-right" id="top-nav">
+                <li><a href="/account_window">Main</a></li>
+                <li><a href="/contacts">Contacts</a></li>
+                <li><a href="/Notebook">Notes</a></li>
+                <li><a href="/file_uploader">File Uploader</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </nav><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<section id="hero-area" style="min-height: 99vh;">
+    <div class="container">
+        <div class="row" id="contacts_amount">
+            <div class="col-md-6">
+                <div class="block">
+                    <h1 class="wow fadeInDown">Here's <strong>{{title}}</strong> can help you with <b>finding</b> a certain note.</h1>
+                    <p class="wow fadeInDown" data-wow-delay="1s">You can <b>search</b> for any note you have here.</p>
+                    <div class="wow fadeInDown" data-wow-delay="1.5s">
+	                        	<a class="btn btn-default btn-home" href="/Notebook" role="button">Back to Notes</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-12 wow fadeInLeft" style="width:50%">
+               <form method="POST" action="/search_by_phrase">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-warning">{{message}}</div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+
+                    <div class="form-group" style="padding: 2%; display:inline">
+                        <h2 style="color:white; margin-bottom: 2%">Fragment for search:</h2>
+                        <textarea class="form-control" name="note_phrase" ></textarea>
+                    </div>
+                    <div class="dropdown-notes">
+                            <select name="tags" multiple="multiple">
+                                {% for tag in all_tags %}
+                                <option value="{{tag.name}}">{{tag.name}}</option>
+                                {% endfor %}
+                            </select>
+                        <i class="material-icons"></i>
+                    </div>
+                    <button style="width:40%" class="btn btn-send" type="submit">SEARCH</button>
+                        <button type="reset" class="btn btn-send"
+                                style="width:40%; margin-left:10%; background-color:transparent">Reset
+                        </button>
+                </form>
+            </div>
+        </div>
+    </div><!-- .row close -->
+    </div><!-- .container close -->
+</section><!-- header close -->
+<section>
+
+    <div class="container">
+        {% if result %}
+        <div class="row">
+            <div class="col-12 wow fadeInLeft" style="visibility: visible; animation-name: fadeInLeft;">
+                <div class="sub-heading" style="padding:2%">
+                    <h3> All founded notes with : "{{phrase}}"</h3>
+                </div>
+                <div class="block" style="padding:3%">
+                    {% for r_notes in result_notes %}
+
+                    <!-- Button trigger modal -->
+                    <button type="button" style="min-width:175px; min-height:120px; font-size:28px; margin:1%;
+                     background: rgba(0, 0, 0, 0) linear-gradient(135deg, #41aba0 0%, #8ec64e 100%) repeat scroll 0 0;
+                     border: 1px solid #ccc; border-radius: 4px; -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%); box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+" class="btn btn-success" data-toggle="modal" data-target="#note_{{r_notes[0]}}_1">
+                        {{r_notes[1]}}
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="note_{{r_notes[0]}}_1" tabindex="-1" role="dialog"
+                         aria-labelledby="note_title_{{r_notes[0]}}_1" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="note_title_{{r_notes[0]}}_1"> <b>{{r_notes[1]}}</b> </h5>
+<!--                                    PLACE FOR TAGS FOR CERTAIN NOTE-->
+                                    <p>Pinned tags: {{r_notes[3]}}</p>
+                                </div>
+                                <div class="modal-body">
+                                    {{r_notes[2]}}
+
+                                </div>
+                                <div class="modal-footer">
+                                    <span style='margin-right:77%'>
+                                    <a style="margin-left:2%" href="/edit_note/{{r_notes[0]}}" role="button"
+                                       class="secondary">&#9997;</a>
+                                    <a style="margin-left:2%; color:red; text-decoration: None"
+                                       href="/delete_note/{{r_notes[0]}}"
+                                       role="button" class="contrast">&#10006;</a></span>
+                                    <button style="margin-left:2%;" type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     {% endfor %}
+                </div>
+            </div>
+        </div>
+          {% endif %}
+        {% if result_tag %}
+        <div class="row">
+            <div class="col-12 wow fadeInLeft" style="visibility: visible; animation-name: fadeInLeft;">
+                <div class="sub-heading" style="padding:2%">
+                    <h3> All found notes with tags: "{{note_tgs}}"</h3>
+                </div>
+                <div class="block" style="padding:3%">
+                     {% for r_notes in result_note_tags %}
+                    <!-- Button trigger modal -->
+                    <button type="button" style="min-width:175px; min-height:120px; font-size:28px; margin:1%;
+                     background: rgba(0, 0, 0, 0) linear-gradient(135deg, #41aba0 0%, #8ec64e 100%) repeat scroll 0 0;
+                     border: 1px solid #ccc; border-radius: 4px; -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%); box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+" class="btn btn-success" data-toggle="modal" data-target="#note_{{r_notes[0]}}_2">
+                        {{r_notes[1]}}
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="note_{{r_notes[0]}}_2" tabindex="-1" role="dialog"
+                         aria-labelledby="note_title_{{r_notes[0]}}_2" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="note_title_{{r_notes[0]}}_2"> <b>{{r_notes[1]}}</b> </h5>
+<!--                                    PLACE FOR TAGS FOR CERTAIN NOTE-->
+                                    <p>Pinned tags: {{r_notes[3]}}</p>
+                                </div>
+                                <div class="modal-body">
+                                    {{r_notes[2]}}
+
+                                </div>
+                                <div class="modal-footer">
+                                    <span style='margin-right:77%'>
+                                    <a style="margin-left:2%" href="/edit_note/{{r_notes[0]}}" role="button"
+                                       class="secondary">&#9997;</a>
+                                    <a style="margin-left:2%; color:red; text-decoration: None"
+                                       href="/delete_note/{{r_notes[0]}}"
+                                       role="button" class="contrast">&#10006;</a></span>
+                                    <button style="margin-left:2%;" type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if all_in %}
+        <div class="row">
+            <div class="col-12 wow fadeInLeft" style="visibility: visible; animation-name: fadeInLeft;">
+                <div class="sub-heading" style="padding:2%">
+                    <h3> All found notes with tags: "{{phrase}}" and "{{note_tgs}}"</h3>
+                </div>
+                <div class="block" style="padding:3%">
+
+                      {% for r_notes in result_notes_all %}
+
+                    <!-- Button trigger modal -->
+                    <button type="button" style="min-width:175px; min-height:120px; font-size:28px; margin:1%;
+                     background: rgba(0, 0, 0, 0) linear-gradient(135deg, #41aba0 0%, #8ec64e 100%) repeat scroll 0 0;
+                     border: 1px solid #ccc; border-radius: 4px; -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%); box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+" class="btn btn-success" data-toggle="modal" data-target="#note_{{r_notes[0]}}_3">
+                        {{r_notes[1]}}
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="note_{{r_notes[0]}}_3" tabindex="-1" role="dialog"
+                         aria-labelledby="note_title_{{r_notes[0]}}_3" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="note_title_{{r_notes[0]}}_3"> <b>{{r_notes[1]}}</b> </h5>
+<!--                                    PLACE FOR TAGS FOR CERTAIN NOTE-->
+                                    <p>Pinned tags: {{r_notes[3]}}</p>
+                                </div>
+                                <div class="modal-body">
+                                    {{r_notes[2]}}
+
+                                </div>
+                                <div class="modal-footer">
+                                    <span style='margin-right:77%'>
+                                    <a style="margin-left:2%" href="/edit_note/{{r_notes[0]}}" role="button"
+                                       class="secondary">&#9997;</a>
+                                    <a style="margin-left:2%; color:red; text-decoration: None"
+                                       href="/delete_note/{{r_notes[0]}}"
+                                       role="button" class="contrast">&#10006;</a></span>
+                                    <button style="margin-left:2%;" type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{%endblock%}

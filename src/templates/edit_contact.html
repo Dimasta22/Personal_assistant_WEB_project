@@ -40,7 +40,7 @@
                     </h1>
                     <p class="wow fadeInDown" data-wow-delay="1s">You can change any information of your contact.</p>
                     <div class="wow fadeInDown" data-wow-delay="1.5s">
-                        <a class="btn btn-default btn-home" href="/contacts" role="button">Back To Contacts</a>
+                        <a class="btn btn-default btn-home" href="/contacts#contacts_table" role="button">Back To Contacts</a>
                     </div>
                 </div>
             </div>
@@ -103,58 +103,164 @@
                         <tr style="display:flex">
                             <th><h3>Emails:</h3></th>
                             <th style="display:flex">
-                                {% for email in contact.emails %}
-                                <h3 style="margin-right:3%">{{email.email}};</h3>
-                                <form action="/edit_email/{{contact.id}}/{{email.id}}" method="post">
-                                    <button style="background:transparent; border:transparent">
-                                        &#9997;
+                                <div style="display:flex; width:120%">
+                                    {% for email in contact.emails[0:1] %}
+                                    <h4>{{email.email}};</h4>
+                                    {% endfor %}
+                                    <!-- Button trigger modal -->
+                                    <button style="margin-left:3%" type="button" class="btn btn-success"
+                                            data-toggle="modal"
+                                            data-target="#emails">
+                                        See All
                                     </button>
-                                </form>
-                                <form action="/delete_email/{{contact.id}}/{{email.id}}" method="post">
-                                    <button style="background:transparent; border:transparent">
-                                        &#10006;
-                                    </button>
-                                </form>
-                                {% endfor %}
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="emails" tabindex="-1" role="dialog"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" id="emails_title">EMAILS:</h3>
+                                                </div>
+                                                <div class="modal-body" style="display:flex">
+                                                    {% for email in contact.emails %}
+                                                    <ul>
+                                                        <li>
+                                                            <div style="display:flex; align-items:flex-end">
+                                                                <h4>{{email.email}};</h4>
+                                                                <form action="/edit_email/{{contact.id}}/{{email.id}}"
+                                                                      method="post">
+                                                                    <button style="background:transparent; border:transparent">
+                                                                        &#9997;
+                                                                    </button>
+                                                                </form>
+                                                                <form action="/delete_email/{{contact.id}}/{{email.id}}"
+                                                                      method="post">
+                                                                    <button style="background:transparent; border:transparent">
+                                                                        &#10006;
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </th>
                         </tr>
                         <tr style="display:flex">
                             <th><h3>Phones:</h3></th>
                             <th style="display:flex">
-                                {% for phone in contact.phones %}
-                                <h3 style="margin-right:3%">{{phone.phone}};</h3>
-                                <form action="/edit_phone/{{contact.id}}/{{phone.id}}" method="post">
-                                    <button style="background:transparent; border:transparent">
-                                        &#9997;
+                                <div style="display:flex; width:120%">
+                                    {% for phone in contact.phones[0:1] %}
+                                    <h4>{{phone.phone}};</h4>
+                                    {% endfor %}
+                                    <!-- Button trigger modal -->
+                                    <button style="margin-left:3%" type="button" class="btn btn-success"
+                                            data-toggle="modal"
+                                            data-target="#phones">
+                                        See All
                                     </button>
-                                </form>
-                                <form action="/delete_phone/{{contact.id}}/{{phone.id}}" method="post">
-                                    <button style="background:transparent; border:transparent">
-                                        &#10006;
-                                    </button>
-                                </form>
-                                {% endfor %}
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="phones" tabindex="-1" role="dialog"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" id="phones_title">PHONES:</h3>
+                                                </div>
+                                                <div class="modal-body" style="display:flex">
+                                                    {% for phone in contact.phones %}
+                                                    <ul>
+                                                        <li>
+                                                            <div style="display:flex; align-items:flex-end">
+                                                                <h4>{{phone.phone}};</h4>
+                                                                <form action="/edit_phone/{{contact.id}}/{{phone.id}}"
+                                                                      method="post">
+                                                                    <button style="background:transparent; border:transparent">
+                                                                        &#9997;
+                                                                    </button>
+                                                                </form>
+                                                                <form action="/delete_phone/{{contact.id}}/{{phone.id}}"
+                                                                      method="post">
+                                                                    <button style="background:transparent; border:transparent">
+                                                                        &#10006;
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </th>
                         </tr>
                         <tr style="display:flex">
                             <th><h3>Addresses:</h3></th>
-                            <th style="display:flex">
-                                {% for address in contact.addresses %}
-                                <div style="display:flex; width:170px;">
-                                    <h3 style="margin-right:1%;">{{address.address}};</h3>
-                                <form action="/edit_address/{{contact.id}}/{{address.id}}" method="post">
-                                    <button style="background:transparent; border:transparent">
-                                        &#9997;
+                            <th style="display:flex; width:120%">
+                                <div style="display:flex; width:120%">
+                                    {% for address in contact.addresses[0:1] %}
+                                    <h4>{{address.address}};</h4>
+                                    {% endfor %}
+                                    <!-- Button trigger modal -->
+                                    <button style="margin-left:3%" type="button" class="btn btn-success"
+                                            data-toggle="modal"
+                                            data-target="#addresses">
+                                       See All
                                     </button>
-                                </form>
-                                <form action="/delete_address/{{contact.id}}/{{address.id}}" method="post">
-                                    <button style="background:transparent; border:transparent">
-                                        &#10006;
-                                    </button>
-                                </form>
-                                <br>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="addresses" tabindex="-1" role="dialog"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" id="addresses_title">ADDRESSES:</h3>
+                                                </div>
+                                                <div class="modal-body" style="display:flex">
+                                                    {% for address in contact.addresses %}
+                                                    <ul>
+                                                        <li>
+                                                            <div style="display:flex; align-items:flex-end">
+                                                                <h4>{{address.address}};</h4>
+                                                                <form action="/edit_address/{{contact.id}}/{{address.id}}"
+                                                                      method="post">
+                                                                    <button style="background:transparent; border:transparent">
+                                                                        &#9997;
+                                                                    </button>
+                                                                </form>
+                                                                <form action="/delete_address/{{contact.id}}/{{address.id}}"
+                                                                      method="post">
+                                                                    <button style="background:transparent; border:transparent">
+                                                                        &#10006;
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                {% endfor %}
+                                </div>
                             </th>
                         </tr>
                     </table>
