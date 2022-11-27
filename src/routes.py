@@ -471,6 +471,7 @@ def add_contact():
         email = request.form.get('email')
         address = request.form.get('address')
         cell_phone = request.form.get('cell_phone')
+        print(birthday, type(birthday))
         validation = contact_validation(first_name=first_name,
                                         last_name=last_name,
                                         birthday=birthday,
@@ -480,7 +481,6 @@ def add_contact():
         if validation is not None:
             flash(validation)
             return redirect(request.url)
-
         contact.create_contact(first_name, last_name, birthday,
                                email, address, cell_phone, session['user_id']['id'])
         return redirect(url_for('contacts'))
