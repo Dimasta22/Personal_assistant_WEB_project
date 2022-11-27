@@ -15,13 +15,6 @@ def get_contacts_user_by_id(user_id, contact_id):
 
 
 def create_contact(first_name, last_name, birthday, email, address, phone, user_id):
-    if birthday == '':
-        birthday = '-'
-    else:
-        birthday = datetime.strptime(birthday, "%Y-%m-%d")
-        birthday = birthday.strftime("%d.%m.%Y")
-    if last_name == '':
-        last_name = '-'
     contact = models.Contact(
         first_name=first_name, last_name=last_name, birthday=birthday, user_id=user_id)
     db.session.add(contact)
@@ -214,8 +207,6 @@ def update_last_name(contact_id, user_id, last_name):
 
 def update_birthday(contact_id, user_id, birthday):
     if birthday != '':
-        birthday = datetime.strptime(birthday, "%Y-%m-%d")
-        birthday = birthday.strftime("%d.%m.%Y")
         contact = get_contacts_user_by_id(user_id, contact_id)
         contact.birthday = birthday
         db.session.commit()

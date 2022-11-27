@@ -141,8 +141,9 @@ def file_uploader():
             if file.user_id == user_id:
                 files_on_demand.append(file)
     group_is_set = False
-    return render_template('file_uploader.html', title='Jarvise', types=type_ex,
-                           group_is_set=group_is_set, user_id=user_id, files_on_demand=files_on_demand)
+    return render_template('file_uploader.html', types=type_ex,
+                           group_is_set=group_is_set, user_id=user_id, files_on_demand=files_on_demand,  tab_title=f'Jarvis | File Uploader',
+                               title='JARVIS')
 
 
 @app.route('/file_uploader/<group>', methods=['GET'], strict_slashes=False)
@@ -164,10 +165,13 @@ def file_uploader_set_files(group):
         chosen_group = db.session.query(FileType).filter(FileType.name == group).first()
         selected_files = db.session.query(File).filter(File.user_id == user_id, File.type_id == chosen_group.id)
         selected_files = selected_files.paginate(page=page, per_page=3)
-        return render_template('file_uploader.html', title='Jarvise', types=type_ex,
-                               group_is_set=group_is_set, selected_files=selected_files, group=group)
-    return render_template('file_uploader.html', title='Jarvise', types=type_ex,
-                           group_is_set=group_is_set, group=group)
+        return render_template('file_uploader.html', types=type_ex,
+                               group_is_set=group_is_set, selected_files=selected_files, group=group,
+                               tab_title=f'Jarvis | File Uploader',
+                               title='JARVIS')
+    return render_template('file_uploader.html', types=type_ex,
+                           group_is_set=group_is_set, group=group, tab_title=f'Jarvis | File Uploader',
+                           title='JARVIS')
 
 
 @app.route('/file_uploader/upload', methods=['GET', 'POST'], strict_slashes=False)
@@ -420,23 +424,26 @@ def search_by_phrases():
         note_tgs = request.form.getlist("tags")
         if not phrase and not note_tgs:
             flash('Nothing to show')
-            return render_template('search_n2.html', nick=nick.nick, message='Nothing to show', tab_title=f'Jarvis | Search for note',
-                           title='JARVIS', all_tags=all_tags)
+            return render_template('search_n2.html', nick=nick.nick, message='Nothing to show',
+                                   tab_title=f'Jarvis | Search for note',
+                                   title='JARVIS', all_tags=all_tags)
         if phrase and not note_tgs:
             flash('No Tags included')
             result_note = note.all_find_notes(nick.id, phrase)
             result_notes = note.result_notes_into_list(result_note)
             return render_template('search_n2.html', nick=nick.nick, result=result_note, phrase=phrase,
-                                   result_notes=result_notes, message='No Tags included', tab_title=f'Jarvis | Search for note',
-                           title='JARVIS',all_tags=all_tags)
+                                   result_notes=result_notes, message='No Tags included',
+                                   tab_title=f'Jarvis | Search for note',
+                                   title='JARVIS', all_tags=all_tags)
         if not phrase and note_tgs:
             flash('No Notes included')
             result_tag = tag.all_find_tags(nick.id, note_tgs)
             result_note_tags = note.result_notes_into_list(result_tag)
             note_tgs = ", ".join(note_tgs)
             return render_template('search_n2.html', nick=nick.nick, result_tag=result_tag,
-                                   result_note_tags=result_note_tags, note_tgs=note_tgs, message='No Tags included',tab_title=f'Jarvis | Search for note',
-                           title='JARVIS',all_tags=all_tags)
+                                   result_note_tags=result_note_tags, note_tgs=note_tgs, message='No Tags included',
+                                   tab_title=f'Jarvis | Search for note',
+                                   title='JARVIS', all_tags=all_tags)
         if phrase and note_tgs:
             flash('All included')
             result_note = note.all_find_notes(nick.id, phrase)
@@ -448,10 +455,11 @@ def search_by_phrases():
             return render_template('search_n2.html', nick=nick.nick, result_tag=result_tag,
                                    all_in=all_in, phrase=phrase,
                                    result_all=result_note, result_notes_all=result_notes,
-                                   result_note_tags=result_note_tags, note_tgs=note_tgs, message='All included',tab_title=f'Jarvis | Search for note',
-                           title='JARVIS',all_tags=all_tags)
+                                   result_note_tags=result_note_tags, note_tgs=note_tgs, message='All included',
+                                   tab_title=f'Jarvis | Search for note',
+                                   title='JARVIS', all_tags=all_tags)
     return render_template('search_n2', nick=nick.nick, tab_title=f'Jarvis | Search for note',
-                           title='JARVIS',all_tags=all_tags)
+                           title='JARVIS', all_tags=all_tags)
 
 
 @app.route('/contacts', methods=['GET', 'POST'], strict_slashes=False)
@@ -478,7 +486,6 @@ def add_contact():
         email = request.form.get('email')
         address = request.form.get('address')
         cell_phone = request.form.get('cell_phone')
-        print(birthday, type(birthday))
         validation = contact_validation(first_name=first_name,
                                         last_name=last_name,
                                         birthday=birthday,
@@ -488,6 +495,7 @@ def add_contact():
         if validation is not None:
             flash(validation)
             return redirect(request.url)
+
         contact.create_contact(first_name, last_name, birthday,
                                email, address, cell_phone, session['user_id']['id'])
         return redirect(url_for('contacts'))
