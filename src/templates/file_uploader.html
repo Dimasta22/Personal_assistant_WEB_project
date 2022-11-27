@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>File Uploader</title>
+    <title>{{tab_title}}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -59,7 +59,6 @@ Header start
         <nav class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav navbar-right" id="top-nav">
                 <li class="current"><a href="#hero-area">UP!</a></li>
-                <li><a href="#upload">Upload</a></li>
                 <li><a href="#show_all">Show All</a></li>
 
             </ul>
@@ -84,13 +83,51 @@ Header start
             </div>
             <div class="col-md-6 wow zoomIn">
                 <div class="block">
-                    <div class="counter text-center">
-                        <ul id="countdown_dashboard">
-                            <li><p> task N1 </p></li>
-                            <li><p> task N2 </p></li>
-                            <li><p> task N3 </p></li>
-
-                        </ul>
+                    <div class="row">
+                        <div style="width:80%" class="col-md-7 wow fadeInLeft">
+                            <div class="sub-heading">
+                                <h3 style="color:white; width:90%">Here you can upload your files!</h3>
+                            </div>
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div style="width:50%" class="alert alert-warning">{{message}}</div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                            <form style="width:100%"
+                                    class="col-sm-6"
+                                    action="/file_uploader/upload"
+                                    method="post"
+                                    enctype="multipart/form-data"
+                            >
+                                <div class="form-group">
+                                    <input  title="Defines the name of file here."
+                                            class="form-control"
+                                            type="text"
+                                            placeholder="Description"
+                                            name="description"
+                                            required
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <div class="example-2">
+                                        <div class="form-group">
+                                            <input type="file" name="file" id="file" class="input-file">
+                                            <label style="width:100%" for="file" class="btn btn-tertiary js-labelFile">
+                                                <i class="icon fa fa-check"></i>
+                                                <span class="js-fileName">Choose file</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button style="width:100%" class="btn btn-send" type="submit">
+                                        Upload
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,56 +139,7 @@ Header start
 <!--
 About start
 ==================== -->
-<section id="upload" class="section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-7 col-sm-12 wow fadeInLeft">
-                <div class="sub-heading">
-                    <h3>Here you can upload your files!</h3>
-                </div>
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-warning">{{message}}</div>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
-                <form
-                        class="col-sm-6"
-                        action="/file_uploader/upload"
-                        method="post"
-                        enctype="multipart/form-data"
-                >
-                    <div class="form-group">
-                        <input
-                                class="form-control"
-                                type="text"
-                                placeholder="Description"
-                                name="description"
-                                required
-                        />
-                    </div>
-                    <div class="form-group">
-                        <div class="example-2">
-                            <div class="form-group">
-                                <input type="file" name="file" id="file" class="input-file">
-                                <label for="file" class="btn btn-tertiary js-labelFile">
-                                    <i class="icon fa fa-check"></i>
-                                    <span class="js-fileName">Choose file</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-send" type="submit">
-                            Upload
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section><!-- #about close -->
+
 <!--
 About start
 ==================== -->
@@ -183,10 +171,10 @@ About start
                     {%endfor%}
                 </div>
                 {%if not files_on_demand%}
-                    <div style="width:40%" class="alert alert-success" role="alert">
-                        <b>There is nothing... yet.</b>
-                    </div>
-                    {%endif%}
+                <div style="width:40%" class="alert alert-success" role="alert">
+                    <b>There is nothing... yet.</b>
+                </div>
+                {%endif%}
                 {%else%}
                 <div>
                     <b>{{group}}</b> | <a href="/file_uploader/#show_all"><b style="color:green">To all</b></a>
