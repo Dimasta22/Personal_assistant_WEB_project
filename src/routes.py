@@ -228,11 +228,17 @@ def notebook():
     nick = user.get_user(session['user_id']['id'])
     all_tags_n = len(tag.all_tags(nick.id))
     all_tags = tag.all_tags(nick.id)
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+    pagination_tags = tag.pagination_tag(nick.id, page)
     all_notes = note.all_notes(nick.id)
     all_notes_n = len(note.all_notes(nick.id))
     note_tags = note.result_notes_into_list(all_notes)
     return render_template('notebook2.html', nick=nick.nick, all_tags_num=all_tags_n, all_tags=all_tags,
-                           all_notes=all_notes, note_tags=note_tags,
+                           all_notes=all_notes, note_tags=note_tags, pagination_tags=pagination_tags,
                            all_notes_n=all_notes_n, tab_title=f'Jarvis | {nick.nick}', title='JARVIS')
 
 
