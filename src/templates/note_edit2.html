@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="col-md-7 col-sm-12 wow fadeInLeft" style="width:50%">
-                <form method="POST" action="/edit_note/{{d_note.id}}">
+                <form method="POST" action="/note_edit/{{d_note.id}}">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     {% for message in messages %}
@@ -54,11 +54,11 @@
                     {% endwith %}
                     <div class="form-group" style="padding: 2%; display:inline">
                         <h2 style="color:white; margin-bottom: 2%">Note name:</h2>
-                        <input type="text" class="form-control" name="note_name" placeholder="{{d_note.name}}" required/>
+                        <input type="text" class="form-control" name="note_name" placeholder="{{d_note.name}}" >
                     </div>
                     <div class="form-group" style="padding: 2%; display:inline">
                         <h2 style="color:white; margin-bottom: 2%">Note description:</h2>
-                        <input type="text" class="form-control" name="note_description" placeholder="{{d_note.description}}" required/>
+                        <input type="text" class="form-control" name="note_description" placeholder="{{d_note.description}}" >
                     </div>
                     <div class="dropdown-notes">
                             <select name="tags" multiple="multiple">

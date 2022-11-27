@@ -62,9 +62,9 @@
                     {% for tag in all_tags %}
                     <ul style="margin-top:2%; ">
                         <li style="display:flex;">
-                            <h3><a style="text-decoration: None; color:white;" href="/detail_tag/{{tag.id}}"
-                                   role="button"
-                                   class="outline">#{{tag.name}}</a></h3>
+                            <h3><a style="text-decoration: None; color:white;"
+<!--                                   role="button"-->
+                                   #{{tag.name}}</a></h3>
                             <a style="margin-left:2%" href="/edit_tag/{{tag.id}}" role="button" class="secondary">&#9997;</a>
                             <a style="margin-left:2%; color:red; text-decoration: None" href="/delete_tag/{{tag.id}}"
                                role="button" class="contrast">&#10006;</a> ;
@@ -109,7 +109,11 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="note_title_{{note.id}}"> <b>{{note.name}}</b> </h5>
 <!--                                    PLACE FOR TAGS FOR CERTAIN NOTE-->
-                                    <p>Pinned tags: тут мають бути теги</p>
+                                    {% for ttags in note_tags %}
+                                        {% if note.id == ttags[0] %}
+                                    <p>Pinned tags: {{ttags[3]}}</p>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
                                 <div class="modal-body">
                                     {{note.description}}
@@ -117,7 +121,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <span style='margin-right:77%'>
-                                    <a style="margin-left:2%" href="/edit_note/{{note.id}}" role="button"
+                                    <a style="margin-left:2%" href="/note_edit/{{note.id}}" role="button"
                                        class="secondary">&#9997;</a>
                                     <a style="margin-left:2%; color:red; text-decoration: None"
                                        href="/delete_note/{{note.id}}"
