@@ -377,7 +377,7 @@ def edit_note(_id):
         note_ty = (False if note_ty == '0' else True)
         if note.search_note_name(note_n, nick.id) is None:
             note.edit_note(d_note.id, note_n, note_des, tags_in_form, note_ty)
-            flash(f'The note "{note_n}" was updated successfully!')
+            flash(f'The note was updated successfully!')
             return redirect("/Notebook")
         else:
             flash('This name already exist!')
