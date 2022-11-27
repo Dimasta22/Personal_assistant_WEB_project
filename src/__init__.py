@@ -6,7 +6,7 @@ from config import config
 
 app = Flask(__name__)
 app.config.from_object(config.Config)
-app.debug = True
+app.debug = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
