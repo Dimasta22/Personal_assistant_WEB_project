@@ -12,7 +12,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/account_window">
                 <img class="logo-1" src="{{ url_for('static', filename='/images/logo.png')}}" alt="LOGO">
                 <img class="logo-2" src="{{ url_for('static', filename='/images/logo-2.png')}}" alt="LOGO">
             </a>
@@ -61,15 +61,15 @@
             >
                      <div class="form-group"  style="padding:3%; display:inline;">
                          <ul>
-                             <li style="margin-bottom:3%"><input type="text" class="form-control" name="first_name" pattern="^[А-Яа-яёЁЇїІіЄєҐґA-Za-z]+$" placeholder="First Name" required/></li>
-                            <li style="margin-bottom:3%"><input class="form-control" type="text" placeholder="Last Name" pattern="^[А-Яа-яёЁЇїІіЄєҐґA-Za-z]+$" name="last_name"/></li>
-                            <li style="margin-bottom:3%"><input class="form-control" type="text" placeholder="Email" pattern="[a-zA-Z][a-zA-Z0-9_.]{1,}@\w+[.][a-z]{2,}" name="email"
+                             <li style="margin-bottom:3%"><input type="text" class="form-control" name="first_name" pattern="^[А-Яа-яёЁЇїІіЄєҐґ]+$" placeholder="First Name" required/></li>
+                            <li style="margin-bottom:3%"><input class="form-control" type="text" placeholder="Last Name" pattern="^[А-Яа-яёЁЇїІіЄєҐґ]+$" name="last_name"/></li>
+                            <li style="margin-bottom:3%"><input class="form-control" type="text" placeholder="Email" pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$" name="email"
                 /></li>
                             <li style="margin-bottom:3%"><input class="form-control" type="text" placeholder="Address" name="address"
                 /></li>
-                            <li style="margin-bottom:3%"> <input class="form-control" type="text" pattern="\+\d{12}||\d{12}||\d{12}||\d{10}" placeholder="380123456789" name="cell_phone"
+                            <li style="margin-bottom:3%"> <input class="form-control" type="text" placeholder="380123456789" pattern="^\d{2}\d{3}\d{3}\d{2}\d{2}$" name="cell_phone"
                 /></li>
-                             <li style="margin-bottom:3%">  <input class="form-control" type='date' placeholder="Date Of Birth: dd.mm.yyyy"  name="birthday"/></li>
+                             <li style="margin-bottom:3%">  <input class="form-control" type=text placeholder="Date Of Birth: dd.mm.yyyy"  name="birthday"/></li>
                          </ul>
                     </div>
                         <div class="form-group">

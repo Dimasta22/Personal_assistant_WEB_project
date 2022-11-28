@@ -85,9 +85,8 @@
                         </li>
                     </ul>
                     {% endfor %}
-                    {%if all_tags_num > 5 %}
                     <nav>
-                        <div style="margin-top: 2%;" class="btn-group" role="group" aria-label="Basic example">
+                        <div class="btn-group" role="group" aria-label="Basic example">
                             <a href="/Notebook/?page={{ pagination_tags.prev_num }}#hero-area"
                                class="btn btn-success {%if not pagination_tags.has_prev%} disabled {%endif%}"
                                role="button">Prev</a>
@@ -96,7 +95,6 @@
                                role="button">Next</a>
                         </div>
                     </nav><!-- Pagination ENDS!!! -->
-                    {%endif%}
 
                 </div>
                 <span><br></span>

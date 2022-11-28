@@ -13,12 +13,12 @@ def contact_validation(first_name=None, last_name=None,birthday=None, email=None
     #         flag = True
     #         result +='last name should be necessarily, '
     if birthday != None and birthday != '':
-        if re.search('\d{4}-\d{2}-\d{2}', birthday) == None:
+        if re.search('\d{2}.\d{2}.\d{4}', birthday) == None:
             if len(birthday) != 10:
                 flag = True
-                result +='you should write birthday: yyyy/mm/dd, '
+                result +='you should write birthday: dd.mm.yyyy, '
         try:
-            datetime.strptime(birthday, "%Y-%m-%d")
+            datetime.strptime(birthday, "%d.%m.%Y")
         except:
             flag = True
             result +=f'you wrote wrong date: {birthday}, '
