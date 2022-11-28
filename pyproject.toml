@@ -1,12 +1,13 @@
 [tool.poetry]
-name = "project_web"
+name = "personal_assistant_web_project"
 version = "0.1.0"
 description = ""
-authors = ["Dimasta22 <serdyuk0002@gmail.com>"]
+authors = ["Andrii V. <kidstonek@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-Flask = "^2.2.2"
+requests = "^2.28.1"
+bs4 = "^0.0.1"
 
 [tool.poetry.dev-dependencies]
 

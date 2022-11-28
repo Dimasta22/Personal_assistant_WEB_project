@@ -1,0 +1,82 @@
+{% extends "new_base.html" %}
+
+{% block content %}
+<!--
+Header start
+==================== -->
+<div class="navbar-default navbar-fixed-top" id="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <img class="logo-1" src="{{ url_for('static', filename='/images/logo.png')}}" alt="LOGO">
+                <img class="logo-2" src="{{ url_for('static', filename='/images/logo-2.png')}}" alt="LOGO">
+            </a>
+        </div>
+    </div><!-- /.container-fluid -->
+</div>
+
+<section id="hero-area" style="min-height: 99vh;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="block" style="padding:0">
+                    <h1 class="wow fadeInDown"><br>Welcome to <b>{{title}}</b>{{title_desc}}!</h1>
+                    <p class="wow fadeInDown" data-wow-delay="0.3s"><strong>Haven't used the JARVIS yet??</strong></p>
+                    <div class="wow fadeInDown" data-wow-delay="0.3s">
+                        <a class="btn btn-default btn-home" href="/registration" role="button">SIGN UP</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 wow zoomIn">
+                <div class="block" style="width:80%">
+                    <div class="counter text-center">
+                        <!--ALERT MESSAGE-->
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-warning">{{message}}</div>
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                        <!--ALERT MESSAGE-->
+                        <div class="row justify-content-center">
+                            <form style="width:100%" class="col-sm-6" action="/login" method="post">
+                                <div class="input-field">
+                                    <input
+                                            class="form-control"
+                                            type="text"
+                                            placeholder="Nickname"
+                                            name="nickname"/>
+                                </div>
+                                <div class="input-field">
+                                    <input
+                                            class="form-control"
+                                            type="password"
+                                            placeholder="Password"
+                                            name="password"
+                                            required/>
+                                </div>
+                                <div style="padding-right:70%" class="form-group form-check mb-3">
+                                    <label class="form-check-label">
+                                        <input
+                                                type="checkbox"
+                                                class="form-check-input"
+                                                name="remember"
+                                        />
+                                        Remember me</label>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-send" type="submit">
+                                        Login
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .row close -->
+        </div>
+    </div><!-- .container close -->
+</section><!-- header close -->
+{%endblock%}

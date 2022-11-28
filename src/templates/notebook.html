@@ -1,0 +1,44 @@
+<html><head></head><body>{% extends "base_notes.html" %}
+{% block content %}
+    <div class="grid">
+        <ul>
+            <a href="/tags/" role="button">Add tags</a>
+        </ul>
+        <ul>
+            <a href="/notes/" role="button">Add notes</a>
+        </ul>
+        <ul>
+            <a href="/search_notes_tags/" role="button">Search</a>
+        </ul>
+    </div>
+	<div style="
+    display: flex;
+    justify-content: space-around;
+">
+    <div id="tags_you_have">
+        for now you have {{ all_tags_num }} tags
+    {% for tag in all_tags %}
+    <ul>
+        <li>
+            <a href="/detail_tag/{{tag.id}}" role="button" class="outline">{{tag.name}}</a>
+            <a href="/edit_tag/{{tag.id}}" role="button" class="secondary">Edit tag</a>
+            <a href="/delete_tag/{{tag.id}}" role="button" class="contrast">Delete tag</a>
+        </li>
+    </ul>
+      {% endfor %}
+	</div>
+    <div id="notes_you_have">
+        for now you have {{ all_notes_n }} notes
+    {% for note in all_notes %}
+    <ul>
+        <li>
+            <a href="/detail_note/{{note.id}}" role="button" class="outline">{{note.name}}</a>
+            <a href="/edit_note/{{note.id}}" role="button" class="secondary">Edit note</a>
+            <a href="/delete_note/{{note.id}}" role="button" class="contrast">Delete note</a>
+        </li>
+    </ul>
+      {% endfor %}
+	</div>
+	</div>
+    {% endblock %}
+</body></html>

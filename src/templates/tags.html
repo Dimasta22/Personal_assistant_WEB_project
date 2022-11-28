@@ -1,0 +1,20 @@
+{% extends "base_notes.html" %}
+{% block content %}
+    <form method="POST" action="/tags">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning">{{message}}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div style="padding: 10px">
+            <label
+            >Tag name:
+                <input type="text" name="tag_name" required/>
+            </label>
+            <button type="submit">Submit</button>
+            <button type="reset" class="secondary">Reset</button>
+        </div>
+    </form>
+{% endblock %}

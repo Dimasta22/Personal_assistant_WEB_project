@@ -1,0 +1,190 @@
+{% extends "new_base.html" %}
+
+{% block content %}
+
+<div class="navbar-default navbar-fixed-top" id="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img class="logo-1" src="{{ url_for('static', filename='/images/logo.png')}}" alt="LOGO">
+                <img class="logo-2" src="{{ url_for('static', filename='/images/logo-2.png')}}" alt="LOGO">
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <nav class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav navbar-right" id="top-nav">
+                <li><a href="/account_window">Main</a></li>
+                <li><a href="/contacts">Contacts</a></li>
+                <li><a href="/Notebook">Notes</a></li>
+                <li><a href="/file_uploader">File Uploader</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </nav><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<section id="hero-area">
+    <div class="container">
+        <div class="row" id="here_is_currency">
+            <div class="col-md-6">
+                <div class="block">
+                    <h1 class="wow fadeInDown">{{hello}} Welcome to <strong>{{title}}</strong> .</h1>
+                    <p class="wow fadeInDown" data-wow-delay="1s">This application will provide you with the most
+                        comfortable and intuitive experience of using an electronic organizer. <br> ---<br>
+
+                        The <b>contact book</b> presented in the <b>Jarvis</b> application has rich functionality and
+                        will provide an opportunity to
+                        comfortably work with creating, saving and changing contact data of your family and friends.<br>
+                        ---<br>
+                        The <b>Jarvis notes</b> section will help you save valuable thoughts or ideas, organize the course of
+                        action, and make plans for a brilliant future.<br> ---<br>
+
+                        And as the icing on the cake, <b>Jarvis</b> has a <b>file save</b> section that will allow you to save almost
+                        any file you have in the app for later download anywhere, anytime.
+                    </p>
+                    <div class="wow fadeInDown" data-wow-delay="0.3s">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-12 wow fadeInLeft" style="width:50%">
+                <div class="sub-heading">
+                    <h3>Currency:</h3>
+                    <table class="table" style="width:80%;">
+                        <thead>
+                        <tr>
+                            {% for index in range(4)%}
+                            <td><b>{{currency_news[index]}}</b></td>
+                            {%endfor%}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{currency_news[4]}}</td>
+                            {% for index in range(7,10)%}
+                            <td>{{currency_news[index]}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>{{currency_news[5]}}</td>
+                            {% for index in range(10,13)%}
+                            <td>{{currency_news[index]}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td style="width:10%">{{currency_news[6]}}</td>
+                            {% for index in range(13,16)%}
+                            <td>{{currency_news[index]}}</td>
+                            {% endfor %}
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="weather_reporto">
+                        <form method="post">
+                            <h3 style="color:white; margin:2%">Weather:</h3>
+                            <div class="row">
+                                <div class="select" id="selector_city">
+                                    <select name="select_city" id="city" style="width:45%" class="dropdown-notes">
+                                        <!--Supplement an id here instead of using 'name'-->
+                                        <option value="Днепр"
+                                                {% if city=="Днепр" %} selected {% endif %}
+                                        >Dnipro
+                                        </option>
+                                        <option value="Киев"
+                                                {% if city=="Киев" %} selected {% endif %}
+                                        >Kyiv
+                                        </option>
+                                        <option value="Харьков"
+                                                {% if city=="Харьков" %} selected {% endif %}
+                                        >Kharkiv
+                                        </option>
+                                        <option value="Львов"
+                                                {% if city=="Львов" %} selected {% endif %}
+                                        >Lviv
+                                        </option>
+                                        <option value="Одесса"
+                                                {% if city=="Одесса" %} selected {% endif %}
+                                        >Odesa
+                                        </option>
+                                        <option value="Каменское"
+                                                {% if city=="Каменское" %} selected {% endif %}
+                                        >Kamenskoe
+                                        </option>
+                                    </select>
+                                    <button class="btn" id="weather-button"
+                                            style="padding:2px; font-size:10; margin:0;
+background-color:transparent; border:1px dotted; border-radius:4px" type="submit">
+                                        Choose
+                                    </button>
+                                </div>
+                            </div>
+                            {% for weather in weather_news%}
+                            <ul>
+                                <li style="margin:2%">
+                                    <span class="outline" style="color:white; margin:2%">{{weather}}</span>
+                                </li>
+                            </ul>
+                            {% endfor %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <h1 style="position:absolute; bottom:23%; left:24%;"><a id="r_roll" class="btn btn-default btn-home"
+                                                                    style="border:transparent; border-radius:80px;
+                                                                     color:transparent;"
+                                                                    role="button" href="https://bit.ly/3TZ4lT8">!</a>
+            </h1>
+        </div><!-- .row close -->
+    </div><!-- .container close -->
+</section><!-- header close -->
+
+
+<!--
+About start
+==================== -->
+<section id="about" class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 wow zoomIn" id="football">
+                <h3 style="color:black">&#9917; Football News:</h3>
+                <div class="block">
+                    <div class="counter text-center">
+                        <ul id="countdown_dashboard_2" class="list-group">
+                            {% for news, href in football_news.items() %}
+                            <li class="list-group-item">
+                                <a href="{{href}}" class="outline" style="text-decoration:None">
+                                    <b style="color:black">{{news}}</b></a>
+                            </li>
+                            {%endfor%}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 wow zoomIn" id="news">
+                <h3 style="color:black">&#128240; News:</h3>
+                <div class="block">
+                    <div class="counter text-center">
+                        <ul id="countdown_dashboard" class="list-group">
+                            {% for news, href in politics_news.items()%}
+                            <li class="list-group-item">
+                                <a href="{{href}}" class="outline" style="text-decoration:None"><b style="color:green">{{news}}</b></a>
+                            </li>
+                            {%endfor%}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- #about close -->
+<!-- Example single danger button -->
+
+
+{%endblock%}

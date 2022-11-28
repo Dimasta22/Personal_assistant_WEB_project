@@ -1,0 +1,153 @@
+{% extends "new_base.html" %}
+
+{% block content %}
+
+<div class="navbar-default navbar-fixed-top" id="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/account_window">
+                <img class="logo-1" src="{{ url_for('static', filename='/images/logo.png')}}" alt="LOGO">
+                <img class="logo-2" src="{{ url_for('static', filename='/images/logo-2.png')}}" alt="LOGO">
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <nav class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav navbar-right" id="top-nav">
+                <li><a href="/account_window">Main</a></li>
+                <li><a href="/contacts">Contacts</a></li>
+                <li><a href="/Notebook">Notes</a></li>
+                <li><a href="/file_uploader">File Uploader</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </nav><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<section id="hero-area" style="min-height: 99vh;">
+    <div class="container">
+        <div class="row" id="contacts_amount">
+            <div class="col-md-6">
+                <div class="block">
+                    <h1 class="wow fadeInDown">Welcome to <strong>{{title}}</strong>ES contact book.</h1>
+                    <p class="wow fadeInDown" data-wow-delay="1s">Feel free to create, update or delete the contacts of
+                        people you care of.</p>
+                    <div class="wow fadeInDown" data-wow-delay="1.5s">
+	                        	<a class="btn btn-default btn-home" href="/add_contact" role="button">Add Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-12 wow fadeInLeft" style="width:50%">
+                <h2 style="color:white">Contacts, that I keep for now: {{amount_contacts}}</h2>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-warning">{{message}}</div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <form style="margin:2%" action="/find_contact" method="post">
+                    <input name="find" class="form-control" placeholder="Search for contact">
+                    <button class="btn btn-send">
+                        SEARCH
+                    </button>
+                </form>
+                <form action="/show_contact_birthday" method="post">
+                    <p style="color:white">Choose date till which your contacts will have birthday: </p><br> <input type="date" class="form-control" name="calendar">
+                        <button class="btn btn-send">
+                            Find
+                        </button>
+                </form>
+            </div>
+        </div>
+    </div><!-- .row close -->
+    </div><!-- .container close -->
+</section><!-- header close -->
+<section id="about" class="section" style="padding-top:1%">
+            <div class="container">
+                <div class="row">
+                    <h1  id="contacts_table" style="color:black; margin-bottom:4%">Here is all of your contacts:</h1>
+                    <table class="table">
+                <tr>
+                    <td>first&nbsp;name</td>
+                    <td>last&nbsp;name</td>
+                    <td>birthday</td>
+                    <td>email</td>
+                    <td>cell&nbsp;phone</td>
+                    <td>address</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+            {% for contact in contacts%}
+            <tr>
+                <th>{{contact.first_name}}</th>
+                <th>{{contact.last_name}}</th>
+                <th>{{contact.birthday}}</th>
+                <th>
+                {% for email in contact.emails %}
+                {{email.email}}
+                <br>
+                {% endfor %}
+                </th>
+                <th>
+                    {% for phone in contact.phones %}
+                        {{phone.phone}}
+                        <br>
+                        {% endfor %}
+                </th>
+                <th style="width:200px">
+                    <span style="width:200px">
+                    {% for address in contact.addresses %}
+                    {{address.address}}
+                    <br>
+                    {% endfor %}
+                        </span>
+                </th>
+                <th>
+                    <div style="display:flex">
+                        <form action="/add_email/{{contact.id}}" method="post">
+                        <button>
+                            + &#128234;
+                        </button>
+                    </form>
+                        <form action="/add_phone/{{contact.id}}" method="post">
+                        <button>
+                            + &#9742;
+                        </button>
+                    </form>
+                       <form action="/add_address/{{contact.id}}" method="post">
+                        <button>
+                            + &#127969;
+                        </button>
+                    </form>
+                        </div>
+                </th>
+                <th >
+                    <div style="display:flex">
+                    <form action="/edit_contact/{{contact.id}}" method="post">
+                        <button>
+                        &#9997;
+                        </button>
+                    </form>
+                        <form action="/delete_contact/{{contact.id}}" method="post">
+                        <button>
+                        &#10006;
+                        </button>
+                    </form>
+                        </div>
+                </th>
+              </tr>
+            {% endfor %}
+        </table>
+                </div>
+            </div>
+        </section>
+
+{%endblock%}

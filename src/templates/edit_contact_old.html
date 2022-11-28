@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="contacts_page" style="color: #000;">
+        <h1>Edit contact:</h1>
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-warning">{{message}}</div>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+        <div>
+            <table style="width:10%">
+            <tr>
+                <th>Name:</th>
+                <th>
+                    {{contact.first_name}} <a style="color: black; text-align: center; margin-left: 10px;" href="/edit_name/{{contact.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
+                    height="50" alt="Edit name"></a></th>
+            </tr>
+            <tr>
+                <th>Last name:</th>
+                <th>{{contact.last_name}}<a style="color: black; text-align: center; margin-left: 10px;" href="/edit_last_name/{{contact.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
+                    height="50" alt="Edit last name"></a>
+                    <a style="color: black; text-align: center; margin-left: 10px;" href="/delete_last_name/{{contact.id}}"><img src="{{url_for('static', filename='delete_button.png')}}" width="12" 
+                        height="50" alt="delete last name"></a></th>
+            </tr>
+            <tr>
+                <th>Birthday:</th>
+                <th>{{contact.birthday}}<a style="color: black; text-align: center; margin-left: 10px;" href="/edit_birthday/{{contact.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
+                    height="50" alt="Edit birthday"></a>
+                    <a style="color: black; text-align: center; margin-left: 10px;" href="/delete_birthday/{{contact.id}}"><img src="{{url_for('static', filename='delete_button.png')}}" width="12" 
+                        height="50" alt="delete birthday"></a></th>
+            </tr>
+            <tr>
+                <th>Emails:</th>
+                <th>
+                    {% for email in contact.emails %}
+                    {{email.email}}
+                    <a style="color: black; text-align: center; margin-left: 10px;" href="/edit_email/{{contact.id}}/{{email.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
+                        height="50" alt="Edit email"></a>
+                        <a style="color: black; text-align: center; margin-left: 10px;" href="/delete_email/{{contact.id}}/{{email.id}}"><img src="{{url_for('static', filename='delete_button.png')}}" width="12" 
+                            height="50" alt="delete email"></a><br>
+                    {% endfor %}
+                </th>
+            </tr>
+            <tr>
+                <th>Phones:</th>
+                <th>
+                    {% for phone in contact.phones %}
+                        {{phone.phone}}
+                        <a style="color: black; text-align: center; margin-left: 10px;" href="/edit_phone/{{contact.id}}/{{phone.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
+                            height="50" alt="Edit phone"></a>
+                            <a style="color: black; text-align: center; margin-left: 10px;" href="/delete_phone/{{contact.id}}/{{phone.id}}"><img src="{{url_for('static', filename='delete_button.png')}}" width="12" 
+                                height="50" alt="delete phone"></a><br>
+                        {% endfor %}
+                </th>
+            </tr>
+            <tr>
+                <th>Addresses:</th>
+                <th>
+                    {% for address in contact.addresses %}
+                    {{address.address}}
+                    <a style="color: black; text-align: center; margin-left: 10px;" href="/edit_address/{{contact.id}}/{{address.id}}"><img src="{{url_for('static', filename='edit_button.png')}}" width="12" 
+                        height="50" alt="Edit address"></a><a style="color: black; text-align: center; margin-left: 10px;" href="/delete_address/{{contact.id}}/{{address.id}}"><img src="{{url_for('static', filename='delete_button.png')}}" width="12" 
+                        height="50" alt="delete address"></a><br>
+                    {% endfor %}
+                </th>
+            </tr>
+        </table>
+        </div>
+        
+    </div>
+    {% endblock %}

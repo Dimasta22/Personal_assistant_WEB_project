@@ -1,0 +1,8 @@
+{% extends "base_notes.html" %}
+{% block content %}
+            <h1>Tag description:</h1>
+                                        <h2>{{d_tag.name}}</h2>
+          <a href="/edit_tag/{{d_tag.id}}" role="button" class="secondary">Edit tag</a>
+          <a href="/delete_tag/{{d_tag.id}}" role="button" class="contrast">Delete tag</a>
+{% endblock %}
+
